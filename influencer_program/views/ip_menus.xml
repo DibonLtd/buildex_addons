@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ╔═══════════════════════════════════════════════════════════╗
+         ║          INFLUENCER PROGRAM — TOP-LEVEL APP MENU          ║
+         ╚═══════════════════════════════════════════════════════════╝ -->
+    <menuitem id="ip_menu_root"
+              name="Influencer Program"
+              web_icon="influencer_program,static/description/icon.png"
+              groups="influencer_program.group_influencer_user"
+              sequence="85"/>
+
+    <!-- ─── Dashboard ─────────────────────────────────────────── -->
+    <menuitem id="ip_menu_dashboard"
+              name="Dashboard"
+              parent="ip_menu_root"
+              action="ip_action_perf_report"
+              sequence="1"/>
+
+    <!-- ─── Influencers ───────────────────────────────────────── -->
+    <menuitem id="ip_menu_influencers"
+              name="Influencers"
+              parent="ip_menu_root"
+              sequence="10"/>
+
+    <menuitem id="ip_menu_influencer_all"
+              name="All Influencers"
+              parent="ip_menu_influencers"
+              action="ip_action_influencer_all"
+              sequence="1"/>
+
+    <menuitem id="ip_menu_influencer_pending"
+              name="Pending Applications"
+              parent="ip_menu_influencers"
+              action="ip_action_influencer_pending"
+              sequence="2"/>
+
+    <menuitem id="ip_menu_influencer_approved"
+              name="Approved"
+              parent="ip_menu_influencers"
+              action="ip_action_influencer_approved"
+              sequence="3"/>
+
+    <!-- ─── Performance ──────────────────────────────────────── -->
+    <menuitem id="ip_menu_performance"
+              name="Performance"
+              parent="ip_menu_root"
+              sequence="20"/>
+
+    <menuitem id="ip_menu_perf_overview"
+              name="Overview"
+              parent="ip_menu_performance"
+              action="ip_action_perf_report"
+              sequence="1"/>
+
+    <menuitem id="ip_menu_commissions"
+              name="Commissions"
+              parent="ip_menu_performance"
+              action="ip_action_commissions"
+              sequence="2"/>
+
+    <menuitem id="ip_menu_commission_batches"
+              name="Commission Batches"
+              parent="ip_menu_performance"
+              action="ip_action_commission_batches"
+              groups="influencer_program.group_influencer_manager"
+              sequence="3"/>
+
+    <menuitem id="ip_menu_wallet"
+              name="Wallet Transactions"
+              parent="ip_menu_performance"
+              action="ip_action_wallet"
+              sequence="4"/>
+
+    <menuitem id="ip_menu_visits"
+              name="Referral Visits"
+              parent="ip_menu_performance"
+              action="ip_action_visit_stats"
+              sequence="5"/>
+
+    <!-- ─── Sales ─────────────────────────────────────────────── -->
+    <menuitem id="ip_menu_sales"
+              name="Sales"
+              parent="ip_menu_root"
+              sequence="30"/>
+
+    <menuitem id="ip_menu_referred_sales"
+              name="Referred Sales"
+              parent="ip_menu_sales"
+              action="ip_action_referred_sales"
+              sequence="1"/>
+
+    <!-- ─── Network ───────────────────────────────────────────── -->
+    <menuitem id="ip_menu_network"
+              name="Network"
+              parent="ip_menu_root"
+              sequence="40"/>
+
+    <menuitem id="ip_menu_topline_mentors"
+              name="Topline Mentors"
+              parent="ip_menu_network"
+              action="ip_action_topline_mentors"
+              sequence="1"/>
+
+    <menuitem id="ip_menu_recruits"
+              name="Recruits"
+              parent="ip_menu_network"
+              action="ip_action_recruits"
+              sequence="2"/>
+
+    <!-- ─── Configuration (Manager only) ───────────────────── -->
+    <menuitem id="ip_menu_config"
+              name="Configuration"
+              parent="ip_menu_root"
+              groups="influencer_program.group_influencer_manager"
+              sequence="90"/>
+
+    <menuitem id="ip_menu_commission_plans"
+              name="Commission Plans"
+              parent="ip_menu_config"
+              action="ip_action_commission_plans"
+              groups="influencer_program.group_influencer_manager"
+              sequence="1"/>
+
+    <menuitem id="ip_menu_program_config"
+              name="Programme Terms"
+              parent="ip_menu_config"
+              action="ip_action_program_config"
+              groups="influencer_program.group_influencer_manager"
+              sequence="2"/>
+
+</odoo>

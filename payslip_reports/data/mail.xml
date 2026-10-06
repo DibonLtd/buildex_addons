@@ -1,0 +1,28 @@
+<odoo>
+    <record id="email_template_payslip_report" model="mail.template">
+        <field name="name">Payslip Report</field>
+        <field name="model_id" ref="payslip_reports.model_payslip_wizard"/>
+        <field name="subject">Your P9 Report</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear&amp;nbsp;
+                    <t t-out="ctx.get('partner')"/>
+                    ,
+                    <br/>
+                    <br/>
+                    Here is the P9 Reports for the period <b> <t t-out="ctx.get('date_from')"/> to  <t t-out="ctx.get('date_to')"/> </b>&amp;nbsp; from Mutara Orchards Ltd.
+                </p>
+                
+
+<p> If you have any questions, please do not hesitate to contact the undersigned on :  hr@mo.co.ke </p>
+<br/>
+<p>Thank you,</p>
+<p>Kind regards,</p>
+<p>Jeniffer Gichubi Kananu</p>
+
+            </div>
+        </field>
+                <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

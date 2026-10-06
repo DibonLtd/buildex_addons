@@ -1,0 +1,376 @@
+<odoo>
+    <template id="website_sale_address_ke" inherit_id="website_sale.address" name="Website Sale Address KE">
+        <xpath expr="//form[contains(@class, 'checkout_autoformat')]" position="attributes">
+            <attribute name="class" add="o_ke_checkout_form bg-white border rounded-4 shadow-sm p-3 p-md-4" separator=" "/>
+        </xpath>
+
+        <xpath expr="//h4[contains(@class, 'mb-1 mt-5')]" position="after">
+            <p class="text-muted mb-3 o_ke_checkout_note">
+                Enter your contact and delivery details. Delivery Town is required.
+            </p>
+        </xpath>
+
+        <xpath expr="//input[@name='required_fields']" position="attributes">
+            <attribute name="t-att-value">'phone'</attribute>
+        </xpath>
+
+        <xpath expr="//label[@for='o_name']" position="replace">
+            <label class="col-form-label fw-normal label-optional" for="o_name">Full name</label>
+        </xpath>
+
+        <xpath expr="//t[@t-if='website._display_partner_b2b_fields()']" position="replace">
+            <t t-if="website._display_partner_b2b_fields()">
+                <div class="w-100"/>
+                <div id="company_name_div" class="col-lg-6 mb-2">
+                    <label class="col-form-label fw-normal label-optional" for="o_company_name">
+                        Company / Shop Name
+                    </label>
+                    <input
+                        id="o_company_name"
+                        type="text"
+                        name="company_name"
+                        t-att-value="partner_sudo.commercial_company_name"
+                        class="form-control"
+                    />
+                </div>
+            </t>
+        </xpath>
+
+        <xpath expr="//label[@for='o_state_id']" position="replace">
+            <label class="col-form-label" for="o_state_id">Delivery Town</label>
+        </xpath>
+
+        <xpath expr="//select[@id='o_state_id']/option[1]" position="replace">
+            <option value="">Select Delivery Town...</option>
+        </xpath>
+
+        <xpath expr="//div[@id='div_street']" position="replace"/>
+
+        <xpath expr="//div[@id='div_street2']" position="replace"/>
+
+        <xpath expr="//t[@t-if='zip_before_city']" position="replace"/>
+
+        <xpath expr="//t[@t-if='not zip_before_city']" position="replace"/>
+
+        <xpath expr="//label[@for='o_city']" position="replace">
+            <label class="col-form-label" for="o_city">County</label>
+        </xpath>
+
+        <xpath expr="//input[@id='o_name']" position="attributes">
+            <attribute name="readonly">readonly</attribute>
+        </xpath>
+
+        <xpath expr="//div[@id='div_country']" position="replace">
+            <div id="div_country" class="col-lg-6 mb-2">
+                <label class="col-form-label" for="o_country_id">Country</label>
+                <t t-set="ke_country" t-value="request.env['res.country'].search([('code', '=', 'KE')], limit=1)"/>
+                <input type="hidden" name="country_id" t-att-value="ke_country.id"/>
+                <input type="text" class="form-control" value="Kenya" readonly="readonly"/>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[@id='div_email']" position="replace"/>
+
+        <xpath expr="//div[@id='div_email_public']" position="replace"/>
+    </template>
+
+    <!-- ============================================================
+         PAYMENT STATUS — redirect away immediately to post_payment
+         ============================================================ -->
+    <template id="payment_status_redirect" inherit_id="payment.payment_status" name="Skip Payment Status">
+        <xpath expr="//div[@class='wrap']" position="before">
+            <script type="text/javascript">window.location.replace('/shop/post_payment');</script>
+        </xpath>
+    </template>
+
+    <!-- ============================================================
+         PAYMENT PREFERENCE STEP
+         Shown after delivery address, before payment
+         ============================================================ -->
+    <template id="payment_preference_template" name="Checkout: Payment Preference">
+        <t t-call="website.layout">
+            <div class="container py-5" style="max-width:600px;">
+
+                <!-- Breadcrumb / progress indicator -->
+                <div class="text-center mb-4">
+                    <span class="badge bg-secondary me-1">1. Address</span>
+                    <span class="text-muted me-1">&#8594;</span>
+                    <span class="badge bg-primary me-1">2. Payment Option</span>
+                    <span class="text-muted me-1">&#8594;</span>
+                    <span class="badge bg-light text-dark border me-1">3. Payment</span>
+                    <span class="text-muted me-1">&#8594;</span>
+                    <span class="badge bg-light text-dark border">4. Confirm</span>
+                </div>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white fw-bold fs-5 text-center py-3">
+                        How would you like to pay?
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" action="/shop/payment_preference">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                            <!-- Pay Now -->
+                            <label class="d-flex align-items-start p-3 border rounded-3 mb-3"
+                                   style="cursor:pointer;"
+                                   for="pref_pay_now">
+                                <input class="form-check-input mt-1 me-3 flex-shrink-0"
+                                       type="radio"
+                                       name="payment_preference"
+                                       id="pref_pay_now"
+                                       value="pay_now"
+                                       checked="checked"/>
+                                <div>
+                                    <div class="fw-semibold">
+                                        <i class="fa fa-credit-card me-1 text-primary"></i>
+                                        Pay on Order
+                                    </div>
+                                    <div class="small text-muted mt-1">
+                                        Complete payment via Equity Bank Paybill (247247) before your order is processed.
+                                    </div>
+                                </div>
+                            </label>
+
+                            <!-- Pay After Delivery -->
+                            <label class="d-flex align-items-start p-3 border rounded-3 mb-4"
+                                   style="cursor:pointer;"
+                                   for="pref_pay_after">
+                                <input class="form-check-input mt-1 me-3 flex-shrink-0"
+                                       type="radio"
+                                       name="payment_preference"
+                                       id="pref_pay_after"
+                                       value="pay_after_delivery"/>
+                                <div>
+                                    <div class="fw-semibold">
+                                        <i class="fa fa-truck me-1 text-success"></i>
+                                        Pay on Delivery
+                                    </div>
+                                    <div class="small text-muted mt-1">
+                                        Confirm your order now and pay once goods are delivered to you.
+                                    </div>
+                                </div>
+                            </label>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="/shop/address" class="btn btn-outline-secondary">
+                                    <i class="fa fa-arrow-left me-1"></i> Back
+                                </a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    Continue <i class="fa fa-arrow-right ms-1"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         POST-PAYMENT: TECHNICIAN QUESTION
+         Shown after payment / order placement
+         ============================================================ -->
+    <template id="post_payment_template" name="Checkout: Post Payment">
+        <t t-call="website.layout">
+            <div class="container py-5" style="max-width:600px;">
+
+                <div class="text-center mb-4">
+                    <i class="fa fa-check-circle text-success" style="font-size:2.5rem;"></i>
+                    <h4 class="fw-bold mt-2">Order Placed!</h4>
+                    <p class="text-muted small">Order: <strong t-esc="order.name"/></p>
+                </div>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white fw-bold fs-5 text-center py-3">
+                        <i class="fa fa-wrench me-1 text-secondary"></i>
+                        Do you have an installation technician?
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" action="/shop/post_payment">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                            <div class="d-flex gap-3 mb-4">
+                                <label class="d-flex align-items-center gap-2 border rounded-3 px-3 py-3 flex-grow-1"
+                                       style="cursor:pointer;" for="tech_yes">
+                                    <input class="form-check-input m-0"
+                                           type="radio"
+                                           name="wants_technician"
+                                           id="tech_yes"
+                                           value="yes"
+                                           checked="checked"/>
+                                    <div>
+                                        <div class="fw-semibold">Yes</div>
+                                        <div class="small text-muted">I'll provide technician details</div>
+                                    </div>
+                                </label>
+                                <label class="d-flex align-items-center gap-2 border rounded-3 px-3 py-3 flex-grow-1"
+                                       style="cursor:pointer;" for="tech_no">
+                                    <input class="form-check-input m-0"
+                                           type="radio"
+                                           name="wants_technician"
+                                           id="tech_no"
+                                           value="no"/>
+                                    <div>
+                                        <div class="fw-semibold">No</div>
+                                        <div class="small text-muted">Skip this step</div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary px-4">
+                                    Continue <i class="fa fa-arrow-right ms-1"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         TECHNICIAN INFO STEP
+         Reached only when user selected Yes for technician
+         ============================================================ -->
+    <template id="technician_info_template" name="Checkout: Technician Info">
+        <t t-call="website.layout">
+            <div class="container py-5" style="max-width:600px;">
+
+                <!-- Breadcrumb / progress indicator -->
+                <div class="text-center mb-4">
+                    <span class="badge bg-secondary me-1">1. Address</span>
+                    <span class="text-muted me-1">&#8594;</span>
+                    <span class="badge bg-secondary me-1">2. Payment</span>
+                    <span class="text-muted me-1">&#8594;</span>
+                    <span class="badge bg-primary me-1">3. Technician Details</span>
+                </div>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white py-3">
+                        <div class="fw-bold fs-5 text-center">Installation Technician Details</div>
+                        <div class="text-muted text-center small mt-1">
+                            Provide your technician's details for the installation.
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" action="/shop/technician_info">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="technician_name">Technician Name</label>
+                                <input type="text"
+                                       id="technician_name"
+                                       name="technician_name"
+                                       class="form-control"
+                                       placeholder="Full name of the technician"
+                                       t-att-value="order.technician_name or ''"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="technician_contact">Technician Contact</label>
+                                <input type="text"
+                                       id="technician_contact"
+                                       name="technician_contact"
+                                       class="form-control"
+                                       placeholder="Phone number"
+                                       t-att-value="order.technician_contact or ''"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="technician_location">Technician Location</label>
+                                <input type="text"
+                                       id="technician_location"
+                                       name="technician_location"
+                                       class="form-control"
+                                       placeholder="Town / Area"
+                                       t-att-value="order.technician_location or ''"/>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label" for="technician_specs">Specialization / Description (Technician)</label>
+                                <textarea id="technician_specs"
+                                          name="technician_specs"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Any special installation requirements or notes..."><t t-esc="order.technician_specs or ''"/></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="/shop/confirmation"
+                                   class="btn btn-outline-secondary">
+                                    Skip — View Order
+                                </a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    Submit <i class="fa fa-check ms-1"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         ORDER AWAITING CONFIRMATION
+         Replaces Odoo's default "Payment Successful" confirmation
+         ============================================================ -->
+    <template id="order_awaiting_confirmation" name="Checkout: Awaiting Confirmation">
+        <t t-call="website.layout">
+            <div class="container py-5" style="max-width:600px;">
+
+                <div class="text-center mb-4">
+                    <div class="mb-3">
+                        <i class="fa fa-clock-o text-warning" style="font-size:3.5rem;"></i>
+                    </div>
+                    <h2 class="fw-bold">Order Awaiting Confirmation</h2>
+                    <p class="text-muted">
+                        Your order has been received and is pending review by our team.
+                        You will be notified once it is confirmed.
+                    </p>
+                </div>
+
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Order Reference</span>
+                            <span class="fw-semibold" t-esc="order.name"/>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Payment</span>
+                            <span class="fw-semibold">
+                                <t t-if="order.payment_preference == 'pay_after_delivery'">Pay on Delivery</t>
+                                <t t-else="">Pay on Order</t>
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Status</span>
+                            <span class="badge bg-warning text-dark">Awaiting Confirmation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info border-0 rounded-3 text-center small">
+                    <i class="fa fa-info-circle me-1"></i>
+                    Confirmation is done by our team. You can track your order status under
+                    <strong>My Orders</strong>.
+                </div>
+
+                <div class="text-center mt-4">
+                    <a t-attf-href="/my/orders/#{order.id}" class="btn btn-primary me-2">
+                        View My Order
+                    </a>
+                    <a href="/shop" class="btn btn-outline-secondary">
+                        Continue Shopping
+                    </a>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+</odoo>

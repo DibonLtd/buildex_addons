@@ -1,0 +1,89 @@
+<odoo>
+
+    <!-- ================= ROOT MENU ================= -->
+    <menuitem id="menu_influencer_root"
+              name="Influencers"
+              parent="contacts.menu_contacts"
+              sequence="2"/>
+
+    <!-- ================= ACTIONS ================= -->
+
+    <!-- Draft -->
+    <record id="action_influencer_draft" model="ir.actions.act_window">
+        <field name="name">Influencer Applications (Draft)</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">
+            [
+                ('applied_as_influencer','=',True),
+                ('influencer_state','=','draft')
+            ]
+        </field>
+    </record>
+
+    <!-- Under Review -->
+    <record id="action_influencer_review" model="ir.actions.act_window">
+        <field name="name">Influencer Applications (Under Review)</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">
+            [
+                ('applied_as_influencer','=',True),
+                ('influencer_state','=','review')
+            ]
+        </field>
+    </record>
+
+    <!-- Approved -->
+    <record id="action_influencer_approved" model="ir.actions.act_window">
+        <field name="name">Approved Influencers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">
+            [
+                ('is_referrer','=',True),
+                ('influencer_state','=','approved')
+            ]
+        </field>
+    </record>
+
+    <!-- Rejected -->
+    <record id="action_influencer_rejected" model="ir.actions.act_window">
+        <field name="name">Rejected Influencers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">
+            [
+                ('applied_as_influencer','=',True),
+                ('influencer_state','=','rejected')
+            ]
+        </field>
+    </record>
+
+    <!-- ================= MENUS ================= -->
+
+    <menuitem id="menu_influencer_draft"
+              name="Draft Applications"
+              parent="menu_influencer_root"
+              action="action_influencer_draft"
+              sequence="10"/>
+
+    <menuitem id="menu_influencer_review"
+              name="Under Review"
+              parent="menu_influencer_root"
+              action="action_influencer_review"
+              sequence="20"/>
+
+    <menuitem id="menu_influencer_approved"
+              name="Approved Influencers"
+              parent="menu_influencer_root"
+              action="action_influencer_approved"
+              sequence="30"/>
+
+    <menuitem id="menu_influencer_rejected"
+              name="Rejected"
+              parent="menu_influencer_root"
+              action="action_influencer_rejected"
+              sequence="40"/>
+
+</odoo>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================
+         FORM: add Confirm Payment button + prominent M-PESA reference
+         ================================================================ -->
+    <record id="payment_transaction_form_bank_till" model="ir.ui.view">
+        <field name="name">payment.transaction.form.bank_till</field>
+        <field name="model">payment.transaction</field>
+        <field name="inherit_id" ref="payment.payment_transaction_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Confirm Payment button in header — visible only for pending bank_till txns -->
+            <xpath expr="//header" position="inside">
+                <button name="action_confirm_bank_till_payment"
+                        string="Confirm Payment"
+                        type="object"
+                        class="btn-success"
+                        invisible="provider_code != 'bank_till' or state != 'pending'"
+                        confirm="Have you verified the M-PESA reference against the Equity Bank statement? This will mark the order as paid."/>
+            </xpath>
+
+            <!-- M-PESA reference shown prominently after provider_reference -->
+            <xpath expr="//field[@name='provider_reference']" position="after">
+                <field name="bank_till_payment_reference"
+                       invisible="provider_code != 'bank_till'"
+                       required="provider_code == 'bank_till' and state == 'pending'"
+                       string="M-PESA / Equity Reference"
+                       widget="char"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ================================================================
+         LIST VIEW: all bank_till transactions for easy reconciliation
+         ================================================================ -->
+    <record id="payment_transaction_list_bank_till" model="ir.ui.view">
+        <field name="name">payment.transaction.list.bank_till</field>
+        <field name="model">payment.transaction</field>
+        <field name="arch" type="xml">
+            <list string="Equity Paybill Payments"
+                  decoration-warning="state == 'pending'"
+                  decoration-success="state == 'done'"
+                  decoration-danger="state in ('cancel', 'error')">
+                <field name="reference" string="Order Reference"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="amount" string="Amount"/>
+                <field name="currency_id" optional="hide"/>
+                <field name="bank_till_payment_reference" string="M-PESA Reference"/>
+                <field name="state" widget="badge"
+                       decoration-warning="state == 'pending'"
+                       decoration-success="state == 'done'"
+                       decoration-danger="state in ('cancel', 'error')"/>
+                <field name="create_date" string="Date" optional="show"/>
+                <button name="action_confirm_bank_till_payment"
+                        string="Confirm"
+                        type="object"
+                        icon="fa-check"
+                        class="btn-success btn-sm"
+                        invisible="state != 'pending'"
+                        confirm="Confirm this payment has been verified on Equity Bank statement?"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ================================================================
+         ACTION: Equity Paybill Payments menu entry
+         ================================================================ -->
+    <record id="action_bank_till_transactions" model="ir.actions.act_window">
+        <field name="name">Equity Paybill Payments</field>
+        <field name="res_model">payment.transaction</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('payment_transaction_list_bank_till')}),
+        ]"/>
+        <field name="domain">[('provider_code', '=', 'bank_till')]</field>
+        <field name="context">{'search_default_filter_pending': 1}</field>
+    </record>
+
+    <!-- Default search: filter to pending (awaiting confirmation) -->
+    <record id="payment_transaction_search_bank_till" model="ir.ui.view">
+        <field name="name">payment.transaction.search.bank_till</field>
+        <field name="model">payment.transaction</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="reference" string="Order Reference"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="bank_till_payment_reference" string="M-PESA Reference"/>
+                <filter name="filter_pending"
+                        string="Awaiting Confirmation"
+                        domain="[('state', '=', 'pending'), ('provider_code', '=', 'bank_till')]"/>
+                <filter name="filter_done"
+                        string="Confirmed"
+                        domain="[('state', '=', 'done'), ('provider_code', '=', 'bank_till')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Menu item under Website > Orders (accessible to sales/operations staff) -->
+    <menuitem id="menu_bank_till_transactions"
+              name="Equity Paybill Payments"
+              parent="website_sale.menu_orders"
+              action="action_bank_till_transactions"
+              sequence="25"/>
+
+</odoo>

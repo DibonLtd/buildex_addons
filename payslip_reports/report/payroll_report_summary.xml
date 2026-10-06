@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_salary_summary">
+        <t t-call="web.html_container">
+            <style type="text/css">
+                table {
+                    font-size: 13px !important;
+                    font-family: 'Times New Roman', Times, serif;
+                }
+                .table_head {
+                    border-top: 2px solid #84b822;
+                    color: #000000;
+                }
+                .indents {
+                    font-family: 'Times New Roman', Times, serif !important;
+                    font-size: 13px !important;
+                    font-style: italic !important;
+                    text-indent: 40px !important;
+                }
+                tr {
+                    border: 1px solid #000000 !important;
+                    height: 12px;
+                }
+                table {
+                    border-collapse: collapse;
+                }
+                th, td {
+                    border: 1px solid #cecfd5;
+                    padding: 2px 3px;
+                }
+                h3 {
+                    font-weight: bold;
+                    text-align: center;
+                }
+                h4 {
+                    font-weight: bold;
+                    font-size: 11px;
+                    font-family: 'Times New Roman', Times, serif;
+                }
+                .text-right {
+                    text-align: right;
+                }
+                .category-header {
+                    font-weight: bold;
+                    background-color: #e0e0e0;
+                    text-align: left;
+                }
+            </style>
+
+            <!-- Company and Pay Structure Details -->
+            <table class="table table-bordered" style="width:100%">
+                <tr class="row">
+                    <td class="col-6" align="left" style="width:50%;">
+                        <span><strong>Company:</strong></span>
+                        <span t-field="company_id.name"/>
+                        <br/>
+                        <span><strong>Address:</strong></span>
+                        <span t-field="company_id.street"/>
+                        <br/>
+                        <span><strong>Email:</strong></span>
+                        <span t-field="company_id.email"/>
+                        <br/>
+                    </td>
+                    <td class="col-6" align="left" style="width:50%;">
+                        <span><strong>Pay Structure:</strong></span>
+                        <span><t t-esc="structure_name"/></span>
+                        <br/>
+                        <span><strong>Date From:</strong></span>
+                        <span><t t-esc="date_start"/></span>
+                        <br/>
+                        <span><strong>Date To:</strong></span>
+                        <span><t t-esc="date_end"/></span>
+                        <br/>
+                    </td>
+                </tr>
+            </table>
+
+            <br/>
+
+            <!-- Payslip Summary -->
+            <b>Mutara Salary Summary Report</b>
+
+            <!-- Categories and Rules -->
+            <t t-if="rule_data">
+                <table class="table table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Rule</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Iterate over categories and display their sections -->
+                        <t t-foreach="rule_data.items()" t-as="category">
+                            <t t-if="category[0] in ['Basic', 'Allowance', 'Deduction', 'Company Contribution', 'Statutory Deductions', 'Other Deduction', 'Net']">
+                                <!-- Display the category header -->
+                                <tr>
+                                    <td colspan="3" class="category-header"><strong><t t-esc="category[0]"/></strong></td>
+                                </tr>
+
+                                <!-- Display the rules for the category in two columns -->
+                                <t t-foreach="category[1].items()" t-as="rule">
+                                    <tr>
+                                        <td></td>
+                                        <td><t t-esc="rule[0]"/></td>
+                                        <td class="text-right">
+                                            <t t-esc="'{:,.2f}'.format(rule[1])"/>
+                                        </td>
+                                    </tr>
+                                </t>
+
+                                <!-- Display the total for the category -->
+                                <tr>
+                                    <td><strong>Total <t t-esc="category[0]"/></strong></td>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <strong><t t-esc="'{:,.2f}'.format(category_totals[category[0]])"/></strong>
+                                    </td>
+                                </tr>
+
+                                <!-- Row break between categories -->
+                                <tr>
+                                    <td colspan="3"><br/></td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+
+            <!-- No Data Available Message -->
+            <t t-else="">
+                <table class="table table-bordered" style="width:100%">
+                    <tbody>
+                        <tr>
+                            <td colspan="3">No data available</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </t>
+        </t>
+    </template>
+</odoo>
+
+

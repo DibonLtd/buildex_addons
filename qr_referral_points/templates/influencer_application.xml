@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="influencer_application_form" name="Influencer Application Form">
+        <t t-call="website.layout">
+            <div class="container py-5" style="max-width: 780px;">
+
+                <h2 class="mb-1 fw-bold">Influencer Application</h2>
+                <p class="text-muted mb-4">Complete all sections to submit your application.</p>
+
+                <form action="/my/influencer/submit" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                    <!-- ── SECTION 1: Personal Details ───────────────────── -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-header bg-primary text-white rounded-top-4 py-3 px-4">
+                            <h5 class="mb-0"><i class="fa fa-user me-2"/>Personal Details</h5>
+                        </div>
+                        <div class="card-body p-4">
+
+                            <!-- Profile Picture -->
+                            <div class="mb-4 text-center">
+                                <label class="form-label fw-semibold d-block">Profile Picture</label>
+                                <t t-if="partner.image_1920">
+                                    <img t-attf-src="/web/image/res.partner/#{partner.id}/image_128"
+                                         class="rounded-circle mb-2 border"
+                                         style="width:90px;height:90px;object-fit:cover;"/>
+                                </t>
+                                <input type="file" name="image_1920" accept="image/*" class="form-control mt-1"/>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Full Name</label>
+                                    <input type="text" name="name" class="form-control bg-light"
+                                           t-att-value="partner.name or ''"
+                                           readonly="readonly" required="required"/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Email Address</label>
+                                    <input type="email" name="email" class="form-control bg-light"
+                                           t-att-value="partner.email or ''"
+                                           readonly="readonly" required="required"/>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Phone Number</label>
+                                    <input type="text" name="phone" class="form-control bg-light"
+                                           t-att-value="partner.mobile or ''"
+                                           readonly="readonly" required="required"/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Gender <span class="text-danger">*</span></label>
+                                    <select name="gender" class="form-select" required="required">
+                                        <option value="">— Select —</option>
+                                        <option value="male"
+                                                t-att-selected="'selected' if partner.gender == 'male' else None">Male</option>
+                                        <option value="female"
+                                                t-att-selected="'selected' if partner.gender == 'female' else None">Female</option>
+                                        <option value="other"
+                                                t-att-selected="'selected' if partner.gender == 'other' else None">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Date of Birth <span class="text-danger">*</span></label>
+                                    <input type="date" name="birthdate" class="form-control"
+                                           t-att-value="partner.birthdate and partner.birthdate.strftime('%Y-%m-%d') or ''"
+                                           required="required"/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Country / Nationality <span class="text-danger">*</span></label>
+                                    <select name="country_id" class="form-select" required="required">
+                                        <option value="">— Select Country —</option>
+                                        <t t-foreach="countries" t-as="country">
+                                            <option t-att-value="country.id"
+                                                    t-att-selected="'selected' if partner.country_id.id == country.id else None"
+                                                    t-esc="country.name"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- ID Number -->
+                            <div class="mb-0">
+                                <label class="form-label fw-semibold">National ID / Passport Number <span class="text-danger">*</span></label>
+                                <input type="text" name="id_number" class="form-control"
+                                       placeholder="ID or Passport number"
+                                       t-att-value="partner.id_number or ''"
+                                       required="required"/>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ── SECTION 2: Location ───────────────────────────── -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-header bg-primary text-white rounded-top-4 py-3 px-4">
+                            <h5 class="mb-0"><i class="fa fa-map-marker me-2"/>Location</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">County <span class="text-danger">*</span></label>
+                                    <select name="county" class="form-select" required="required">
+                                        <option value="">— Select County —</option>
+                                        <option value="mombasa" t-att-selected="'selected' if partner.county == 'mombasa' else None">Mombasa</option>
+                                        <option value="kwale" t-att-selected="'selected' if partner.county == 'kwale' else None">Kwale</option>
+                                        <option value="kilifi" t-att-selected="'selected' if partner.county == 'kilifi' else None">Kilifi</option>
+                                        <option value="tana_river" t-att-selected="'selected' if partner.county == 'tana_river' else None">Tana River</option>
+                                        <option value="lamu" t-att-selected="'selected' if partner.county == 'lamu' else None">Lamu</option>
+                                        <option value="taita_taveta" t-att-selected="'selected' if partner.county == 'taita_taveta' else None">Taita/Taveta</option>
+                                        <option value="garissa" t-att-selected="'selected' if partner.county == 'garissa' else None">Garissa</option>
+                                        <option value="wajir" t-att-selected="'selected' if partner.county == 'wajir' else None">Wajir</option>
+                                        <option value="mandera" t-att-selected="'selected' if partner.county == 'mandera' else None">Mandera</option>
+                                        <option value="marsabit" t-att-selected="'selected' if partner.county == 'marsabit' else None">Marsabit</option>
+                                        <option value="isiolo" t-att-selected="'selected' if partner.county == 'isiolo' else None">Isiolo</option>
+                                        <option value="meru" t-att-selected="'selected' if partner.county == 'meru' else None">Meru</option>
+                                        <option value="tharaka_nithi" t-att-selected="'selected' if partner.county == 'tharaka_nithi' else None">Tharaka-Nithi</option>
+                                        <option value="embu" t-att-selected="'selected' if partner.county == 'embu' else None">Embu</option>
+                                        <option value="kitui" t-att-selected="'selected' if partner.county == 'kitui' else None">Kitui</option>
+                                        <option value="machakos" t-att-selected="'selected' if partner.county == 'machakos' else None">Machakos</option>
+                                        <option value="makueni" t-att-selected="'selected' if partner.county == 'makueni' else None">Makueni</option>
+                                        <option value="nyandarua" t-att-selected="'selected' if partner.county == 'nyandarua' else None">Nyandarua</option>
+                                        <option value="nyeri" t-att-selected="'selected' if partner.county == 'nyeri' else None">Nyeri</option>
+                                        <option value="kirinyaga" t-att-selected="'selected' if partner.county == 'kirinyaga' else None">Kirinyaga</option>
+                                        <option value="muranga" t-att-selected="'selected' if partner.county == 'muranga' else None">Murang'a</option>
+                                        <option value="kiambu" t-att-selected="'selected' if partner.county == 'kiambu' else None">Kiambu</option>
+                                        <option value="turkana" t-att-selected="'selected' if partner.county == 'turkana' else None">Turkana</option>
+                                        <option value="west_pokot" t-att-selected="'selected' if partner.county == 'west_pokot' else None">West Pokot</option>
+                                        <option value="samburu" t-att-selected="'selected' if partner.county == 'samburu' else None">Samburu</option>
+                                        <option value="trans_nzoia" t-att-selected="'selected' if partner.county == 'trans_nzoia' else None">Trans Nzoia</option>
+                                        <option value="uasin_gishu" t-att-selected="'selected' if partner.county == 'uasin_gishu' else None">Uasin Gishu</option>
+                                        <option value="elgeyo_marakwet" t-att-selected="'selected' if partner.county == 'elgeyo_marakwet' else None">Elgeyo/Marakwet</option>
+                                        <option value="nandi" t-att-selected="'selected' if partner.county == 'nandi' else None">Nandi</option>
+                                        <option value="baringo" t-att-selected="'selected' if partner.county == 'baringo' else None">Baringo</option>
+                                        <option value="laikipia" t-att-selected="'selected' if partner.county == 'laikipia' else None">Laikipia</option>
+                                        <option value="nakuru" t-att-selected="'selected' if partner.county == 'nakuru' else None">Nakuru</option>
+                                        <option value="narok" t-att-selected="'selected' if partner.county == 'narok' else None">Narok</option>
+                                        <option value="kajiado" t-att-selected="'selected' if partner.county == 'kajiado' else None">Kajiado</option>
+                                        <option value="kericho" t-att-selected="'selected' if partner.county == 'kericho' else None">Kericho</option>
+                                        <option value="bomet" t-att-selected="'selected' if partner.county == 'bomet' else None">Bomet</option>
+                                        <option value="kakamega" t-att-selected="'selected' if partner.county == 'kakamega' else None">Kakamega</option>
+                                        <option value="vihiga" t-att-selected="'selected' if partner.county == 'vihiga' else None">Vihiga</option>
+                                        <option value="bungoma" t-att-selected="'selected' if partner.county == 'bungoma' else None">Bungoma</option>
+                                        <option value="busia" t-att-selected="'selected' if partner.county == 'busia' else None">Busia</option>
+                                        <option value="siaya" t-att-selected="'selected' if partner.county == 'siaya' else None">Siaya</option>
+                                        <option value="kisumu" t-att-selected="'selected' if partner.county == 'kisumu' else None">Kisumu</option>
+                                        <option value="homa_bay" t-att-selected="'selected' if partner.county == 'homa_bay' else None">Homa Bay</option>
+                                        <option value="migori" t-att-selected="'selected' if partner.county == 'migori' else None">Migori</option>
+                                        <option value="kisii" t-att-selected="'selected' if partner.county == 'kisii' else None">Kisii</option>
+                                        <option value="nyamira" t-att-selected="'selected' if partner.county == 'nyamira' else None">Nyamira</option>
+                                        <option value="nairobi" t-att-selected="'selected' if partner.county == 'nairobi' else None">Nairobi City</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Delivery Town <span class="text-danger">*</span></label>
+                                    <select name="city" class="form-select" required="required">
+                                        <option value="">— Select Delivery Town —</option>
+                                        <t t-foreach="delivery_towns" t-as="town">
+                                            <option t-att-value="town.name"
+                                                    t-att-selected="'selected' if partner.city == town.name else None"
+                                                    t-esc="town.name"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── SECTION 3: Tax &amp; Payment ──────────────────── -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-header bg-primary text-white rounded-top-4 py-3 px-4">
+                            <h5 class="mb-0"><i class="fa fa-university me-2"/>Tax &amp; Payment</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">KRA PIN <span class="text-danger">*</span></label>
+                                <input type="text" name="vat" class="form-control"
+                                       placeholder="e.g. A0123456789B"
+                                       t-att-value="partner.vat or ''"
+                                       required="required"/>
+                            </div>
+                            <div class="mb-0">
+                                <label class="form-label fw-semibold">Payment Account Details <span class="text-danger">*</span></label>
+                                <small class="text-muted d-block mb-1">e.g. M-Pesa number, bank name &amp; account number</small>
+                                <input type="text" name="influencer_payment_account" class="form-control"
+                                       placeholder="e.g. 0712 345 678 / Equity Bank 0123456789"
+                                       t-att-value="partner.influencer_payment_account or ''"
+                                       required="required"/>
+                            </div>
+                            <div class="mb-0 mt-3">
+                                <label class="form-label fw-semibold">Topline Referral Code <span class="text-muted fw-normal">(optional)</span></label>
+                                <small class="text-muted d-block mb-1">If an approved Buildex influencer recruited you, enter their topline code (e.g. BLXTL0001). Only codes from approved influencers are accepted.</small>
+                                <input type="text" name="topline_code" class="form-control"
+                                       placeholder="e.g. BLXTL0001"
+                                       t-att-value="partner.topline_id.topline_referral_code or prefill_topline_code or ''"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── SECTION 4: Influencer Profile ─────────────────── -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-header bg-primary text-white rounded-top-4 py-3 px-4">
+                            <h5 class="mb-0"><i class="fa fa-star me-2"/>Influencer Profile</h5>
+                        </div>
+                        <div class="card-body p-4">
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Why do you want to become an influencer? <span class="text-danger">*</span></label>
+                                <select name="influencer_join_reason" class="form-select" required="required">
+                                    <option value="">— Select a reason —</option>
+                                    <option value="earn" t-att-selected="'selected' if partner.influencer_join_reason == 'earn' else None">Earn</option>
+                                    <option value="learn" t-att-selected="'selected' if partner.influencer_join_reason == 'learn' else None">Learn</option>
+                                    <option value="grow_career" t-att-selected="'selected' if partner.influencer_join_reason == 'grow_career' else None">Grow my career</option>
+                                    <option value="leisure" t-att-selected="'selected' if partner.influencer_join_reason == 'leisure' else None">Leisure</option>
+                                    <option value="grow_social" t-att-selected="'selected' if partner.influencer_join_reason == 'grow_social' else None">Grow social media</option>
+                                    <option value="other" t-att-selected="'selected' if partner.influencer_join_reason == 'other' else None">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Years of Experience <span class="text-danger">*</span></label>
+                                    <select name="influencer_experience_years" class="form-select" required="required">
+                                        <option value="">— Select —</option>
+                                        <option value="under_1" t-att-selected="'selected' if partner.influencer_experience_years == 'under_1' else None">Under 1 year</option>
+                                        <option value="1" t-att-selected="'selected' if partner.influencer_experience_years == '1' else None">1 year</option>
+                                        <option value="2" t-att-selected="'selected' if partner.influencer_experience_years == '2' else None">2 years</option>
+                                        <option value="3_plus" t-att-selected="'selected' if partner.influencer_experience_years == '3_plus' else None">3+</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">How did you hear about us? <span class="text-danger">*</span></label>
+                                    <select name="influencer_referral_source" class="form-select" required="required">
+                                        <option value="">— Select —</option>
+                                        <option value="social_media" t-att-selected="'selected' if partner.influencer_referral_source == 'social_media' else None">Social Media</option>
+                                        <option value="salesperson" t-att-selected="'selected' if partner.influencer_referral_source == 'salesperson' else None">Salesperson</option>
+                                        <option value="media" t-att-selected="'selected' if partner.influencer_referral_source == 'media' else None">Media</option>
+                                        <option value="friend" t-att-selected="'selected' if partner.influencer_referral_source == 'friend' else None">Friend</option>
+                                        <option value="referred" t-att-selected="'selected' if partner.influencer_referral_source == 'referred' else None">Referred</option>
+                                        <option value="website" t-att-selected="'selected' if partner.influencer_referral_source == 'website' else None">Website</option>
+                                        <option value="other" t-att-selected="'selected' if partner.influencer_referral_source == 'other' else None">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-0">
+                                <label class="form-label fw-semibold">Construction Material Knowledge</label>
+                                <small class="text-muted d-block mb-1">Briefly describe your knowledge of construction materials.</small>
+                                <textarea name="influencer_construction_knowledge" class="form-control" rows="3"><t t-esc="partner.influencer_construction_knowledge or ''"/></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ── SECTION 5: Social Media Links ─────────────────── -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-header bg-primary text-white rounded-top-4 py-3 px-4">
+                            <h5 class="mb-0"><i class="fa fa-share-alt me-2"/>Social Media Links</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">TikTok</label>
+                                    <input type="url" name="influencer_tiktok_link" class="form-control"
+                                           placeholder="https://tiktok.com/@yourprofile"
+                                           t-att-value="partner.influencer_tiktok_link or ''"/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Facebook</label>
+                                    <input type="url" name="facebook_link" class="form-control"
+                                           placeholder="https://facebook.com/yourprofile"
+                                           t-att-value="partner.influencer_facebook_link or ''"/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">Instagram</label>
+                                    <input type="url" name="instagram_link" class="form-control"
+                                           placeholder="https://instagram.com/yourprofile"
+                                           t-att-value="partner.influencer_instagram_link or ''"/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">X (Twitter)</label>
+                                    <input type="url" name="x_link" class="form-control"
+                                           placeholder="https://x.com/yourprofile"
+                                           t-att-value="partner.influencer_x_link or ''"/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">LinkedIn</label>
+                                    <input type="url" name="linkedin_link" class="form-control"
+                                           placeholder="https://linkedin.com/in/yourprofile"
+                                           t-att-value="partner.influencer_linkedin_link or ''"/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">YouTube</label>
+                                    <input type="url" name="youtube_link" class="form-control"
+                                           placeholder="https://youtube.com/@yourchannel"
+                                           t-att-value="partner.influencer_youtube_link or ''"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── SECTION 6: Integrity Declaration ──────────────── -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-header bg-primary text-white rounded-top-4 py-3 px-4">
+                            <h5 class="mb-0"><i class="fa fa-shield me-2"/>Integrity Declaration</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <label class="form-label fw-semibold">
+                                Have you ever been convicted of a criminal offence? <span class="text-danger">*</span>
+                            </label>
+                            <div class="d-flex gap-4 mt-1 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio"
+                                           name="influencer_convicted" id="convicted_no" value="0"
+                                           t-att-checked="'checked' if not partner.influencer_convicted else None"
+                                           required="required"
+                                           onchange="document.getElementById('conviction_details_wrap').style.display='none'"/>
+                                    <label class="form-check-label" for="convicted_no">No</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio"
+                                           name="influencer_convicted" id="convicted_yes" value="1"
+                                           t-att-checked="'checked' if partner.influencer_convicted else None"
+                                           onchange="document.getElementById('conviction_details_wrap').style.display='block'"/>
+                                    <label class="form-check-label" for="convicted_yes">Yes</label>
+                                </div>
+                            </div>
+
+                            <!-- Conviction details — shown only when Yes is selected -->
+                            <div id="conviction_details_wrap"
+                                 t-att-style="'display:block' if partner.influencer_convicted else 'display:none'">
+                                <label class="form-label fw-semibold">
+                                    Please provide details (offence, date of conviction) <span class="text-danger">*</span>
+                                </label>
+                                <textarea name="influencer_conviction_details"
+                                          class="form-control" rows="3"
+                                          placeholder="e.g. Fraud conviction on 15 Jan 2015"><t t-esc="partner.influencer_conviction_details or ''"/></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── SECTION 7: Communication Preferences ──────────── -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-header bg-primary text-white rounded-top-4 py-3 px-4">
+                            <h5 class="mb-0"><i class="fa fa-phone me-2"/>Communication Preferences</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <label class="form-label fw-semibold">How may our agents contact you? <span class="text-danger">*</span></label>
+                            <small class="text-muted d-block mb-3">Select all that apply</small>
+                            <div class="d-flex gap-4 flex-wrap">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           name="comm_mode_call" id="comm_call" value="1"
+                                           t-att-checked="'checked' if partner.comm_mode_call else None"/>
+                                    <label class="form-check-label fw-semibold" for="comm_call">📞 Phone Call</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           name="comm_mode_whatsapp" id="comm_wa" value="1"
+                                           t-att-checked="'checked' if partner.comm_mode_whatsapp else None"/>
+                                    <label class="form-check-label fw-semibold" for="comm_wa">💬 WhatsApp</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           name="comm_mode_sms" id="comm_sms" value="1"
+                                           t-att-checked="'checked' if partner.comm_mode_sms else None"/>
+                                    <label class="form-check-label fw-semibold" for="comm_sms">📱 SMS</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── SECTION 8: Terms &amp; Conditions ─────────────── -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-header bg-primary text-white rounded-top-4 py-3 px-4">
+                            <h5 class="mb-0"><i class="fa fa-file-text-o me-2"/>Terms &amp; Conditions</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="bg-light rounded p-3 mb-3"
+                                 style="max-height:220px;overflow-y:auto;font-size:0.88rem;">
+                                <t t-out="terms_html"/>
+                                <div class="mt-3 p-2 rounded"
+                                     style="background:#fff8ed;border-left:4px solid #f59e0b;font-size:.82rem;color:#6b7280;line-height:1.55;">
+                                    <strong style="color:#92400e;">Agent Contact Notice:</strong>
+                                    By submitting this application, you consent to being contacted by an authorised
+                                    Buildex agent via your registered phone number or WhatsApp to assist with your
+                                    onboarding, answer questions about the program, and provide ongoing support.
+                                    You may opt out at any time by contacting us.
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                       name="influencer_terms_accepted" id="terms_accepted"
+                                       value="1" required="required"/>
+                                <label class="form-check-label fw-semibold" for="terms_accepted">
+                                    I have read and agree to the Terms &amp; Conditions.
+                                    <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-lg w-100 fw-semibold py-3">
+                        <i class="fa fa-paper-plane me-1"/> Submit Application
+                    </button>
+
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>

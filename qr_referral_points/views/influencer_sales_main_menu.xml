@@ -1,0 +1,6 @@
+<odoo>
+    <menuitem id="menu_influencer_sales_main"
+              name="Influencer"
+              parent="sale.sale_menu_root"
+              sequence="45"/>
+</odoo>

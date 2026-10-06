@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+<odoo>
+    <data>
+        <record id="inherit_attendance_break_hours" model="ir.ui.view">
+            <field name="name">hr.attendance.break.hours</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//sheet//group" position="inside">
+                        <notebook>
+                            <page string="Break Details" name="Break_details" invisible="not hr_break_ids">
+                                <field name="hr_break_ids" widget="section_and_note_one2many" mode="list">
+                                    <list string="Break details" editable="bottom" >
+                                        <field name="break_in_time"/>
+                                        <field name="break_out_time" />
+                                        <field name="break_duration" widget="float_time"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </xpath>
+                    <xpath expr="//field[@name='worked_hours']" position="after">
+                         <field name="break_hours" widget="float_time"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!-- Attendance filter for check-in time 12:00 AM to 08:00 AM -->
+        <record id="zkteco_hr_attendance_view_filter" model="ir.ui.view">
+            <field name="name">hr_attendance_view_filter</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.hr_attendance_view_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='check_in_filter']" position="after">
+                    <filter string="Wrong Entries" name="wrong_entries" 
+                            domain="[('check_in', '&gt;=', ((context_today() + datetime.timedelta(days = -1)).strftime('%Y-%m-%d') + ' 18:30:00')), ('check_in', '&lt;=', (context_today().strftime('%Y-%m-%d') + ' 02:30:00'))]"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="zkteco_hr_attendance_tree" model="ir.ui.view">
+            <field name="name">hr_attendance_tree_view</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='overtime_hours']" position="after">
+                    <field name="break_hours" string="Break Hours" optional="show" widget="float_time"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_hr_attendance_break_tree" model="ir.ui.view">
+            <field name="name">hr.attendance.break.tree</field>
+            <field name="model">hr.attendance.break</field>
+            <field name="arch" type="xml">
+                <list editable="bottom">
+                    <field name="employee_id" string="Employee"/>
+                    <field name="break_in_time"/>
+                    <field name="break_out_time"/>
+                    <field name="break_duration" widget="float_time"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="hr_attendance_break_filter" model="ir.ui.view">
+            <field name="name">hr.attendance.break.filter</field>
+            <field name="model">hr.attendance.break</field>
+            <field name="arch" type="xml">
+                <search string="Break Search">
+                    <field name="employee_id"/>
+                    <field name="break_in_time"/>
+                    <filter string="My Break" name="mybreak" domain="[('employee_id.user_id', '=', uid)]" />
+                    <separator/>
+                    <filter string="Break In" name="break_in_time_filter" date="break_in_time"/>
+                    <filter string="Last 7 days" name="last_week" domain="[(
+                        'break_in_time','&gt;=', (
+                            context_today() + datetime.timedelta(days=-7)
+                            )
+                        )]"/>
+                    <filter string="Last 3 Months" invisible="1" name="last_three_months" domain="[(
+                        'break_in_time','&gt;=', (
+                            context_today() + datetime.timedelta(days=-90)
+                            )
+                        )]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Break In" name="groupby_name" context="{'group_by': 'break_in_time:week'}"/>
+                        <filter string="Employee" name="employee" context="{'group_by': 'employee_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="zkteco_hr_employee" model="ir.ui.view">
+            <field name="name">hr_attendance_tree_view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button class="oe_stat_button" name="linked_machine" type="object" icon="fa-user" invisible="not linked_machine_count">
+                        <field name="linked_machine_count"  widget="statinfo" />
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_config_settings_zkteco_form_view" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.zkteco</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="80"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//app[@name='hr_attendance']" position="inside">
+                        <block title="Zkteco">
+                            <setting title="Zkteco webhook" help="Use this webhook Url to manage Zkteco Attendance">
+                                <field name="zkteco_webhook_url" class="o_hr_kiosk_url_media w-100" style="width:100% !important;" force_save="1" readonly="1" widget="CopyClipboardURL"/>
+                            </setting>
+                        </block>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

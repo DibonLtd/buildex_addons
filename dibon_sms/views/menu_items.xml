@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menus -->
+    <menuitem 
+        id="menu_dibon_sms_root"
+        name="Dibon SMS"
+        sequence="50"
+        web_icon="dibon_sms,static/description/icon.png"/>
+
+    <!-- Configuration Menu -->
+    <menuitem 
+        id="menu_dibon_sms_config"
+        name="Configuration"
+        parent="menu_dibon_sms_root"
+        sequence="100"/>
+
+    <!-- Settings Menu under Configuration -->
+    <menuitem 
+        id="menu_dibon_sms_settings"
+        name="SMS Settings"
+        parent="menu_dibon_sms_config"
+        action="action_dibon_sms_settings"
+        sequence="10"/>
+        
+    <!-- SMS Menu -->
+    <menuitem 
+        id="menu_dibon_sms_messages"
+        name="SMS Messages"
+        parent="menu_dibon_sms_root"
+        action="action_dibon_sms_messages"
+        sequence="10"/>
+
+    <!-- Dashboard Menu -->
+    <menuitem 
+        id="menu_dibon_sms_dashboard"
+        name="Dashboard"
+        parent="menu_dibon_sms_root"
+        action="action_dibon_sms_dashboard"
+        sequence="1"/>
+    <!-- API Responses Menu -->
+    <menuitem 
+        id="menu_dibon_sms_api_responses"
+        name="API Responses"
+        parent="menu_dibon_sms_root"
+        action="action_dibon_sms_api_responses"
+        sequence="20"/>
+</odoo>

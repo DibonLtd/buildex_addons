@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- IAP Settings Action -->
+    <record id="action_dibon_sms_iap_settings" model="ir.actions.act_window">
+        <field name="name">SMS Configuration</field>
+        <field name="res_model">iap.account</field>
+    <field name="view_mode">list,form</field>
+        <field name="domain">[('service_id.technical_name', '=', 'sms.sms'), ('sms_provider', '=', 'Dibon')]</field>
+        <field name="context">{
+            'default_sms_provider': 'Dibon',
+            'default_service_name': 'sms',
+            'default_state': 'enabled',
+            'form_view_ref': 'dibon_sms.iap_account_view_form',
+            'tree_view_ref': 'dibon_sms.iap_account_view_tree',
+            'search_default_enabled': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first SMS provider configuration
+            </p>
+            <p>
+                Configure your SMS providers and set one as default.
+                You can have multiple providers configured for flexibility.
+            </p>
+        </field>
+    </record>
+</odoo>

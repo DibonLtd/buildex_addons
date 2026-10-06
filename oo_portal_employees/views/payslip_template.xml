@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="portal_my_home_menu_payslips" name="Portal layout : payslip menu entries" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'payslip'" t-attf-class="breadcrumb-item #{'active ' if not payslip else ''}">
+                <a t-if="payslip" t-attf-href="/my/payslips?{{ keep_query() }}">My Payslips</a>
+                <t t-else="">My Payslips</t>
+            </li>
+            <li t-if="payslip" class="breadcrumb-item active">
+                <t t-out="payslip.number" t-if="payslip.number"/>
+                <t t-else=""><em>Draft Payslip</em></t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_payslips" name="Show My Payslips" inherit_id="portal.portal_my_home" customize_show="True" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">My Payslips</t>
+                <t t-set="url" t-value="'/my/payslips'"/>
+                <t t-set="placeholder_count" t-value="'payslip_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+
+    <template id="portal_my_payslips" name="My Payslips">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Payslips</t>
+            </t>
+            <t t-if="not payslips">
+                <p>There are currently no payslips for your account.</p>
+            </t>
+            <t t-if="payslips" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Reference</th>
+                        <th>Batch Name</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Basic Wage</th>
+                        <th>Net Wage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="payslips" t-as="payslip">
+                        <tr>
+                            <td>
+                                <a t-attf-href="/my/payslips/#{payslip.id}?{{ keep_query() }}" t-att-title="payslip.number">
+                                    <t t-out="payslip.number"/>
+                                </a>
+                            </td>
+                            <td><span t-field="payslip.payslip_run_id.name"/></td>
+                            <td><span t-field="payslip.date_from"/></td>
+                            <td><span t-field="payslip.date_to"/></td>
+                            <td><span t-field="payslip.basic_wage"/></td>
+                            <td><span t-field="payslip.net_wage"/></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_payslip_page" name="My Payslip" inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-call="portal.portal_layout">
+ 
+                <t t-set="card_body">
+                    <div class="mb-3">
+                        <h3 t-field="payslip.employee_id.name"/>
+                    </div>
+                    <div class="mb-1" style="display: flex; justify-content: space-between; margin-right: 200px;">
+                        <div>
+                            <div class="mb-1">
+                                <strong>Period:</strong> <span t-field="payslip.date_from"/> - <span t-field="payslip.date_to"/>
+                            </div>
+                            <div class="mb-1">
+                                <strong>Contract:</strong> <span t-field="payslip.contract_id.name"/>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mb-1">
+                                <strong>Structure:</strong> <span t-field="payslip.struct_id.name"/>
+                            </div>
+                            <div class="mb-1">
+                                <strong>Payslip Name :</strong> <span t-field="payslip.name"/>
+                            </div>
+                            <div class="mb-1">
+                                <strong>Batch Name :</strong> <span t-field="payslip.payslip_run_id.name"/>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-call="oo_portal_employees.work_days_tab"/>
+                    <t t-call="oo_portal_employees.salary_computation_tab"/>
+                    <div class="mb-1">
+                        <h3>Description</h3>
+                        <t t-if="payslip.note">
+                            <span t-field="payslip.note"/>
+                        </t>
+                        <t t-else="">
+                            <span>There is no description.</span>
+                        </t>
+                    </div>
+                    <div class="clearfix mt-4" style="display: flex; justify-content: center; color: #FFFFFF;">
+                        <a class="btn btn-secondary btn-block o_download_btn" style="width: fit-content;"
+                           title="Download" t-attf-href="/my/payslips/{{payslip.id}}?access_token={{payslip.access_token}}&amp;report_type=pdf&amp;download=true">
+                            <i class="fa fa-download"/> Download Payslip
+                        </a>
+
+                    </div>
+                    <!-- chatter -->
+                    <div id="sale_order_communication" class="mt-4">
+                        <h2>History</h2>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="payslip.with_user(2)"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="work_days_tab">
+        <section style="page-break-inside: auto;" class="mt32">
+            <h3>Working Days</h3>
+            <table class="table table-sm">
+                <thead class="bg-100">
+                    <tr>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Number of Days</th>
+                        <th>Number of Hours</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-if="payslip.worked_days_line_ids">
+                        <t t-foreach="payslip.worked_days_line_ids" t-as="line">
+                            <tr>
+                                <td><span t-field="line.work_entry_type_id.name"/></td>
+                                <td><span t-field="line.name"/></td>
+                                <td><span t-field="line.number_of_days"/></td>
+                                <td><span t-field="line.number_of_hours"/></td>
+                                <td><span t-field="line.amount"/></td>
+                            </tr>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <tr>
+                            <td colspan="2">
+                                <span>No entries.</span>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </section>
+        <section style="page-break-inside: auto;" class="mt32">
+            <h3>Other Inputs</h3>
+            <table class="table table-sm">
+                <thead class="bg-100">
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-if="payslip.input_line_ids">
+                        <t t-foreach="payslip.input_line_ids" t-as="line">
+                            <tr>
+                                <td><span t-field="line.input_type_id.name"/></td>
+                                <td><span t-field="line.amount"/></td>
+                            </tr>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <tr>
+                            <td colspan="2">
+                                <span>No entries.</span>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </section>
+    </template>
+
+    <template id="salary_computation_tab">
+        <section style="page-break-inside: auto;" class="mt32">
+            <h3>Salary Computation</h3>
+            <table class="table table-sm">
+                <thead class="bg-100">
+                    <tr>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Rate(%)</th>
+                        <th>Rule</th>
+                        <th>Amount</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-if="payslip.line_ids">
+                        <t t-foreach="payslip.line_ids.filtered(lambda l: l.salary_rule_id.appears_on_payslip)" t-as="line">
+                            <tr>
+                                <td><span t-field="line.name"/></td>
+                                <td><span t-field="line.code"/></td>
+                                <td><span t-field="line.category_id.name"/></td>
+                                <td><span t-field="line.quantity"/></td>
+                                <td><span t-field="line.rate"/></td>
+                                <td><span t-field="line.salary_rule_id.name"/></td>
+                                <td><span t-field="line.amount"/></td>
+                                <td><span t-field="line.total"/></td>
+                            </tr>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <td  colspan="5">
+                            <span>No entries.</span>
+                        </td>
+                    </t>
+                </tbody>
+            </table>
+        </section>
+    </template>
+</odoo>

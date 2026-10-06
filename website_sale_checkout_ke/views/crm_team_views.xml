@@ -1,0 +1,23 @@
+<odoo>
+    <record id="crm_team_form_delivery_towns" model="ir.ui.view">
+        <field name="name">crm.team.form.delivery.towns</field>
+        <field name="model">crm.team</field>
+        <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='left']/field[@name='company_id']" position="after">
+                <field name="delivery_town_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_team_tree_delivery_towns" model="ir.ui.view">
+        <field name="name">crm.team.tree.delivery.towns</field>
+        <field name="model">crm.team</field>
+        <field name="inherit_id" ref="sales_team.crm_team_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="delivery_town_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

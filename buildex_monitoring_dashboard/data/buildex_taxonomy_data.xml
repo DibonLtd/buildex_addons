@@ -1,0 +1,84 @@
+<odoo noupdate="1">
+    <record id="buildex_customer_type_home_owner" model="buildex.customer.type"><field name="name">Home Owner</field><field name="code">home_owner</field><field name="sequence">10</field></record>
+    <record id="buildex_customer_type_fundi" model="buildex.customer.type"><field name="name">Fundi</field><field name="code">fundi</field><field name="sequence">20</field></record>
+    <record id="buildex_customer_type_contractor" model="buildex.customer.type"><field name="name">Contractor</field><field name="code">contractor</field><field name="sequence">30</field></record>
+    <record id="buildex_customer_type_developer" model="buildex.customer.type"><field name="name">Developer</field><field name="code">developer</field><field name="sequence">40</field></record>
+    <record id="buildex_customer_type_hardware_owner" model="buildex.customer.type"><field name="name">Hardware Owner</field><field name="code">hardware_owner</field><field name="sequence">50</field></record>
+    <record id="buildex_customer_type_architect_designer" model="buildex.customer.type"><field name="name">Architect/Designer</field><field name="code">architect_designer</field><field name="sequence">60</field></record>
+
+    <record id="buildex_skill_type_gypsum" model="buildex.skill.type"><field name="name">Gypsum Installer</field><field name="code">gypsum</field><field name="sequence">10</field></record>
+    <record id="buildex_skill_type_painter" model="buildex.skill.type"><field name="name">Painter</field><field name="code">painter</field><field name="sequence">20</field></record>
+    <record id="buildex_skill_type_tiler" model="buildex.skill.type"><field name="name">Tiler / Ceramics</field><field name="code">tiler</field><field name="sequence">30</field></record>
+    <record id="buildex_skill_type_doors" model="buildex.skill.type"><field name="name">Door and Framing</field><field name="code">doors</field><field name="sequence">40</field></record>
+    <record id="buildex_skill_type_cabinetry" model="buildex.skill.type"><field name="name">Cabinetry</field><field name="code">cabinetry</field><field name="sequence">50</field></record>
+
+    <record id="buildex_outlet_kisumu" model="buildex.outlet"><field name="name">Kisumu</field><field name="code">kisumu</field><field name="sequence">10</field></record>
+    <record id="buildex_outlet_kakamega" model="buildex.outlet"><field name="name">Kakamega</field><field name="code">kakamega</field><field name="sequence">20</field></record>
+    <record id="buildex_outlet_nairobi" model="buildex.outlet"><field name="name">Nairobi</field><field name="code">nairobi</field><field name="sequence">30</field></record>
+    <record id="buildex_outlet_mombasa" model="buildex.outlet"><field name="name">Mombasa</field><field name="code">mombasa</field><field name="sequence">40</field></record>
+    <record id="buildex_outlet_other" model="buildex.outlet"><field name="name">Other</field><field name="code">other</field><field name="sequence">50</field></record>
+
+    <record id="buildex_age_bracket_18_25" model="buildex.age.bracket"><field name="name">18-25</field><field name="code">18_25</field><field name="sequence">10</field></record>
+    <record id="buildex_age_bracket_26_35" model="buildex.age.bracket"><field name="name">26-35</field><field name="code">26_35</field><field name="sequence">20</field></record>
+    <record id="buildex_age_bracket_36_50" model="buildex.age.bracket"><field name="name">36-50</field><field name="code">36_50</field><field name="sequence">30</field></record>
+    <record id="buildex_age_bracket_50_plus" model="buildex.age.bracket"><field name="name">50+</field><field name="code">50_plus</field><field name="sequence">40</field></record>
+
+    <record id="buildex_acquisition_source_influencer" model="buildex.acquisition.source"><field name="name">Influencer</field><field name="code">influencer</field><field name="sequence">10</field></record>
+    <record id="buildex_acquisition_source_walk_in" model="buildex.acquisition.source"><field name="name">Walk-in</field><field name="code">walk_in</field><field name="sequence">20</field></record>
+    <record id="buildex_acquisition_source_referral_fundi" model="buildex.acquisition.source"><field name="name">Referral (Fundi)</field><field name="code">referral_fundi</field><field name="sequence">30</field></record>
+    <record id="buildex_acquisition_source_referral_customer" model="buildex.acquisition.source"><field name="name">Referral (Customer)</field><field name="code">referral_customer</field><field name="sequence">40</field></record>
+    <record id="buildex_acquisition_source_online_website" model="buildex.acquisition.source"><field name="name">Online (Website)</field><field name="code">online_website</field><field name="sequence">50</field></record>
+    <record id="buildex_acquisition_source_online_whatsapp" model="buildex.acquisition.source"><field name="name">Online (WhatsApp)</field><field name="code">online_whatsapp</field><field name="sequence">60</field></record>
+
+    <record id="buildex_next_need_quotation" model="buildex.next.need"><field name="name">Quotation</field><field name="code">quotation</field><field name="sequence">10</field></record>
+    <record id="buildex_next_need_site_visit" model="buildex.next.need"><field name="name">Site Visit</field><field name="code">site_visit</field><field name="sequence">20</field></record>
+    <record id="buildex_next_need_technical_advice" model="buildex.next.need"><field name="name">Technical Advice</field><field name="code">technical_advice</field><field name="sequence">30</field></record>
+    <record id="buildex_next_need_product_recommendation" model="buildex.next.need"><field name="name">Product Recommendation</field><field name="code">product_recommendation</field><field name="sequence">40</field></record>
+    <record id="buildex_next_need_installation_support" model="buildex.next.need"><field name="name">Installation Support</field><field name="code">installation_support</field><field name="sequence">50</field></record>
+    <record id="buildex_next_need_repeat_purchase" model="buildex.next.need"><field name="name">Repeat Purchase</field><field name="code">repeat_purchase</field><field name="sequence">60</field></record>
+    <record id="buildex_next_need_complaint_resolution" model="buildex.next.need"><field name="name">Complaint Resolution</field><field name="code">complaint_resolution</field><field name="sequence">70</field></record>
+    <record id="buildex_next_need_feedback_collection" model="buildex.next.need"><field name="name">Feedback Collection</field><field name="code">feedback_collection</field><field name="sequence">80</field></record>
+
+    <record id="buildex_project_type_residential" model="buildex.project.type"><field name="name">Residential</field><field name="code">residential</field><field name="sequence">10</field></record>
+    <record id="buildex_project_type_commercial" model="buildex.project.type"><field name="name">Commercial</field><field name="code">commercial</field><field name="sequence">20</field></record>
+    <record id="buildex_project_type_renovation" model="buildex.project.type"><field name="name">Renovation</field><field name="code">renovation</field><field name="sequence">30</field></record>
+
+    <record id="buildex_residential_use_own_stay" model="buildex.residential.use"><field name="name">Own Stay</field><field name="code">own_stay</field><field name="sequence">10</field></record>
+    <record id="buildex_residential_use_rental" model="buildex.residential.use"><field name="name">Rental</field><field name="code">rental</field><field name="sequence">20</field></record>
+
+    <record id="buildex_project_stage_planning" model="buildex.project.stage"><field name="name">Planning</field><field name="code">planning</field><field name="sequence">10</field></record>
+    <record id="buildex_project_stage_foundation" model="buildex.project.stage"><field name="name">Foundation</field><field name="code">foundation</field><field name="sequence">20</field></record>
+    <record id="buildex_project_stage_walling_structure" model="buildex.project.stage"><field name="name">Walling Structure</field><field name="code">walling_structure</field><field name="sequence">30</field></record>
+    <record id="buildex_project_stage_roofing" model="buildex.project.stage"><field name="name">Roofing</field><field name="code">roofing</field><field name="sequence">40</field></record>
+    <record id="buildex_project_stage_doors_frame" model="buildex.project.stage"><field name="name">Doors and Frame</field><field name="code">doors_frame</field><field name="sequence">50</field></record>
+    <record id="buildex_project_stage_walling_interior_finish" model="buildex.project.stage"><field name="name">Walling Interior Finish</field><field name="code">walling_interior_finish</field><field name="sequence">60</field></record>
+    <record id="buildex_project_stage_ceiling" model="buildex.project.stage"><field name="name">Ceiling</field><field name="code">ceiling</field><field name="sequence">70</field></record>
+    <record id="buildex_project_stage_flooring" model="buildex.project.stage"><field name="name">Flooring</field><field name="code">flooring</field><field name="sequence">80</field></record>
+    <record id="buildex_project_stage_cabinetry" model="buildex.project.stage"><field name="name">Cabinetry</field><field name="code">cabinetry</field><field name="sequence">90</field></record>
+    <record id="buildex_project_stage_paint_work" model="buildex.project.stage"><field name="name">Paint Work</field><field name="code">paint_work</field><field name="sequence">100</field></record>
+    <record id="buildex_project_stage_gardening" model="buildex.project.stage"><field name="name">Gardening</field><field name="code">gardening</field><field name="sequence">110</field></record>
+    <record id="buildex_project_stage_renovation" model="buildex.project.stage"><field name="name">Renovation</field><field name="code">renovation</field><field name="sequence">120</field></record>
+
+    <record id="buildex_budget_range_lt_100k" model="buildex.budget.range"><field name="name">&lt; 100K</field><field name="code">lt_100k</field><field name="sequence">10</field></record>
+    <record id="buildex_budget_range_100k_500k" model="buildex.budget.range"><field name="name">100K - 500K</field><field name="code">100k_500k</field><field name="sequence">20</field></record>
+    <record id="buildex_budget_range_500k_1m" model="buildex.budget.range"><field name="name">500K - 1M</field><field name="code">500k_1m</field><field name="sequence">30</field></record>
+    <record id="buildex_budget_range_gt_1m" model="buildex.budget.range"><field name="name">1M+</field><field name="code">gt_1m</field><field name="sequence">40</field></record>
+
+    <record id="buildex_decision_maker_customer" model="buildex.decision.maker"><field name="name">Customer</field><field name="code">customer</field><field name="sequence">10</field></record>
+    <record id="buildex_decision_maker_fundi" model="buildex.decision.maker"><field name="name">Fundi</field><field name="code">fundi</field><field name="sequence">20</field></record>
+    <record id="buildex_decision_maker_contractor" model="buildex.decision.maker"><field name="name">Contractor</field><field name="code">contractor</field><field name="sequence">30</field></record>
+    <record id="buildex_decision_maker_architect" model="buildex.decision.maker"><field name="name">Architect</field><field name="code">architect</field><field name="sequence">40</field></record>
+
+    <record id="buildex_intended_use_ceiling" model="buildex.intended.use"><field name="name">Ceiling</field><field name="code">ceiling</field><field name="sequence">10</field></record>
+    <record id="buildex_intended_use_partition" model="buildex.intended.use"><field name="name">Partition</field><field name="code">partition</field><field name="sequence">20</field></record>
+    <record id="buildex_intended_use_wall_decor" model="buildex.intended.use"><field name="name">Wall Decor</field><field name="code">wall_decor</field><field name="sequence">30</field></record>
+    <record id="buildex_intended_use_floor" model="buildex.intended.use"><field name="name">Floor</field><field name="code">floor</field><field name="sequence">40</field></record>
+    <record id="buildex_intended_use_repairs" model="buildex.intended.use"><field name="name">Repairs</field><field name="code">repairs</field><field name="sequence">50</field></record>
+
+    <record id="buildex_followup_activity_call" model="buildex.followup.activity.type"><field name="name">Phone Call</field><field name="code">call</field><field name="sequence">10</field></record>
+    <record id="buildex_followup_activity_whatsapp" model="buildex.followup.activity.type"><field name="name">WhatsApp</field><field name="code">whatsapp</field><field name="sequence">20</field></record>
+    <record id="buildex_followup_activity_visit" model="buildex.followup.activity.type"><field name="name">Site Visit</field><field name="code">visit</field><field name="sequence">30</field></record>
+    <record id="buildex_followup_activity_email" model="buildex.followup.activity.type"><field name="name">Email</field><field name="code">email</field><field name="sequence">40</field></record>
+    <record id="buildex_followup_activity_sales_followup" model="buildex.followup.activity.type"><field name="name">Sales Follow-up</field><field name="code">sales_followup</field><field name="sequence">50</field></record>
+    <record id="buildex_followup_activity_support" model="buildex.followup.activity.type"><field name="name">Support</field><field name="code">support</field><field name="sequence">60</field></record>
+</odoo>

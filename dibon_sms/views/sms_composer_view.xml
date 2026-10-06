@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- SMS Composer Form View (single safe inherit) -->
+    <record id="dibon_sms_composer_form_view" model="ir.ui.view">
+        <field name="name">sms.composer.form.dibon</field>
+        <field name="model">sms.composer</field>
+        <field name="inherit_id" ref="sms.sms_composer_view_form"/>
+        <!-- <field name="arch" type="xml">
+            <xpath expr="//form/sheet" position="inside">
+                <group string="Recipients" name="dibon_recipients_group">
+                    <field name="numbers" string="Phone Numbers" placeholder="Enter phone numbers separated by commas"/>
+                    <div class="text-muted">Example: +254722123456, +254733123456</div>
+                </group>
+            </xpath> 
+        </field>-->
+    </record>
+</odoo>

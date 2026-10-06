@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_contact_group_list" model="ir.ui.view">
+        <field name="name">partner.contact.group.list</field>
+        <field name="model">partner.contact.group</field>
+        <field name="arch" type="xml">
+            <list string="Contact Groups" default_order="sequence, name">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+                <field name="partner_ids" widget="many2many_tags" optional="show"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_partner_contact_group_form" model="ir.ui.view">
+        <field name="name">partner.contact.group.form</field>
+        <field name="model">partner.contact.group</field>
+        <field name="arch" type="xml">
+            <form string="Contact Group">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="color" widget="color_picker"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Contacts">
+                            <field name="partner_ids" widget="many2many_tags"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_partner_contact_groups" model="ir.actions.act_window">
+        <field name="name">Contact Groups</field>
+        <field name="res_model">partner.contact.group</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_contacts_grouped_by_contact_group" model="ir.actions.act_window">
+        <field name="name">Contacts by Group</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form,activity</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="context">{'search_default_group_by_contact_groups': 1, 'default_is_company': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Contact and assign a contact group.
+            </p>
+            <p>
+                Use contact groups to organize customers, suppliers, fundis, and other partner segments.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_contacts_grouped_by_contact_group"
+        name="Contacts by Group"
+        parent="contacts.menu_contacts"
+        action="action_contacts_grouped_by_contact_group"
+        sequence="10"
+    />
+
+    <menuitem
+        id="menu_partner_contact_groups"
+        name="Contact Groups"
+        parent="contacts.res_partner_menu_config"
+        action="action_partner_contact_groups"
+        sequence="2"
+        groups="base.group_system"
+    />
+</odoo>

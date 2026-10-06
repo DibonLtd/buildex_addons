@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="payment_provider_bank_till" model="payment.provider">
+        <field name="name">Bank Paybill (Equity)</field>
+        <field name="code">bank_till</field>
+        <field name="state">enabled</field>
+        <field name="is_published">True</field>
+        <field name="inline_form_view_id" ref="payment_with_bank_till.inline_form"/>
+        <field name="payment_method_ids"
+               eval="[Command.set([ref('payment_with_bank_till.payment_method_bank_till')])]"/>
+    </record>
+
+</odoo>

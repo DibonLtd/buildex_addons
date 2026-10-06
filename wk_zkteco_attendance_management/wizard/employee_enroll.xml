@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<odoo>
+    <record id="enroll_employees_wizard_view" model="ir.ui.view">
+        <field name="name">enroll.employees.wizard.form</field>
+        <field name="model">enroll.employees.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field class="mt-2" name="employee_ids" widget="section_and_note_one2many" mode="list"  >
+                        <list string="Employees" edit="0" create="0">
+                            <field name="name" />
+                            <field name="barcode" />
+                            <field name="work_email"/>
+                            <field name="department_id" />
+                            <field name="company_id" column_invisible="1" />
+                        </list>
+                    </field>
+
+                    <div invisible="context.get('button_display') == 'remove'" class= "alert alert-warning" role="alert">
+                    <b>NOTE : </b><br/>
+                        Only those employees who are not yet linked to the machine are being displayed in the list.
+                    </div>
+
+                    <div invisible="context.get('button_display') == 'enroll'" class= "alert alert-warning" role="alert">
+                    <b>NOTE : </b><br/>
+                        Only those employees who are linked to the machine are being displayed in the list.
+                    </div>
+
+                    <footer>
+                        <button name="delete_selected_employees" type="object" string="Remove Employees" class="btn-primary"  invisible="context.get('button_display') == 'enroll'"/>
+                        <button name="enroll_selected_employees" type="object" string="Enroll Employees" class="btn-primary"  invisible="context.get('button_display') == 'remove'"/>
+                        <button string="Cancel" special="cancel" class="btn-secondary"/>
+                    </footer>
+                   
+                </sheet>
+            </form>
+        </field> 
+    </record>
+
+</odoo>

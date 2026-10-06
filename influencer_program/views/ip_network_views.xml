@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         TOPLINE MENTORS LIST
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_topline_list" model="ir.ui.view">
+        <field name="name">ip.topline.list</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <list string="Topline Mentors" decoration-success="influencer_state == 'approved'">
+                <field name="name" string="Mentor"/>
+                <field name="mobile"/>
+                <field name="county"/>
+                <field name="topline_referral_code" string="Topline Code"/>
+                <field name="influencer_state" widget="badge"
+                       decoration-success="influencer_state == 'approved'"/>
+                <field name="topline_referral_ids" string="Recruits" widget="many2many_tags"/>
+                <field name="wallet_balance" string="Wallet (KES)"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         RECRUITS (influencers under a topline mentor)
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_recruit_list" model="ir.ui.view">
+        <field name="name">ip.recruit.list</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <list string="Network Recruits"
+                  decoration-success="influencer_state == 'approved'"
+                  decoration-warning="influencer_state == 'review'">
+                <field name="name" string="Recruit"/>
+                <field name="mobile"/>
+                <field name="county"/>
+                <field name="topline_id" string="Mentor"/>
+                <field name="influencer_state" widget="badge"
+                       decoration-success="influencer_state == 'approved'"
+                       decoration-warning="influencer_state == 'review'"
+                       decoration-danger="influencer_state == 'rejected'"/>
+                <field name="wallet_balance" string="Wallet (KES)"/>
+                <field name="referral_total_visits" string="Visits"/>
+                <field name="create_date" string="Joined" widget="date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         NETWORK SEARCH VIEW
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_network_search" model="ir.ui.view">
+        <field name="name">ip.network.search</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search string="Network">
+                <field name="name"/>
+                <field name="mobile"/>
+                <field name="topline_id" string="Mentor"/>
+                <field name="county"/>
+                <separator/>
+                <filter name="approved_only" string="Approved"
+                        domain="[('influencer_state','=','approved')]"/>
+                <filter name="pending_only" string="Pending"
+                        domain="[('influencer_state','in',['draft','review'])]"/>
+                <separator/>
+                <group string="Group By">
+                    <filter string="Mentor" name="group_mentor" context="{'group_by':'topline_id'}"/>
+                    <filter string="County" name="group_county" context="{'group_by':'county'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by':'influencer_state'}"/>
+                    <filter string="Month Joined" name="group_joined" context="{'group_by':'create_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ACTIONS
+    ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Topline Mentors -->
+    <record id="ip_action_topline_mentors" model="ir.actions.act_window">
+        <field name="name">Topline Mentors</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_topline','=',True)]</field>
+        <field name="search_view_id" ref="ip_view_network_search"/>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('ip_view_topline_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ip_view_influencer_form')}),
+        ]"/>
+    </record>
+
+    <!-- All Recruits (has a topline mentor) -->
+    <record id="ip_action_recruits" model="ir.actions.act_window">
+        <field name="name">Network Recruits</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('applied_as_influencer','=',True),('topline_id','!=',False)]</field>
+        <field name="search_view_id" ref="ip_view_network_search"/>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('ip_view_recruit_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ip_view_influencer_form')}),
+        ]"/>
+    </record>
+
+</odoo>

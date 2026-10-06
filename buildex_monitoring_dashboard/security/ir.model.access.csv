@@ -1,0 +1,19 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_buildex_customer_type_user,buildex.customer.type user,model_buildex_customer_type,base.group_user,1,1,1,1
+access_buildex_skill_type_user,buildex.skill.type user,model_buildex_skill_type,base.group_user,1,1,1,1
+access_buildex_outlet_user,buildex.outlet user,model_buildex_outlet,base.group_user,1,1,1,1
+access_buildex_age_bracket_user,buildex.age.bracket user,model_buildex_age_bracket,base.group_user,1,1,1,1
+access_buildex_acquisition_source_user,buildex.acquisition.source user,model_buildex_acquisition_source,base.group_user,1,1,1,1
+access_buildex_next_need_user,buildex.next.need user,model_buildex_next_need,base.group_user,1,1,1,1
+access_buildex_project_type_user,buildex.project.type user,model_buildex_project_type,base.group_user,1,1,1,1
+access_buildex_residential_use_user,buildex.residential.use user,model_buildex_residential_use,base.group_user,1,1,1,1
+access_buildex_project_stage_user,buildex.project.stage user,model_buildex_project_stage,base.group_user,1,1,1,1
+access_buildex_budget_range_user,buildex.budget.range user,model_buildex_budget_range,base.group_user,1,1,1,1
+access_buildex_decision_maker_user,buildex.decision.maker user,model_buildex_decision_maker,base.group_user,1,1,1,1
+access_buildex_intended_use_user,buildex.intended.use user,model_buildex_intended_use,base.group_user,1,1,1,1
+access_buildex_followup_activity_type_user,buildex.followup.activity.type user,model_buildex_followup_activity_type,base.group_user,1,1,1,1
+access_buildex_project_user,buildex.project user,model_buildex_project,base.group_user,1,1,1,1
+access_buildex_feedback_user,buildex.feedback user,model_buildex_feedback,base.group_user,1,1,1,1
+access_buildex_fundi_request_user,buildex.fundi.request user,model_buildex_fundi_request,base.group_user,1,1,1,1
+access_buildex_followup_user,buildex.followup user,model_buildex_followup,base.group_user,1,1,1,1
+access_buildex_product_demand_report_user,buildex.product.demand.report user,model_buildex_product_demand_report,base.group_user,1,0,0,0

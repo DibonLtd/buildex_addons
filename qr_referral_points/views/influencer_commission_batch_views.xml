@@ -1,0 +1,80 @@
+<odoo>
+
+    <!-- ========================= Form View ========================= -->
+    <record id="view_commission_batch_form" model="ir.ui.view">
+        <field name="name">commission.batch.form</field>
+        <field name="model">influencer.commission.batch</field>
+        <field name="arch" type="xml">
+            <form string="Commission Batch">
+
+                <header>
+
+                    <!-- Generate Button -->
+                    <button name="action_generate"
+                            type="object"
+                            string="Generate"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+
+                    <!-- Create Vendor Bills -->
+                    <button name="action_create_vendor_bills"
+                            type="object"
+                            string="Create Vendor Bills"
+                            class="btn-success"
+                            invisible="state != 'batched'"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,batched,billed,paid"/>
+
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Commissions">
+                            <field name="commission_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+
+    <!-- ========================= Tree View ========================= -->
+    <record id="view_commission_batch_tree" model="ir.ui.view">
+        <field name="name">commission.batch.tree</field>
+        <field name="model">influencer.commission.batch</field>
+        <field name="arch" type="xml">
+            <list string="Commission Batches">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ========================= Action ========================= -->
+    <record id="action_commission_batches" model="ir.actions.act_window">
+        <field name="name">Commission Batches</field>
+        <field name="res_model">influencer.commission.batch</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ========================= Menu ========================= -->
+    <menuitem id="menu_commission_batches"
+              name="Influencer Commission Batches"
+              parent="menu_influencer_sales_main"
+              sequence="53"
+              action="action_commission_batches"/>
+
+
+
+</odoo>

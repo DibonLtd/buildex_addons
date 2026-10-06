@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="0">
+
+        <template id="portal_my_home_appraisals" name="Show My Appraisals" inherit_id="portal.portal_my_home" customize_show="True" priority="40">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">My Appraisals</t>
+                    <t t-set="url" t-value="'/my/appraisals'"/>
+                    <t t-set="placeholder_count" t-value="'appraisal_count'"/>
+                </t>
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">Team Appraisals</t>
+                    <t t-set="url" t-value="'/my/team/appraisals'"/>
+                    <t t-set="placeholder_count" t-value="'team_appraisal_count'"/>
+                </t>
+            </xpath>
+
+        </template>
+
+        <template id="portal_my_home_menu_appraisals" name="Portal layout : appraisal menu entries" inherit_id="portal.portal_breadcrumbs" priority="30">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name in ('appraisal', 'team_appraisal')" t-attf-class="breadcrumb-item #{'active ' if not appraisal else ''}">
+                    <a t-if="appraisal" t-attf-href="/my/appraisals?{{ keep_query() }}">My Appraisals</a>
+                    <t t-else="">My Appraisals</t>
+                    <t t-esc="page_name"/>
+                    <a t-if="appraisal and page_name == 'team_appraisal'" t-attf-href="/my/team/appraisals?{{ keep_query() }}">Team Appraisals</a>
+                </li>
+                <!-- <li t-if="page_name == 'team_appraisal'" t-attf-class="breadcrumb-item #{'active ' if not appraisal else ''}">
+                    <a t-if="appraisal and page_name == 'team_appraisal'" t-attf-href="/my/team/appraisals?{{ keep_query() }}">Team Appraisals</a>
+                </li> -->
+                <!-- <li t-if="appraisal" class="breadcrumb-item active">
+                    <t t-esc="payslip.number" t-if="payslip.number"/>
+                    <em>Draft Payslip</em>
+                </li> -->
+            </xpath>
+        </template>
+
+        <template id="portal_my_appraisals" name="My Appraisals">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Appraisals</t>
+                </t>
+                <t t-if="not appraisals">
+                    <p>There are currently no appraisals for your account.</p>
+                </t>
+                <t t-if="appraisals" t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th>Name</th>
+                            <th>Appraisal Date</th>
+                            <th>Department</th>
+                            <th>Average Score</th>
+                            <th>Final Score</th>
+                            <th>Rating</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="appraisals" t-as="appraisal">
+                            <tr>
+                                <td>
+                                    <span t-field="appraisal.display_name"/>
+                                </td>
+                                <td>
+                                    <span t-field="appraisal.date_close"/>
+                                </td>
+                                <td>
+                                    <span t-field="appraisal.department_id"/>
+                                </td>
+                                <td>
+                                    <span t-field="appraisal.average_score" t-options="{'widget': 'float', 'precision': 2}"/>
+                                </td>
+                                <td>
+                                    <span t-if="appraisal.final_score" t-field="appraisal.final_score" t-options="{'widget': 'float', 'precision': 2}"/>
+                                    <span t-else="">-</span>
+                                </td>
+                                <td>
+                                    <span t-field="appraisal.score_card_rating"/>
+                                </td>
+                                <td>
+                                    <span t-field="appraisal.appraisal_state"/>
+                                </td>
+                                <td>
+                                    <a t-if="page_name == 'appraisal'" t-attf-href="/my/appraisals/#{appraisal.id}?{{ keep_query() }}" t-att-title="appraisal.employee_id.name">
+                                        <i class="fa fa-arrow-right"></i>
+                                    </a>
+                                    <a t-if="page_name == 'team_appraisal'" t-attf-href="/my/team/appraisals/#{appraisal.id}?{{ keep_query() }}" t-att-title="appraisal.employee_id.name">
+                                        <i class="fa fa-arrow-right"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+        </template>
+
+        <template id="portal_appraisal_page" name="My Appraisal" inherit_id="portal.portal_sidebar" primary="True">
+            <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+                <t t-call="portal.portal_layout">
+
+                    <t t-set="card_body">
+                        <div class="mb-3">
+                            <h3 t-field="appraisal.employee_id"/>
+                        </div>
+                        <div class="mb-1">
+                            <div>
+                                <div class="mb-1">
+                                    <strong>Appraisal Date:</strong>
+                                    <span t-field="appraisal.date_close"/>
+                                </div>
+                                <div class="mb-1">
+                                    <strong>Department:</strong>
+                                    <span t-field="appraisal.department_id"/>
+                                </div>
+                            </div>
+                            <div class="mt-4 mb-4">
+                                <h5>Scoring</h5>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong>Average Score:</strong>
+                                            <span t-field="appraisal.average_score" t-options="{'widget': 'float', 'precision': 2}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong>Final Score:</strong>
+                                            <span t-if="appraisal.final_score" t-field="appraisal.final_score" t-options="{'widget': 'float', 'precision': 2}"/>
+                                            <span t-else="">Not yet assigned</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong>Rating:</strong>
+                                            <span t-field="appraisal.score_card_rating"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <t t-call="portal.portal_table">
+                                    <thead>
+                                        <tr class="active">
+                                            <th>Participant</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Score</th>
+                                            <th>Status</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="user_inputs" t-as="user_input">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="user_input.nickname"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="user_input.start_datetime"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="user_input.end_datetime"/>
+                                                </td>
+                                            
+                                                <td>
+                                                    <span t-esc="user_input.scoring_total / 25"/>
+                                                </td>
+                                        
+                                                <td>
+                                                    <span t-field="user_input.state"/>
+                                                </td>
+                                                <td>
+                                                    <t t-if="user_input.state == 'done'">
+                                                        <a target="_blank" t-attf-href="/survey/{{user_input.survey_id.access_token}}/{{user_input.access_token}}" t-att-title="user_input.nickname">
+                                                            <i class="fa fa-arrow-right"></i>
+                                                        </a>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <a target="_blank" t-attf-href="{{user_input.get_start_url()}}" t-att-title="user_input.nickname">
+                                                            <i class="fa fa-arrow-right"></i>
+                                                        </a>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

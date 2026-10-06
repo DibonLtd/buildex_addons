@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="paperformat_employee_payslip" model="report.paperformat">
+        <field name="name">Payslip Paper Format</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+    <record id="paperformat_employee_payslip_pot" model="report.paperformat">
+        <field name="name">Payslip Paper Format</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="employee_payslip_report" model="ir.actions.report">
+        <field name="name">P9 Report</field>
+        <field name="model">payslip.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">payslip_reports.payslip_template_document</field>
+        <field name="report_file">payslip_reports.payslip_template_document</field>
+        <field name="paperformat_id" ref="paperformat_employee_payslip"/>
+    </record>
+    <record id="report_salary_summary_pdf" model="ir.actions.report">
+        <field name="name">Salary Summary Report</field>
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">payslip_reports.report_salary_summary</field>
+        <field name="report_file">payslip_reports.report_salary_summary</field>
+        <field name="paperformat_id" ref="paperformat_employee_payslip_pot"/>
+
+    </record>
+ 
+
+
+
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_contact_groups" model="ir.ui.view">
+        <field name="name">res.partner.form.contact.groups</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field
+                    name="contact_group_ids"
+                    widget="many2many_tags"
+                    options="{'color_field': 'color'}"
+                    placeholder="Select contact groups..."
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_partner_filter_contact_groups" model="ir.ui.view">
+        <field name="name">res.partner.search.contact.groups</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="contact_group_ids"/>
+                <filter
+                    name="group_by_contact_groups"
+                    string="Contact Groups"
+                    context="{'group_by': 'contact_group_ids'}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

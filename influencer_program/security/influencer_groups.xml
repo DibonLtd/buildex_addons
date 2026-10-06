@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ── App category ──────────────────────────────────────── -->
+        <record id="module_category_influencer_program" model="ir.module.category">
+            <field name="name">Influencer Program</field>
+            <field name="description">Manage the influencer referral programme</field>
+            <field name="sequence">85</field>
+        </record>
+
+        <!-- ── Influencer User (read-only) ──────────────────────── -->
+        <record id="group_influencer_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_influencer_program"/>
+            <field name="comment">Can view influencer dashboards, reports and details but cannot modify data.</field>
+        </record>
+
+        <!-- ── Influencer Manager (full access) ─────────────────── -->
+        <record id="group_influencer_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_influencer_program"/>
+            <field name="implied_ids" eval="[(4, ref('group_influencer_user'))]"/>
+            <field name="comment">Full access: approve/reject applications, manage commissions, configure plans and terms.</field>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+    </data>
+</odoo>

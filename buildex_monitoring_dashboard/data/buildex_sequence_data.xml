@@ -1,0 +1,22 @@
+<odoo noupdate="1">
+    <record id="seq_buildex_project" model="ir.sequence">
+        <field name="name">Buildex Project</field>
+        <field name="code">buildex.project</field>
+        <field name="prefix">PRJ%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_buildex_feedback" model="ir.sequence">
+        <field name="name">Buildex Feedback</field>
+        <field name="code">buildex.feedback</field>
+        <field name="prefix">FDB%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_buildex_fundi_request" model="ir.sequence">
+        <field name="name">Buildex Fundi Request</field>
+        <field name="code">buildex.fundi.request</field>
+        <field name="prefix">FRQ%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>

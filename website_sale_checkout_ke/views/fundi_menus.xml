@@ -1,0 +1,19 @@
+<odoo>
+
+    <!-- ================= ACTION ================= -->
+    <record id="action_fundi_contacts" model="ir.actions.act_window">
+        <field name="name">Fundi</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_fundi', '=', True)]</field>
+        <field name="context">{'default_is_fundi': True}</field>
+    </record>
+
+    <!-- ================= ROOT MENU (below Influencers) ================= -->
+    <menuitem id="menu_fundi_root"
+              name="Fundi"
+              parent="contacts.menu_contacts"
+              action="action_fundi_contacts"
+              sequence="3"/>
+
+</odoo>

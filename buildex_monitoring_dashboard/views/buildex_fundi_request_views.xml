@@ -1,0 +1,282 @@
+<odoo>
+    <record id="view_buildex_fundi_request_tree" model="ir.ui.view">
+        <field name="name">buildex.fundi.request.tree</field>
+        <field name="model">buildex.fundi.request</field>
+        <field name="arch" type="xml">
+            <list string="Fundi Requests"
+                  decoration-danger="alert_level == 'critical'"
+                  decoration-warning="alert_level == 'warning'"
+                  decoration-success="state in ('assigned', 'completed')">
+                <field name="name"/>
+                <field name="request_date"/>
+                <field name="request_type"/>
+                <field name="partner_id"/>
+                <field name="requested_by_name"/>
+                <field name="phone"/>
+                <field name="city"/>
+                <field name="assigned_user_id"/>
+                <field name="assigned_fundi_id"/>
+                <field name="action_point"/>
+                <field name="response_deadline"/>
+                <field name="age_in_days"/>
+                <field name="priority"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_buildex_fundi_request_kanban" model="ir.ui.view">
+        <field name="name">buildex.fundi.request.kanban</field>
+        <field name="model">buildex.fundi.request</field>
+        <field name="arch" type="xml">
+            <kanban class="buildex_fundi_request_kanban" default_group_by="request_date">
+                <field name="name"/>
+                <field name="request_type"/>
+                <field name="partner_id"/>
+                <field name="requested_by_name"/>
+                <field name="phone"/>
+                <field name="city"/>
+                <field name="assigned_user_id"/>
+                <field name="assigned_fundi_id"/>
+                <field name="action_point"/>
+                <field name="response_deadline"/>
+                <field name="priority"/>
+                <field name="state"/>
+                <field name="alert_level"/>
+                <field name="needs_attention"/>
+                <field name="response_done"/>
+                <field name="request_date"/>
+                <field name="age_in_days"/>
+                <templates>
+                    <t t-name="card">
+                        <t t-set="alert_level" t-value="record.alert_level.raw_value or 'normal'"/>
+                        <t t-set="priority_level" t-value="record.priority.raw_value or '1'"/>
+                        <t t-set="attention_state" t-value="'done' if record.response_done.raw_value else 'attention'"/>
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click buildex_fundi_request_card buildex_alert_#{alert_level} buildex_attention_#{attention_state}">
+                            <div class="p-3">
+                                <div class="buildex_card_topline mb-2">
+                                    <div class="buildex_card_heading">
+                                        <span t-attf-class="buildex_attention_dot buildex_attention_dot_#{attention_state}"/>
+                                        <strong><field name="name"/></strong>
+                                    </div>
+                                    <div class="buildex_card_badges">
+                                        <span t-attf-class="buildex_priority_chip buildex_priority_#{priority_level}">
+                                            <field name="priority"/>
+                                        </span>
+                                        <span class="buildex_alert_chip">
+                                            <field name="alert_level"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="buildex_meta mb-1">
+                                        <strong>Type:</strong>
+                                        <field name="request_type"/>
+                                    </div>
+                                    <div class="fw-semibold">
+                                        <field name="partner_id"/>
+                                    </div>
+                                    <div class="buildex_meta">
+                                        <field name="requested_by_name"/>
+                                        <t t-if="record.phone.value">
+                                            <span> | </span>
+                                            <field name="phone"/>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="buildex_meta mb-1">
+                                    <strong>Town:</strong>
+                                    <field name="city"/>
+                                </div>
+                                <div class="buildex_meta mb-1">
+                                    <strong>Action:</strong>
+                                    <field name="action_point"/>
+                                </div>
+                                <div class="buildex_meta mb-1">
+                                    <strong>Owner:</strong>
+                                    <field name="assigned_user_id"/>
+                                </div>
+                                <div class="buildex_meta mb-1">
+                                    <strong>Fundi:</strong>
+                                    <field name="assigned_fundi_id"/>
+                                </div>
+                                <div class="buildex_meta">
+                                    <strong>Deadline:</strong>
+                                    <field name="response_deadline"/>
+                                    <span> | </span>
+                                    <strong>Age:</strong>
+                                    <field name="age_in_days"/> days
+                                </div>
+                                <div class="buildex_action_bar">
+                                    <button name="action_mark_contacted"
+                                            string="Contacted"
+                                            type="object"
+                                            class="btn btn-primary"
+                                            invisible="state in ('contacted', 'assigned', 'completed', 'cancelled')"/>
+                                    <button name="action_assign_fundi"
+                                            string="Assign"
+                                            type="object"
+                                            class="btn btn-secondary"
+                                            invisible="state in ('assigned', 'completed', 'cancelled')"/>
+                                    <button name="action_create_followup"
+                                            string="Follow-up"
+                                            type="object"
+                                            class="btn btn-light"
+                                            invisible="state in ('completed', 'cancelled')"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_buildex_fundi_request_form" model="ir.ui.view">
+        <field name="name">buildex.fundi.request.form</field>
+        <field name="model">buildex.fundi.request</field>
+        <field name="arch" type="xml">
+            <form string="Fundi Request">
+                <header>
+                    <button name="action_start_response" string="Start Response" type="object" class="oe_highlight" invisible="state != 'new'"/>
+                    <button name="action_mark_contacted" string="Mark Contacted" type="object" class="btn-primary" invisible="state in ('contacted', 'assigned', 'completed', 'cancelled')"/>
+                    <button name="action_assign_fundi" string="Assign Fundi" type="object" invisible="state in ('assigned', 'completed', 'cancelled')"/>
+                    <button name="action_create_followup" string="Create Follow-up" type="object" invisible="state in ('completed', 'cancelled')"/>
+                    <button name="action_mark_completed" string="Complete" type="object" invisible="state in ('completed', 'cancelled')"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('completed', 'cancelled')"/>
+                    <button name="action_reset_to_new" string="Reset" type="object" invisible="state == 'new'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <div class="text-muted">
+                            <field name="requested_service"/>
+                        </div>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="source"/>
+                            <field name="request_type"/>
+                            <field name="request_date"/>
+                            <field name="request_datetime"/>
+                            <field name="priority"/>
+                            <field name="action_point"/>
+                        </group>
+                        <group>
+                            <field name="assigned_user_id"/>
+                            <field name="assigned_fundi_id" invisible="request_type != 'fundi_support'"/>
+                            <field name="response_deadline"/>
+                            <field name="first_response_date" readonly="1"/>
+                            <field name="completion_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Customer">
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="sale_order_id"/>
+                            <field name="product_id"/>
+                        </group>
+                        <group>
+                            <field name="requested_by_name"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="city"/>
+                        </group>
+                    </group>
+                    <group string="Attention">
+                        <group>
+                            <field name="alert_level" readonly="1"/>
+                            <field name="priority"/>
+                            <field name="needs_attention" readonly="1"/>
+                            <field name="response_done" readonly="1"/>
+                            <field name="is_overdue" readonly="1"/>
+                            <field name="age_in_days" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="followup_count" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Request Notes">
+                            <field name="note" nolabel="1" placeholder="What the customer asked for..."/>
+                        </page>
+                        <page string="Internal Notes">
+                            <field name="internal_note" nolabel="1" placeholder="Customer service action notes..."/>
+                        </page>
+                        <page string="Follow-ups">
+                            <field name="followup_ids" context="{'default_partner_id': partner_id, 'default_sale_order_id': sale_order_id, 'default_fundi_request_id': id}">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="assigned_user_id"/>
+                                    <field name="due_date"/>
+                                    <field name="priority"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_buildex_fundi_request_search" model="ir.ui.view">
+        <field name="name">buildex.fundi.request.search</field>
+        <field name="model">buildex.fundi.request</field>
+        <field name="arch" type="xml">
+            <search string="Fundi Requests">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="request_type"/>
+                <field name="phone"/>
+                <field name="city"/>
+                <field name="assigned_user_id"/>
+                <field name="assigned_fundi_id"/>
+                <filter name="filter_fundi_support" string="Fundi Support" domain="[('request_type', '=', 'fundi_support')]"/>
+                <filter name="filter_sales_inquiries" string="Sales Inquiries" domain="[('request_type', '=', 'sales_inquiry')]"/>
+                <filter name="filter_open_queue" string="Open Queue" domain="[('state', 'not in', ('completed', 'cancelled'))]"/>
+                <filter name="filter_new_today" string="New Today" domain="[('request_date', '=', context_today())]"/>
+                <filter name="filter_pending_response" string="Pending Response" domain="[('first_response_date', '=', False), ('state', 'not in', ('completed', 'cancelled'))]"/>
+                <filter name="filter_overdue" string="Overdue" domain="[('is_overdue', '=', True)]"/>
+                <filter name="filter_unassigned" string="Unassigned" domain="[('assigned_user_id', '=', False)]"/>
+                <filter name="filter_my_queue" string="My Queue" domain="[('assigned_user_id', '=', uid), ('state', 'not in', ('completed', 'cancelled'))]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_request_day" string="Request Day" context="{'group_by': 'request_date'}"/>
+                    <filter name="group_request_type" string="Request Type" context="{'group_by': 'request_type'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_owner" string="Assigned To" context="{'group_by': 'assigned_user_id'}"/>
+                    <filter name="group_location" string="Town" context="{'group_by': 'city'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_buildex_actionable_items" model="ir.actions.act_window">
+        <field name="name">Actionable Items</field>
+        <field name="res_model">buildex.fundi.request</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_buildex_fundi_request_search"/>
+        <field name="context">{'search_default_filter_open_queue': 1, 'search_default_group_request_day': 1}</field>
+    </record>
+
+    <record id="action_buildex_fundi_request_dashboard" model="ir.actions.act_window">
+        <field name="name">Fundi Request Dashboard</field>
+        <field name="res_model">buildex.fundi.request</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_buildex_fundi_request_search"/>
+        <field name="context">{'search_default_filter_open_queue': 1, 'search_default_group_request_day': 1}</field>
+    </record>
+
+    <record id="action_buildex_fundi_requests" model="ir.actions.act_window">
+        <field name="name">All Fundi Requests</field>
+        <field name="res_model">buildex.fundi.request</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="view_buildex_fundi_request_search"/>
+    </record>
+</odoo>

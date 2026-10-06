@@ -1,0 +1,177 @@
+<odoo>
+    <menuitem id="menu_buildex_monitoring_root"
+              name="Monitoring Dashboard"
+              sequence="5"/>
+
+    <menuitem id="menu_buildex_monitoring_customers"
+              name="Customers"
+              parent="menu_buildex_monitoring_root"
+              action="action_buildex_customers"
+              sequence="10"/>
+
+    <menuitem id="menu_buildex_monitoring_projects"
+              name="Projects"
+              parent="menu_buildex_monitoring_root"
+              action="action_buildex_projects"
+              sequence="20"/>
+
+    <menuitem id="menu_buildex_monitoring_sales"
+              name="Fundis"
+              parent="menu_buildex_monitoring_root"
+              action="action_buildex_fundis"
+              sequence="30"/>
+
+    <menuitem id="menu_buildex_monitoring_followups"
+              name="Follow-ups"
+              parent="menu_buildex_monitoring_root"
+              action="action_buildex_followups"
+              sequence="35"/>
+
+    <menuitem id="menu_buildex_monitoring_feedback"
+              name="Feedback"
+              parent="menu_buildex_monitoring_root"
+              action="action_buildex_feedback"
+              sequence="40"/>
+
+    <menuitem id="menu_buildex_monitoring_operations"
+              name="Operations"
+              parent="menu_buildex_monitoring_root"
+              sequence="50"/>
+
+    <menuitem id="menu_buildex_monitoring_fundi_request_dashboard"
+              name="Fundi Request Dashboard"
+              parent="menu_buildex_monitoring_operations"
+              action="action_buildex_fundi_request_dashboard"
+              sequence="5"/>
+
+    <menuitem id="menu_buildex_monitoring_actionable_items"
+              name="Actionable Items"
+              parent="menu_buildex_monitoring_operations"
+              action="action_buildex_actionable_items"
+              sequence="6"/>
+
+    <menuitem id="menu_buildex_monitoring_hot_leads"
+              name="Hot Leads &amp; Active Projects"
+              parent="menu_buildex_monitoring_operations"
+              action="action_buildex_hot_leads"
+              sequence="10"/>
+
+    <menuitem id="menu_buildex_monitoring_pending_followups"
+              name="Pending Follow-Ups"
+              parent="menu_buildex_monitoring_operations"
+              action="action_buildex_pending_followups"
+              sequence="20"/>
+
+    <menuitem id="menu_buildex_monitoring_influencers"
+              name="Influencer Performance Live"
+              parent="menu_buildex_monitoring_operations"
+              action="action_buildex_influencer_performance"
+              sequence="30"/>
+
+    <menuitem id="menu_buildex_monitoring_product_demand"
+              name="Product Demand Insights"
+              parent="menu_buildex_monitoring_operations"
+              action="action_buildex_product_demand_insights"
+              sequence="40"/>
+
+    <menuitem id="menu_buildex_monitoring_fundi_network"
+              name="Fundi Network Activity"
+              parent="menu_buildex_monitoring_operations"
+              action="action_buildex_fundi_network_activity"
+              sequence="50"/>
+
+    <menuitem id="menu_buildex_monitoring_customer_health"
+              name="Customer Health Segments"
+              parent="menu_buildex_monitoring_operations"
+              action="action_buildex_customer_health_segments"
+              sequence="60"/>
+
+    <menuitem id="menu_buildex_monitoring_all_fundi_requests"
+              name="All Fundi Requests"
+              parent="menu_buildex_monitoring_root"
+              action="action_buildex_fundi_requests"
+              sequence="45"/>
+
+    <menuitem id="menu_buildex_monitoring_configuration"
+              name="Configuration"
+              parent="menu_buildex_monitoring_root"
+              sequence="100"/>
+
+    <menuitem id="menu_buildex_monitoring_customer_types"
+              name="Customer Types"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_customer_types"
+              sequence="10"/>
+
+    <menuitem id="menu_buildex_monitoring_skill_types"
+              name="Skill Types"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_skill_types"
+              sequence="20"/>
+
+    <menuitem id="menu_buildex_monitoring_outlets"
+              name="Outlets"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_outlets"
+              sequence="30"/>
+
+    <menuitem id="menu_buildex_monitoring_age_brackets"
+              name="Age Brackets"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_age_brackets"
+              sequence="40"/>
+
+    <menuitem id="menu_buildex_monitoring_acquisition_sources"
+              name="Acquisition Sources"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_acquisition_sources"
+              sequence="50"/>
+
+    <menuitem id="menu_buildex_monitoring_next_needs"
+              name="Next Needs"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_next_needs"
+              sequence="60"/>
+
+    <menuitem id="menu_buildex_monitoring_project_types"
+              name="Project Types"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_project_types"
+              sequence="70"/>
+
+    <menuitem id="menu_buildex_monitoring_residential_uses"
+              name="Residential Uses"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_residential_uses"
+              sequence="80"/>
+
+    <menuitem id="menu_buildex_monitoring_project_stages"
+              name="Project Stages"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_project_stages"
+              sequence="90"/>
+
+    <menuitem id="menu_buildex_monitoring_budget_ranges"
+              name="Budget Ranges"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_budget_ranges"
+              sequence="100"/>
+
+    <menuitem id="menu_buildex_monitoring_decision_makers"
+              name="Decision Makers"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_decision_makers"
+              sequence="110"/>
+
+    <menuitem id="menu_buildex_monitoring_intended_uses"
+              name="Intended Uses"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_intended_uses"
+              sequence="120"/>
+
+    <menuitem id="menu_buildex_monitoring_followup_activity_types"
+              name="Follow-up Activity Types"
+              parent="menu_buildex_monitoring_configuration"
+              action="action_buildex_followup_activity_types"
+              sequence="130"/>
+</odoo>

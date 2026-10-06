@@ -1,0 +1,1007 @@
+<odoo>
+<template id="referral_portal_template" name="Influencer Portal">
+<t t-call="website.layout">
+<div class="blx-portal-theme" style="background:#f3f5f4; min-height:100vh;">
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO HEADER
+════════════════════════════════════════════════════════ -->
+<div style="background:linear-gradient(135deg,#282f72 0%,#282f72 58%,#282f72 100%); color:#fff; padding:2.5rem 0 0;">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row align-items-center gap-4 pb-3">
+
+            <!-- Avatar -->
+            <div class="flex-shrink-0">
+                <t t-if="partner.image_1920">
+                    <img t-att-src="'data:image/png;base64,%s' % partner.image_1920.decode()"
+                         style="width:80px;height:80px;border-radius:50%;border:3px solid rgba(255,255,255,0.4);object-fit:cover;"/>
+                </t>
+                <t t-else="">
+                    <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.15);border:3px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:2rem;">
+                        <i class="fa fa-user"/>
+                    </div>
+                </t>
+            </div>
+
+            <!-- Name + Status -->
+            <div class="flex-grow-1">
+                <h3 class="fw-bold mb-1" style="color:#fff;"><t t-esc="partner.name"/></h3>
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <t t-if="partner.influencer_state == 'approved'">
+                        <span style="background:rgba(184,203,202,0.18);border:1px solid #b8cbca;color:#eff7f6;border-radius:20px;padding:2px 14px;font-size:.8rem;font-weight:600;">
+                            ✦ Active Influencer
+                        </span>
+                    </t>
+                    <t t-elif="partner.influencer_state == 'review'">
+                        <span style="background:rgba(248,216,23,0.18);border:1px solid #f8d817;color:#fff4ac;border-radius:20px;padding:2px 14px;font-size:.8rem;font-weight:600;">
+                            ⏳ Under Review
+                        </span>
+                    </t>
+                    <t t-elif="partner.influencer_state == 'rejected'">
+                        <span style="background:rgba(239,68,68,0.25);border:1px solid #ef4444;color:#fca5a5;border-radius:20px;padding:2px 14px;font-size:.8rem;font-weight:600;">
+                            ✕ Rejected
+                        </span>
+                    </t>
+                    <t t-if="partner.commission_plan_id">
+                        <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(184,203,202,0.2);border-radius:20px;padding:2px 14px;font-size:.8rem;color:rgba(255,255,255,0.82);">
+                            <t t-esc="partner.commission_plan_id.name"/> · <t t-esc="partner.commission_plan_id.default_rate"/>% rate
+                        </span>
+                    </t>
+                </div>
+            </div>
+
+            <!-- Wallet Balance (hero) -->
+            <t t-if="partner.is_referrer">
+                <div class="text-center text-md-end flex-shrink-0">
+                    <div style="font-size:.75rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.08em;">Wallet Balance</div>
+                    <div style="font-size:2rem;font-weight:800;color:#f8d817;line-height:1.1;">
+                        <t t-esc="partner.wallet_balance"/> <span style="font-size:1rem;font-weight:500;">KES</span>
+                    </div>
+                    <div style="font-size:.75rem;color:rgba(255,255,255,0.5);">net after deductions</div>
+                </div>
+            </t>
+
+        </div>
+
+        <!-- KPI STAT STRIP (only for approved) -->
+        <t t-if="partner.is_referrer">
+            <div class="row g-0" style="margin-top:1rem;">
+                <div class="col-6 col-md-3">
+                    <div style="background:rgba(255,255,255,0.08);border-top:3px solid #f8d817;padding:1rem;text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:#f8d817;"><t t-esc="today_earned"/></div>
+                        <div style="font-size:.72rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.05em;">Today's Earnings</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div style="background:rgba(255,255,255,0.08);border-top:3px solid #b8cbca;padding:1rem;text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:#e8f2f1;"><t t-esc="monthly_earned"/></div>
+                        <div style="font-size:.72rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.05em;">This Month</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div style="background:rgba(255,255,255,0.08);border-top:3px solid #f8d817;padding:1rem;text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:#ffe168;"><t t-esc="pending_commission_total"/></div>
+                        <div style="font-size:.72rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.05em;">Pending Approval</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div style="background:rgba(255,255,255,0.08);border-top:3px solid #cfd9d8;padding:1rem;text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;color:#ffffff;"><t t-esc="paid_earned"/></div>
+                        <div style="font-size:.72rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.05em;">Total Paid Out</div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     NOT-YET-APPROVED STATE
+════════════════════════════════════════════════════════ -->
+<t t-if="not partner.is_referrer">
+    <div class="container py-5">
+        <div class="text-center py-5">
+            <div style="font-size:4rem;margin-bottom:1rem;">⏳</div>
+            <h4 class="fw-bold mb-2">Application Under Review</h4>
+            <p class="text-muted">Once approved, your full influencer dashboard will appear here.</p>
+        </div>
+    </div>
+</t>
+
+<!-- ═══════════════════════════════════════════════════════
+     APPROVED DASHBOARD
+════════════════════════════════════════════════════════ -->
+<t t-if="partner.is_referrer">
+<div class="container py-4">
+
+    <!-- PILL NAVIGATION -->
+    <div class="blx-portal-nav">
+        <button class="blx-portal-tab" t-attf-data-active="{{ 'true' if not active_stage else 'false' }}"
+                onclick="blxTab('referral',this)">
+            <i class="fa fa-qrcode"/> Referral
+        </button>
+        <button class="blx-portal-tab" t-attf-data-active="{{ 'true' if active_stage else 'false' }}"
+                onclick="blxTab('sales',this)">
+            <i class="fa fa-bar-chart"/> Sales
+        </button>
+        <button class="blx-portal-tab" data-active="false"
+                onclick="blxTab('wallet',this)">
+            <i class="fa fa-dollar"/> Wallet
+        </button>
+        <button class="blx-portal-tab" data-active="false"
+                onclick="blxTab('registrations',this)">
+            <i class="fa fa-users"/> Leads
+            <t t-if="referred_users">
+                <span class="blx-tab-badge"><t t-esc="len(referred_users)"/></span>
+            </t>
+        </button>
+        <button class="blx-portal-tab" data-active="false"
+                onclick="blxTab('network',this)">
+            <i class="fa fa-sitemap"/> Network
+        </button>
+        <button class="blx-portal-tab" data-active="false"
+                onclick="blxTab('visitors',this)">
+            <i class="fa fa-globe"/> Visitors
+        </button>
+    </div>
+
+    <!-- TAB PANELS -->
+    <div id="blx-tab-container">
+
+<!-- ══════════════════ REFERRAL TAB ══════════════════ -->
+<div class="blx-panel" id="referral" t-attf-style="{{ '' if not active_stage else 'display:none;' }}">
+    <div class="row g-4">
+
+        <!-- LEFT: Codes + Link -->
+        <div class="col-lg-7">
+
+            <!-- Product Referral Code card -->
+            <div class="bg-white rounded-4 shadow-sm p-4 mb-4">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span style="background:#eef1ff;color:#282f72;padding:6px 10px;border-radius:10px;font-size:1.1rem;"><i class="fa fa-link"/></span>
+                    <div>
+                        <div class="fw-bold">Your Sales Referral Code</div>
+                        <div class="text-muted" style="font-size:.8rem;">Share with customers to earn commission</div>
+                    </div>
+                </div>
+                <div class="text-center py-2 mb-3 rounded-3" style="background:#f6f7fb;letter-spacing:.15em;font-size:1.6rem;font-weight:800;color:#282f72;">
+                    <t t-esc="partner.referral_code"/>
+                </div>
+
+                <!-- Visit stats mini -->
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <div class="rounded-3 text-center p-2" style="background:#f6f7fb;">
+                            <div style="font-size:1.4rem;font-weight:800;color:#282f72;"><t t-esc="partner.referral_today_visits"/></div>
+                            <div class="text-muted" style="font-size:.72rem;">Visits Today</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="rounded-3 text-center p-2" style="background:#f0f6f5;">
+                            <div style="font-size:1.4rem;font-weight:800;color:#6d8f8d;"><t t-esc="partner.referral_total_visits"/></div>
+                            <div class="text-muted" style="font-size:.72rem;">Total Visits</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Referral Link input -->
+                <label class="fw-semibold small mb-1">Your Referral Link</label>
+                <div class="input-group mb-1">
+                    <input type="text" id="referral_link_input" class="form-control form-control-sm bg-light border-0"
+                           t-att-value="partner.referral_url" readonly="readonly"/>
+                    <button class="btn btn-sm btn-outline-primary blx-theme-outline-primary" type="button" id="copy_referral_btn">
+                        <i class="fa fa-copy"/> Copy
+                    </button>
+                    <a t-att-href="partner.referral_url" target="_blank" class="btn btn-sm btn-primary blx-theme-primary-btn">
+                        <i class="fa fa-external-link"/>
+                    </a>
+                </div>
+                <small id="copy_feedback" class="text-success d-none"><i class="fa fa-check"/> Copied!</small>
+
+                <!-- Social share -->
+                <div class="mt-3">
+                    <div class="small fw-semibold text-muted mb-2">Share via</div>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a t-att-href="'https://api.whatsapp.com/send?text=' + partner.referral_url"
+                           target="_blank" class="btn btn-sm btn-success rounded-pill">
+                            <i class="fa fa-whatsapp"/> WhatsApp
+                        </a>
+                        <a t-att-href="'https://www.facebook.com/sharer/sharer.php?u=' + partner.referral_url"
+                           target="_blank" class="btn btn-sm rounded-pill blx-share-btn blx-share-btn-primary">
+                            <i class="fa fa-facebook"/> Facebook
+                        </a>
+                        <a t-att-href="'https://twitter.com/intent/tweet?url=' + partner.referral_url"
+                           target="_blank" class="btn btn-sm text-white rounded-pill blx-share-btn blx-share-btn-accent">
+                            <i class="fa fa-twitter"/> X
+                        </a>
+                        <a t-att-href="'https://www.linkedin.com/sharing/share-offsite/?url=' + partner.referral_url"
+                           target="_blank" class="btn btn-sm rounded-pill text-white" style="background:#0077b5;">
+                            <i class="fa fa-linkedin"/> LinkedIn
+                        </a>
+                        <button class="btn btn-sm btn-dark rounded-pill" type="button" id="copy_tiktok_btn">
+                            <i class="fa fa-music"/> TikTok
+                        </button>
+                    </div>
+                    <small class="text-muted d-block mt-1" style="font-size:.72rem;">TikTok: code will be copied — paste in your bio</small>
+                </div>
+            </div>
+
+            <!-- Topline Recruiting Code card (only visible when approved topline) -->
+            <t t-if="partner.is_topline">
+                        <div class="rounded-4 shadow-sm p-4" style="background:linear-gradient(135deg,#282f72,#282f72);color:#fff;">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span style="background:rgba(255,255,255,0.15);padding:6px 10px;border-radius:10px;font-size:1.1rem;"><i class="fa fa-star"/></span>
+                        <div>
+                            <div class="fw-bold">Your Topline Recruiting Code</div>
+                            <div style="font-size:.8rem;color:rgba(255,255,255,0.65);">Share with people you recruit as influencers</div>
+                        </div>
+                    </div>
+                    <div class="text-center py-3 mb-3 rounded-3" style="background:rgba(255,255,255,0.12);letter-spacing:.2em;font-size:1.8rem;font-weight:800;">
+                        <t t-esc="partner.topline_referral_code"/>
+                    </div>
+                    <div style="font-size:.8rem;color:rgba(255,255,255,0.65);margin-bottom:0.75rem;">
+                        When they register as influencers using this code, you earn
+                        <strong style="color:#f8d817;">
+                            <t t-esc="partner.commission_plan_id.topline_bonus_rate if partner.commission_plan_id else 10"/>%
+                        </strong>
+                        of every commission they earn.
+                    </div>
+
+                    <!-- Shareable recruiting link display -->
+                    <t t-set="recruit_link" t-value="recruit_base_url + '/influencer/recruit?tl=' + (partner.topline_referral_code or '')"/>
+                    <div class="rounded-3 p-2 mb-3" style="background:rgba(0,0,0,0.25);font-size:.72rem;word-break:break-all;color:rgba(255,255,255,0.75);">
+                        <i class="fa fa-link me-1" style="color:#f8d817;"/>
+                        <t t-esc="recruit_link"/>
+                    </div>
+
+                    <!-- Copy code / Share link buttons -->
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm rounded-pill fw-semibold flex-fill"
+                                style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);"
+                                t-att-data-code="partner.topline_referral_code"
+                                onclick="navigator.clipboard.writeText(this.dataset.code); this.textContent='Code Copied!'; setTimeout(()=>this.innerHTML='&#xf0c5; Code',1500);">
+                            <i class="fa fa-copy"/> Code
+                        </button>
+                        <button class="btn btn-sm rounded-pill fw-semibold flex-fill"
+                                style="background:#f8d817;color:#282f72;border:none;"
+                                t-att-data-link="recruit_link"
+                                onclick="navigator.clipboard.writeText(this.dataset.link); this.textContent='Link Copied!'; setTimeout(()=>this.innerHTML='&#xf1e0; Share Link',1500);">
+                            <i class="fa fa-share-alt"/> Share Link
+                        </button>
+                    </div>
+                </div>
+            </t>
+        </div>
+
+        <!-- RIGHT: QR Code + Visit History -->
+        <div class="col-lg-5">
+            <t t-if="partner.referral_qr">
+                <div class="bg-white rounded-4 shadow-sm p-4 text-center mb-4">
+                    <div class="fw-bold mb-3"><i class="fa fa-qrcode me-1" style="color:#282f72;"/> Referral QR Code</div>
+                    <img id="referral_qr_img"
+                         t-att-src="'data:image/png;base64,%s' % partner.referral_qr.decode()"
+                         class="img-thumbnail border-0 shadow-sm mb-3"
+                         style="max-width:180px;border-radius:12px;"/>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button class="btn btn-sm btn-outline-primary rounded-pill" id="download_qr_btn">
+                            <i class="fa fa-download"/> Download
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill" id="print_qr_btn">
+                            <i class="fa fa-print"/> Print
+                        </button>
+                    </div>
+                </div>
+            </t>
+
+            <!-- Daily visit history -->
+            <t t-if="visit_stats">
+                <div class="bg-white rounded-4 shadow-sm p-4">
+                    <div class="fw-bold mb-3"><i class="fa fa-calendar text-primary me-1"/> Daily Visit History</div>
+                    <div style="max-height:260px;overflow-y:auto;">
+                        <table class="table table-sm mb-0">
+                            <thead class="sticky-top bg-white">
+                                <tr>
+                                    <th class="text-muted fw-normal small">Date</th>
+                                    <th class="text-end text-muted fw-normal small">Visits</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="visit_stats" t-as="row">
+                                    <tr>
+                                        <td class="small"><t t-esc="row.date"/></td>
+                                        <td class="text-end">
+                                            <span class="badge rounded-pill" style="background:#eef1ff;color:#282f72;"><t t-esc="row.visit_count"/></span>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </div>
+</div><!-- /referral tab -->
+
+
+<!-- ══════════════════ SALES TAB ══════════════════ -->
+<div class="blx-panel" id="sales" t-attf-style="{{ '' if active_stage else 'display:none;' }}">
+
+    <!-- Pipeline counts — clicking filters rows, no page reload -->
+    <div class="bg-white rounded-4 shadow-sm p-3 mb-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="text-center flex-fill">
+                <button class="blx-stage-btn border-0 bg-transparent p-0" onclick="blxFilterSales('ordered',this)">
+                    <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center fw-bold text-white mb-1"
+                         style="width:48px;height:48px;background:#282f72;">
+                        <t t-esc="status_counts.get('ordered', 0)"/>
+                    </div>
+                    <div class="small fw-semibold" style="color:#282f72;">Ordered</div>
+                </button>
+            </div>
+            <div class="text-muted">→</div>
+            <div class="text-center flex-fill">
+                <button class="blx-stage-btn border-0 bg-transparent p-0" onclick="blxFilterSales('dispatched',this)">
+                    <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center fw-bold text-white mb-1"
+                         style="width:48px;height:48px;background:#f8d817;">
+                        <t t-esc="status_counts.get('dispatched', 0)"/>
+                    </div>
+                    <div class="small fw-semibold" style="color:#f8d817;">Dispatched</div>
+                </button>
+            </div>
+            <div class="text-muted">→</div>
+            <div class="text-center flex-fill">
+                <button class="blx-stage-btn border-0 bg-transparent p-0" onclick="blxFilterSales('delivered',this)">
+                    <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center fw-bold text-white mb-1"
+                         style="width:48px;height:48px;background:#6d8f8d;">
+                        <t t-esc="status_counts.get('delivered', 0)"/>
+                    </div>
+                    <div class="small fw-semibold" style="color:#6d8f8d;">Delivered</div>
+                </button>
+            </div>
+            <div class="text-muted">→</div>
+            <div class="text-center flex-fill">
+                <button class="blx-stage-btn border-0 bg-transparent p-0" onclick="blxFilterSales('invoiced',this)">
+                    <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center fw-bold text-dark mb-1"
+                         style="width:48px;height:48px;background:#b8cbca;">
+                        <t t-esc="status_counts.get('invoiced', 0)"/>
+                    </div>
+                    <div class="small fw-semibold" style="color:#0099bb;">Invoiced</div>
+                </button>
+            </div>
+            <div class="text-muted">→</div>
+            <div class="text-center flex-fill">
+                <button class="blx-stage-btn border-0 bg-transparent p-0" onclick="blxFilterSales('paid',this)">
+                    <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center fw-bold text-white mb-1"
+                         style="width:48px;height:48px;background:#198754;">
+                        <t t-esc="status_counts.get('paid', 0)"/>
+                    </div>
+                    <div class="small fw-semibold" style="color:#198754;">Paid</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── PERFORMANCE METRICS ── -->
+    <div class="row g-3 mb-4">
+
+        <!-- Orders Closed -->
+        <div class="col-6 col-md-3">
+            <div class="bg-white rounded-4 shadow-sm p-3 h-100 text-center position-relative overflow-hidden">
+                <div style="position:absolute;top:-10px;right:-10px;width:60px;height:60px;border-radius:50%;background:rgba(109,143,141,0.12);"></div>
+                <div class="mb-2">
+                    <span style="background:#e1eceb;color:#5c7f7d;border-radius:50%;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;">
+                        <i class="fa fa-check-circle" style="font-size:1.1rem;"/>
+                    </span>
+                </div>
+                <div style="font-size:1.8rem;font-weight:800;color:#198754;line-height:1;">
+                    <t t-esc="sales_metrics.get('orders_closed', 0)"/>
+                </div>
+                <div class="fw-semibold text-dark mt-1" style="font-size:.85rem;">Orders Closed</div>
+                <div class="text-muted mt-1" style="font-size:.72rem;">
+                    of <t t-esc="sales_metrics.get('total_orders', 0)"/> total orders
+                </div>
+            </div>
+        </div>
+
+        <!-- Conversion Rate -->
+        <div class="col-6 col-md-3">
+            <div class="bg-white rounded-4 shadow-sm p-3 h-100 text-center position-relative overflow-hidden">
+                <div style="position:absolute;top:-10px;right:-10px;width:60px;height:60px;border-radius:50%;background:rgba(47,52,125,0.08);"></div>
+                <div class="mb-2">
+                    <span style="background:#dbeafe;color:#1e40af;border-radius:50%;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;">
+                        <i class="fa fa-line-chart" style="font-size:1.1rem;"/>
+                    </span>
+                </div>
+                <div style="font-size:1.8rem;font-weight:800;color:#282f72;line-height:1;">
+                    <t t-esc="sales_metrics.get('conversion_rate', 0.0)"/>%
+                </div>
+                <div class="fw-semibold text-dark mt-1" style="font-size:.85rem;">Conversion Rate</div>
+                <div class="text-muted mt-1" style="font-size:.72rem;">
+                    paid ÷ total orders
+                </div>
+            </div>
+        </div>
+
+        <!-- Average Order Value -->
+        <div class="col-6 col-md-3">
+            <div class="bg-white rounded-4 shadow-sm p-3 h-100 text-center position-relative overflow-hidden">
+                <div style="position:absolute;top:-10px;right:-10px;width:60px;height:60px;border-radius:50%;background:rgba(255,210,31,0.14);"></div>
+                <div class="mb-2">
+                    <span style="background:#fff5cf;color:#f8d817;border-radius:50%;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;">
+                        <i class="fa fa-shopping-cart" style="font-size:1.1rem;"/>
+                    </span>
+                </div>
+                <div style="font-size:1.8rem;font-weight:800;color:#f8d817;line-height:1;">
+                    <span t-esc="sales_metrics.get('avg_order_value', 0.0)"
+                          t-options="{'widget':'monetary','display_currency':request.env.company.currency_id}"/>
+                </div>
+                <div class="fw-semibold text-dark mt-1" style="font-size:.85rem;">Avg. Order Value</div>
+                <div class="text-muted mt-1" style="font-size:.72rem;">
+                    per order placed
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Repeat Rate -->
+        <div class="col-6 col-md-3">
+            <div class="bg-white rounded-4 shadow-sm p-3 h-100 text-center position-relative overflow-hidden">
+                <div style="position:absolute;top:-10px;right:-10px;width:60px;height:60px;border-radius:50%;background:rgba(184,203,202,0.18);"></div>
+                <div class="mb-2">
+                    <span style="background:#e5efee;color:#6d8f8d;border-radius:50%;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;">
+                        <i class="fa fa-repeat" style="font-size:1.1rem;"/>
+                    </span>
+                </div>
+                <div style="font-size:1.8rem;font-weight:800;color:#6d8f8d;line-height:1;">
+                    <t t-esc="sales_metrics.get('repeat_rate', 0.0)"/>%
+                </div>
+                <div class="fw-semibold text-dark mt-1" style="font-size:.85rem;">Customer Repeat Rate</div>
+                <div class="text-muted mt-1" style="font-size:.72rem;">
+                    <t t-esc="sales_metrics.get('repeat_customers', 0)"/> of
+                    <t t-esc="sales_metrics.get('unique_customers', 0)"/> customers returned
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /metrics row -->
+
+    <!-- Filter pills — client-side, no page reload -->
+    <div class="d-flex flex-wrap gap-2 mb-4 justify-content-center" id="blx-sales-filters">
+        <button class="btn btn-sm rounded-pill blx-sales-pill btn-dark"
+                data-stage="" onclick="blxFilterSales('',this)">All</button>
+        <button class="btn btn-sm rounded-pill blx-sales-pill btn-outline-primary"
+                data-stage="ordered" onclick="blxFilterSales('ordered',this)">Ordered</button>
+        <button class="btn btn-sm rounded-pill blx-sales-pill"
+                data-stage="dispatched" onclick="blxFilterSales('dispatched',this)"
+                style="border-color:#f8d817;color:#f8d817;">Dispatched</button>
+        <button class="btn btn-sm rounded-pill blx-sales-pill"
+                data-stage="delivered" onclick="blxFilterSales('delivered',this)"
+                style="border-color:#6d8f8d;color:#6d8f8d;">Delivered</button>
+        <button class="btn btn-sm rounded-pill blx-sales-pill"
+                data-stage="invoiced" onclick="blxFilterSales('invoiced',this)"
+                style="border-color:#b8cbca;color:#5f8482;">Invoiced</button>
+        <button class="btn btn-sm rounded-pill blx-sales-pill btn-outline-success"
+                data-stage="paid" onclick="blxFilterSales('paid',this)">Paid</button>
+    </div>
+
+    <t t-if="monthly_sales">
+        <t t-foreach="monthly_sales.items()" t-as="month">
+            <div class="bg-white rounded-4 shadow-sm mb-4 overflow-hidden blx-month-section">
+                <!-- Month header -->
+                <div class="px-4 py-3 d-flex justify-content-between align-items-center"
+                     style="background:#282f72;color:#fff;">
+                    <span class="fw-bold"><i class="fa fa-calendar-o me-2"/><t t-esc="month[0]"/></span>
+                    <span class="badge rounded-pill" style="background:rgba(255,255,255,0.15);">
+                        <t t-esc="month[1]['order_count']"/> orders
+                    </span>
+                </div>
+                <!-- Month KPIs -->
+                <div class="row g-0 text-center border-bottom">
+                    <div class="col-4 py-3 border-end">
+                        <div class="fw-bold text-primary"><t t-esc="month[1]['order_count']"/></div>
+                        <div class="text-muted" style="font-size:.72rem;">Orders</div>
+                    </div>
+                    <div class="col-4 py-3 border-end">
+                        <div class="fw-bold text-info">
+                            <span t-esc="month[1]['invoiced_amount']"
+                                  t-options="{'widget':'monetary','display_currency':request.env.company.currency_id}"/>
+                        </div>
+                        <div class="text-muted" style="font-size:.72rem;">Invoiced</div>
+                    </div>
+                    <div class="col-4 py-3">
+                        <div class="fw-bold text-success">
+                            <span t-esc="month[1]['paid_invoiced_amount']"
+                                  t-options="{'widget':'monetary','display_currency':request.env.company.currency_id}"/>
+                        </div>
+                        <div class="text-muted" style="font-size:.72rem;">Paid</div>
+                    </div>
+                </div>
+                <!-- Orders table -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-sm mb-0">
+                        <thead style="background:#f8fafc;">
+                            <tr class="text-muted small">
+                                <th class="fw-semibold ps-4">Order</th>
+                                <th class="fw-semibold">Date</th>
+                                <th class="fw-semibold">Status</th>
+                                <th class="fw-semibold text-end">Total</th>
+                                <th class="fw-semibold text-end pe-4">Paid</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="month[1]['orders']" t-as="so">
+                                <tr t-att-data-order-stage="so.influencer_order_stage or 'ordered'">
+                                    <td class="ps-4">
+                                        <a t-att-href="'/my/orders/%s' % so.id" class="fw-semibold text-decoration-none text-dark">
+                                            <t t-esc="so.name"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-muted small"><t t-esc="so.create_date.date()"/></td>
+                                    <td>
+                                        <span t-if="so.influencer_order_stage == 'paid'"       class="badge rounded-pill text-white" style="background:#198754;">Paid</span>
+                                        <span t-elif="so.influencer_order_stage == 'invoiced'" class="badge rounded-pill text-dark" style="background:#b8cbca;">Invoiced</span>
+                                        <span t-elif="so.influencer_order_stage == 'delivered'" class="badge rounded-pill text-white" style="background:#6d8f8d;">Delivered</span>
+                                        <span t-elif="so.influencer_order_stage == 'dispatched'" class="badge rounded-pill text-dark" style="background:#f8d817;">Dispatched</span>
+                                        <span t-else="" class="badge rounded-pill text-white" style="background:#282f72;">Ordered</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-esc="so.amount_total"
+                                              t-options="{'widget':'monetary','display_currency':so.currency_id}"/>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <t t-set="paid_amount" t-value="sum(so.invoice_ids.filtered(lambda i: i.state == 'posted' and i.payment_state in ('paid','in_payment')).mapped('amount_total'))"/>
+                                        <span t-if="paid_amount" class="text-success fw-semibold">
+                                            <span t-esc="paid_amount" t-options="{'widget':'monetary','display_currency':so.currency_id}"/>
+                                        </span>
+                                        <span t-else="" class="text-muted">—</span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </t>
+    <t t-if="not monthly_sales">
+        <div class="bg-white rounded-4 shadow-sm text-center py-5">
+            <div style="font-size:3rem;margin-bottom:1rem;">📦</div>
+            <h5 class="fw-bold">No sales yet</h5>
+            <p class="text-muted">Share your referral link to start earning commissions.</p>
+        </div>
+    </t>
+</div><!-- /sales tab -->
+
+
+<!-- ══════════════════ WALLET TAB ══════════════════ -->
+<div class="blx-panel" id="wallet" style="display:none;">
+    <div class="row g-4 mb-4">
+
+        <!-- Balance card -->
+        <div class="col-md-5">
+            <div class="rounded-4 shadow-sm text-center p-4 h-100"
+                 style="background:linear-gradient(135deg,#282f72,#282f72);color:#fff;">
+                <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.5);margin-bottom:.5rem;">Available Balance</div>
+                <div style="font-size:3rem;font-weight:800;color:#f8d817;line-height:1;">
+                    <t t-esc="partner.wallet_balance"/>
+                </div>
+                <div style="color:rgba(255,255,255,0.5);font-size:.85rem;margin-bottom:1.5rem;">KES</div>
+
+                <!-- Payout button or minimum notice -->
+                <t t-if="partner.wallet_balance >= partner.commission_plan_id.auto_payout_minimum">
+                    <form t-att-action="'/my/influencer/request_payout'" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <button type="submit" class="btn rounded-pill fw-semibold w-100"
+                                style="background:#f8d817;color:#282f72;border:none;padding:.6rem 1.5rem;">
+                            <i class="fa fa-paper-plane me-1"/> Request Payout
+                        </button>
+                    </form>
+                </t>
+                <t t-else="">
+                    <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:.75rem;font-size:.8rem;color:rgba(255,255,255,0.6);">
+                        Minimum for payout:
+                        <strong style="color:#f8d817;"><t t-esc="partner.commission_plan_id.auto_payout_minimum"/> KES</strong>
+                    </div>
+                </t>
+
+                <!-- Topline mentor badge -->
+                <t t-if="partner.topline_id">
+                    <div style="margin-top:1rem;font-size:.78rem;color:rgba(255,255,255,0.45);">
+                        Mentor: <strong style="color:rgba(255,255,255,0.75);"><t t-esc="partner.topline_id.name"/></strong>
+                    </div>
+                </t>
+            </div>
+        </div>
+
+        <!-- Earnings breakdown -->
+        <div class="col-md-7">
+            <div class="bg-white rounded-4 shadow-sm p-4 h-100">
+                <div class="fw-bold mb-3"><i class="fa fa-calculator text-primary me-1"/> Earnings Breakdown</div>
+                <t t-if="all_commissions_summary">
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                        <span class="text-muted small">Gross Commission (IC)</span>
+                        <span class="fw-bold"><t t-esc="all_commissions_summary['gross']"/> KES</span>
+                    </div>
+                    <!-- Topline deduction hidden from influencer wallet view -->
+                    <t t-if="all_commissions_summary['tax']">
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <span class="text-muted small">Less: Withholding Tax (5.0%)</span>
+                            <span class="text-danger small">− <t t-esc="all_commissions_summary['tax']"/> KES</span>
+                        </div>
+                    </t>
+                    <div class="d-flex justify-content-between align-items-center pt-3">
+                        <span class="fw-bold">Net Earnings</span>
+                        <span class="fw-bold fs-5 text-success"><t t-esc="all_commissions_summary['net']"/> KES</span>
+                    </div>
+                </t>
+                <!-- Balance pills -->
+                <div class="row g-2 mt-3">
+                    <div class="col-6">
+                        <div class="rounded-3 text-center p-2" style="background:#fff8ed;">
+                            <div class="fw-bold text-warning small"><t t-esc="pending_commission_total"/> KES</div>
+                            <div style="font-size:.7rem;color:#aaa;">Pending Approval</div>
+                        </div>
+                    </div>
+                    <t t-if="topline_earned_total">
+                        <div class="col-6">
+                            <div class="rounded-3 text-center p-2" style="background:#e0f7fa;">
+                                <div class="fw-bold text-info small"><t t-esc="topline_earned_total"/> KES</div>
+                                <div style="font-size:.7rem;color:#aaa;">Topline Bonuses</div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Topline bonus table -->
+    <t t-if="topline_commissions">
+        <div class="bg-white rounded-4 shadow-sm mb-4 overflow-hidden">
+            <div class="px-4 py-3 fw-bold d-flex align-items-center gap-2" style="border-bottom:1px solid #f0f0f0;">
+                <span style="background:#e0f7fa;color:#0284c7;padding:4px 8px;border-radius:8px;font-size:.9rem;"><i class="fa fa-star"/></span>
+                Topline Mentorship Bonuses
+                <t t-if="partner.commission_plan_id">
+                    <span class="badge rounded-pill ms-auto" style="background:#e0f7fa;color:#0284c7;font-size:.72rem;">
+                        <t t-esc="partner.commission_plan_id.topline_bonus_rate"/>% rate
+                    </span>
+                </t>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-sm mb-0">
+                    <thead style="background:#f8fafc;">
+                        <tr class="text-muted small">
+                            <th class="fw-semibold ps-4">Date</th>
+                            <th class="fw-semibold">Sale Order</th>
+                            <th class="fw-semibold text-end">Base Commission</th>
+                            <th class="fw-semibold text-end">Your Bonus</th>
+                            <th class="fw-semibold pe-4">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="topline_commissions" t-as="tc">
+                            <tr>
+                                <td class="ps-4 small text-muted"><t t-esc="tc.create_date.date()"/></td>
+                                <td class="small"><t t-esc="tc.sale_order_id.name or '—'"/></td>
+                                <td class="text-end small text-muted"><t t-esc="tc.base_amount"/> KES</td>
+                                <td class="text-end fw-bold text-info"><t t-esc="tc.commission_amount"/> KES</td>
+                                <td class="pe-4">
+                                    <t t-if="tc.state == 'draft'"><span class="badge rounded-pill bg-secondary">Pending</span></t>
+                                    <t t-elif="tc.state == 'approved'"><span class="badge rounded-pill bg-success">Approved</span></t>
+                                    <t t-elif="tc.state == 'batched'"><span class="badge rounded-pill bg-info text-dark">Processing</span></t>
+                                    <t t-elif="tc.state == 'paid'"><span class="badge rounded-pill bg-success">Paid</span></t>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+
+    <!-- Payout history -->
+    <t t-if="payout_history">
+        <div class="bg-white rounded-4 shadow-sm mb-4 overflow-hidden">
+            <div class="px-4 py-3 fw-bold" style="border-bottom:1px solid #f0f0f0;">
+                <i class="fa fa-history text-primary me-1"/> Payout Requests
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-sm mb-0">
+                    <thead style="background:#f8fafc;">
+                        <tr class="text-muted small">
+                            <th class="fw-semibold ps-4">Reference</th>
+                            <th class="fw-semibold">Date</th>
+                            <th class="fw-semibold text-end">Amount</th>
+                            <th class="fw-semibold pe-4">Payment Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="payout_history" t-as="ph">
+                            <tr>
+                                <td class="ps-4 small fw-semibold"><t t-esc="ph['batch'].name"/></td>
+                                <td class="small text-muted"><t t-esc="ph['batch'].date_from"/></td>
+                                <td class="text-end fw-bold"><t t-esc="ph['total']"/> KES</td>
+                                <td class="pe-4">
+                                    <t t-if="not ph['bill']"><span class="text-muted small">—</span></t>
+                                    <t t-elif="ph['bill_state'] == 'not_paid'"><span class="badge rounded-pill bg-warning text-dark">Awaiting</span></t>
+                                    <t t-elif="ph['bill_state'] == 'in_payment'"><span class="badge rounded-pill bg-info text-dark">In Payment</span></t>
+                                    <t t-elif="ph['bill_state'] == 'paid'"><span class="badge rounded-pill bg-success">Paid</span></t>
+                                    <t t-elif="ph['bill_state'] == 'partial'"><span class="badge rounded-pill bg-secondary">Partial</span></t>
+                                    <t t-else=""><span class="text-muted small"><t t-esc="ph['bill_state']"/></span></t>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+
+    <!-- Transaction ledger -->
+    <div class="bg-white rounded-4 shadow-sm overflow-hidden">
+        <div class="px-4 py-3 fw-bold" style="border-bottom:1px solid #f0f0f0;">
+            <i class="fa fa-list-alt text-primary me-1"/> Transaction Ledger
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-sm mb-0">
+                <thead style="background:#f8fafc;">
+                    <tr class="text-muted small">
+                        <th class="fw-semibold ps-4">Date</th>
+                        <th class="fw-semibold">Type</th>
+                        <th class="fw-semibold text-end pe-4">Amount (KES)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="transactions" t-as="tx">
+                        <tr>
+                            <td class="ps-4 small text-muted"><t t-esc="tx.create_date.date()"/></td>
+                            <td>
+                                <t t-if="tx.transaction_type == 'credit'">
+                                    <span class="badge rounded-pill" style="background:#dcfce7;color:#16a34a;">+ Credit</span>
+                                </t>
+                                <t t-else="">
+                                    <span class="badge rounded-pill" style="background:#fee2e2;color:#dc2626;">− Debit</span>
+                                </t>
+                            </td>
+                            <td class="text-end pe-4 fw-semibold">
+                                <t t-if="tx.transaction_type == 'credit'">
+                                    <span class="text-success"><t t-esc="tx.amount"/></span>
+                                </t>
+                                <t t-else="">
+                                    <span class="text-danger"><t t-esc="tx.amount"/></span>
+                                </t>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div><!-- /wallet tab -->
+
+
+<!-- ══════════════════ REGISTRATIONS TAB ══════════════════ -->
+<div class="blx-panel" id="registrations" style="display:none;">
+    <div class="bg-white rounded-4 shadow-sm overflow-hidden">
+        <div class="px-4 py-3 d-flex align-items-center justify-content-between" style="background:#282f72;color:#fff;">
+            <span class="fw-bold"><i class="fa fa-users me-1"/> People Who Registered via Your Link</span>
+            <span class="badge rounded-pill" style="background:rgba(255,255,255,0.15);font-size:.8rem;">
+                <t t-esc="len(referred_users)"/> registered
+            </span>
+        </div>
+        <t t-if="not referred_users">
+            <div class="text-center py-5">
+                <div style="font-size:3rem;margin-bottom:1rem;">🔗</div>
+                <h6 class="fw-bold">No registrations yet</h6>
+                <p class="text-muted small">Share your referral link — anyone who signs up will appear here.</p>
+            </div>
+        </t>
+        <t t-if="referred_users">
+            <div class="table-responsive">
+                <table class="table table-hover table-sm mb-0">
+                    <thead style="background:#f8fafc;">
+                        <tr class="text-muted small">
+                            <th class="fw-semibold ps-4" style="width:30px;">#</th>
+                            <th class="fw-semibold">Name</th>
+                            <th class="fw-semibold">Contact</th>
+                            <th class="fw-semibold">Location</th>
+                            <th class="fw-semibold">Comm Mode</th>
+                            <th class="fw-semibold">Joined</th>
+                            <th class="fw-semibold text-center">Orders</th>
+                            <th class="fw-semibold text-end pe-4">Total (KES)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="referred_users" t-as="ru">
+                            <t t-set="ru_orders" t-value="ru.sale_order_ids.filtered(lambda o: o.state in ('sale','done'))"/>
+                            <t t-set="ru_total" t-value="sum(ru_orders.mapped('amount_total'))"/>
+                            <t t-set="ru_loc_parts" t-value="list(filter(None, [ru.city, ru.county or '', ru.country_id.name]))"/>
+                            <t t-set="ru_location" t-value="', '.join(ru_loc_parts)"/>
+                            <tr>
+                                <td class="ps-4 text-muted small"><t t-esc="ru_index + 1"/></td>
+                                <td class="fw-semibold small">
+                                    <div><t t-esc="ru.name"/></div>
+                                    <div class="text-muted" style="font-size:.72rem;"><t t-esc="ru.email or ''"/></div>
+                                </td>
+                                <td class="small">
+                                    <t t-if="ru.mobile or ru.phone">
+                                        <div><i class="fa fa-phone me-1 text-muted"/><t t-esc="ru.mobile or ru.phone"/></div>
+                                    </t>
+                                    <t t-else=""><span class="text-muted">—</span></t>
+                                </td>
+                                <td class="small text-muted">
+                                    <t t-if="ru_location"><t t-esc="ru_location"/></t>
+                                    <t t-elif="ru.visitor_latitude and ru.visitor_longitude">
+                                        <span style="font-size:.7rem;">GPS: <t t-esc="'%.4f' % ru.visitor_latitude"/>, <t t-esc="'%.4f' % ru.visitor_longitude"/></span>
+                                    </t>
+                                    <t t-else=""><span class="text-muted">—</span></t>
+                                </td>
+                                <td class="small">
+                                    <div class="d-flex gap-1 flex-wrap">
+                                        <t t-if="ru.comm_mode_call"><span style="background:#dbeafe;color:#1e40af;border-radius:6px;padding:1px 6px;font-size:.68rem;">📞 Call</span></t>
+                                        <t t-if="ru.comm_mode_whatsapp"><span style="background:#dcfce7;color:#166534;border-radius:6px;padding:1px 6px;font-size:.68rem;">💬 WA</span></t>
+                                        <t t-if="ru.comm_mode_sms"><span style="background:#fef9c3;color:#854d0e;border-radius:6px;padding:1px 6px;font-size:.68rem;">📱 SMS</span></t>
+                                        <t t-if="not ru.comm_mode_call and not ru.comm_mode_whatsapp and not ru.comm_mode_sms"><span class="text-muted">—</span></t>
+                                    </div>
+                                </td>
+                                <td class="small text-muted"><t t-esc="ru.create_date.date()"/></td>
+                                <td class="text-center">
+                                    <t t-if="ru_orders">
+                                        <span class="badge rounded-pill bg-success"><t t-esc="len(ru_orders)"/></span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="badge rounded-pill" style="background:#f1f5f9;color:#94a3b8;">0</span>
+                                    </t>
+                                </td>
+                                <td class="text-end pe-4 fw-semibold">
+                                    <t t-if="ru_total">
+                                        <span class="text-success small"><t t-esc="ru_total"/></span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="text-muted">—</span>
+                                    </t>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </div>
+</div><!-- /registrations tab -->
+
+
+<!-- ══════════════════ NETWORK TAB ══════════════════ -->
+<div class="blx-panel" id="network" style="display:none;">
+    <div class="bg-white rounded-4 shadow-sm overflow-hidden">
+        <div class="px-4 py-3 d-flex align-items-center justify-content-between" style="background:#282f72;color:#fff;">
+            <span class="fw-bold"><i class="fa fa-sitemap me-1"/> My Influencer Network</span>
+            <span class="badge rounded-pill" style="background:rgba(255,255,255,0.15);">
+                <t t-esc="len(network_partners)"/> influencer(s)
+            </span>
+        </div>
+        <t t-if="not network_partners">
+            <div class="text-center py-5">
+                <div style="font-size:3rem;margin-bottom:1rem;">🤝</div>
+                <h6 class="fw-bold">No network yet</h6>
+                <p class="text-muted small">Share your Topline Code with people you want to recruit as influencers.</p>
+            </div>
+        </t>
+        <t t-if="network_partners">
+            <div class="table-responsive">
+                <table class="table table-hover table-sm mb-0">
+                    <thead style="background:#f8fafc;">
+                        <tr class="text-muted small">
+                            <th class="fw-semibold ps-4">Influencer</th>
+                            <th class="fw-semibold">Status</th>
+                            <th class="fw-semibold text-end">Sales Volume (KES)</th>
+                            <th class="fw-semibold text-end pe-4">My Bonuses (KES)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="network_partners" t-as="np">
+                            <t t-set="my_bonuses_from_np" t-value="topline_commissions.filtered(lambda c: c.sale_order_id.referral_partner_id.id == np.id)"/>
+                            <t t-set="np_turnover" t-value="network_turnover.get(np.id, 0)"/>
+                            <tr>
+                                <td class="ps-4 fw-semibold small">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div style="width:32px;height:32px;border-radius:50%;background:#eef1ff;color:#282f72;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;">
+                                            <t t-esc="np.name[:1].upper()"/>
+                                        </div>
+                                        <div>
+                                            <div><t t-esc="np.name"/></div>
+                                            <div class="text-muted" style="font-size:.7rem;"><t t-esc="np.mobile or np.phone or ''"/></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <t t-if="np.influencer_state == 'approved'">
+                                        <span class="badge rounded-pill bg-success">Active</span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="badge rounded-pill bg-secondary">Inactive</span>
+                                    </t>
+                                </td>
+                                <td class="text-end fw-semibold">
+                                    <t t-if="np_turnover">
+                                        <span class="text-dark"><t t-esc="np_turnover"/></span>
+                                    </t>
+                                    <t t-else=""><span class="text-muted">—</span></t>
+                                </td>
+                                <td class="text-end pe-4 fw-bold text-info">
+                                    <t t-esc="sum(my_bonuses_from_np.mapped('commission_amount'))"/> KES
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+            <div class="px-4 py-3 text-end" style="background:#f8fafc;border-top:1px solid #f0f0f0;">
+                <span class="small text-muted">Total topline bonuses:</span>
+                <strong class="text-info ms-1"><t t-esc="topline_earned_total"/> KES</strong>
+            </div>
+        </t>
+    </div>
+</div><!-- /network tab -->
+
+
+<!-- ══════════════════ VISITORS TAB ══════════════════ -->
+<div class="blx-panel" id="visitors" style="display:none;">
+    <div class="bg-white rounded-4 shadow-sm overflow-hidden">
+        <div class="px-4 py-3 fw-bold" style="background:#282f72;color:#fff;">
+            <i class="fa fa-globe me-1"/> Visitor Location Log
+        </div>
+        <t t-if="not visit_logs">
+            <div class="text-center py-5">
+                <div style="font-size:3rem;margin-bottom:1rem;">🌍</div>
+                <h6 class="fw-bold">No visitor data yet</h6>
+                <p class="text-muted small">Visitors from your referral link will appear here with location data.</p>
+            </div>
+        </t>
+        <t t-if="visit_logs">
+            <div class="table-responsive">
+                <table class="table table-hover table-sm mb-0">
+                    <thead style="background:#f8fafc;">
+                        <tr class="text-muted small">
+                            <th class="fw-semibold ps-4">Date &amp; Time</th>
+                            <th class="fw-semibold">Country</th>
+                            <th class="fw-semibold">Region</th>
+                            <th class="fw-semibold">City</th>
+                            <th class="fw-semibold pe-4">GPS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="visit_logs" t-as="log">
+                            <tr>
+                                <td class="ps-4 small text-muted"><t t-esc="log.visit_datetime"/></td>
+                                <td class="small"><t t-esc="log.visitor_country or '—'"/></td>
+                                <td class="small text-muted"><t t-esc="log.visitor_region or '—'"/></td>
+                                <td class="small text-muted"><t t-esc="log.visitor_city or '—'"/></td>
+                                <td class="pe-4 small">
+                                    <t t-if="log.gps_lat or log.gps_lng">
+                                        <a t-attf-href="https://maps.google.com/?q={{ log.gps_lat }},{{ log.gps_lng }}"
+                                           target="_blank" style="font-size:.7rem;color:#282f72;text-decoration:none;">
+                                            <i class="fa fa-map-marker me-1"/>
+                                            <t t-esc="'%.4f' % log.gps_lat"/>, <t t-esc="'%.4f' % log.gps_lng"/>
+                                        </a>
+                                    </t>
+                                    <t t-else=""><span class="text-muted">—</span></t>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </div>
+</div><!-- /visitors tab -->
+
+
+    </div><!-- /blx-tab-container -->
+</div><!-- /container -->
+</t><!-- /is_referrer -->
+
+</div><!-- /bg wrapper -->
+</t>
+</template>
+</odoo>

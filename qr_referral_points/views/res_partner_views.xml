@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_form_referral" model="ir.ui.view">
+        <field name="name">res.partner.form.referral</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//sheet" position="inside">
+
+                <!-- ACTION BUTTONS -->
+                <group string="Influencer Actions" col="2">
+                    <!-- Approve: always visible when applied, but non-clickable once not in review -->
+                    <button name="action_approve_influencer"
+                            type="object"
+                            string="Approve Influencer"
+                            class="btn-primary"
+                            invisible="not applied_as_influencer"
+                            readonly="influencer_state != 'review'"/>
+                    <!-- Reject: disappears once no longer in review -->
+                    <button name="action_reject_influencer"
+                            type="object"
+                            string="Reject Influencer"
+                            class="btn-secondary"
+                            invisible="not applied_as_influencer or influencer_state != 'review'"/>
+                </group>
+
+                <!-- ══ INFLUENCER APPLICATION ══ -->
+                <group string="Referral / Influencer Program">
+
+                    <group string="Application Status">
+                        <field name="applied_as_influencer" readonly="1"/>
+                        <field name="influencer_state" readonly="1"/>
+                        <field name="wallet_balance"/>
+                        <field name="commission_plan_id"
+                               modifiers='{"readonly": [["influencer_state","=","approved"]]}'/>
+                    </group>
+
+                    <group string="Personal Details"
+                           modifiers='{"invisible": [["applied_as_influencer","=",false]]}'>
+                        <field name="id_number" readonly="1"/>
+                        <field name="birthdate" readonly="1"/>
+                        <field name="gender" readonly="1"/>
+                        <field name="county" readonly="1"/>
+                        <field name="city" string="Delivery Town" readonly="1"/>
+                        <field name="country_id" string="Country/Nationality" readonly="1"/>
+                        <field name="vat" string="KRA PIN" readonly="1"/>
+                        <field name="influencer_payment_account" readonly="1"/>
+                    </group>
+
+                    <group string="Application Details"
+                           modifiers='{"invisible": [["applied_as_influencer","=",false]]}'>
+                        <field name="influencer_join_reason" readonly="1"/>
+                        <field name="influencer_experience_years" readonly="1"/>
+                        <field name="influencer_referral_source" readonly="1"/>
+                        <field name="influencer_construction_knowledge" readonly="1"/>
+                        <field name="influencer_application_note" readonly="1"/>
+                    </group>
+
+                    <group string="Social Media Links"
+                           modifiers='{"invisible": [["applied_as_influencer","=",false]]}'>
+                        <field name="influencer_tiktok_link" widget="url" readonly="1"/>
+                        <button name="action_visit_tiktok" type="object" string="Visit" icon="fa-external-link"
+                                class="btn btn-sm btn-primary"
+                                modifiers='{"invisible": [["influencer_tiktok_link","=",false]]}'/>
+                        <field name="influencer_facebook_link" widget="url" readonly="1"/>
+                        <button name="action_visit_facebook" type="object" string="Visit" icon="fa-external-link"
+                                class="btn btn-sm btn-primary"
+                                modifiers='{"invisible": [["influencer_facebook_link","=",false]]}'/>
+                        <field name="influencer_instagram_link" widget="url" readonly="1"/>
+                        <button name="action_visit_instagram" type="object" string="Visit" icon="fa-external-link"
+                                class="btn btn-sm btn-primary"
+                                modifiers='{"invisible": [["influencer_instagram_link","=",false]]}'/>
+                        <field name="influencer_x_link" widget="url" readonly="1"/>
+                        <button name="action_visit_x" type="object" string="Visit" icon="fa-external-link"
+                                class="btn btn-sm btn-primary"
+                                modifiers='{"invisible": [["influencer_x_link","=",false]]}'/>
+                        <field name="influencer_linkedin_link" widget="url" readonly="1"/>
+                        <button name="action_visit_linkedin" type="object" string="Visit" icon="fa-external-link"
+                                class="btn btn-sm btn-primary"
+                                modifiers='{"invisible": [["influencer_linkedin_link","=",false]]}'/>
+                        <field name="influencer_youtube_link" widget="url" readonly="1"/>
+                        <button name="action_visit_youtube" type="object" string="Visit" icon="fa-external-link"
+                                class="btn btn-sm btn-primary"
+                                modifiers='{"invisible": [["influencer_youtube_link","=",false]]}'/>
+                    </group>
+
+                    <group string="Integrity"
+                           modifiers='{"invisible": [["applied_as_influencer","=",false]]}'>
+                        <field name="influencer_convicted" readonly="1"/>
+                        <field name="influencer_conviction_details" readonly="1"
+                               modifiers='{"invisible": [["influencer_convicted","=",false]]}'/>
+                        <field name="influencer_terms_accepted" readonly="1"/>
+                    </group>
+
+                    <group string="Contact &amp; Location Preferences">
+                        <field name="comm_mode_call" readonly="1"/>
+                        <field name="comm_mode_whatsapp" readonly="1"/>
+                        <field name="comm_mode_sms" readonly="1"/>
+                        <field name="visitor_latitude" readonly="1"/>
+                        <field name="visitor_longitude" readonly="1"/>
+                    </group>
+
+                    <!-- Topline Settings (only for approved influencers) -->
+                    <group string="Topline Settings"
+                           modifiers='{"invisible": ["|", ["influencer_state","!=","approved"], ["applied_as_influencer","=",false]]}'>
+                        <field name="is_topline"/>
+                        <field name="topline_referral_code" readonly="1"
+                               modifiers='{"invisible": [["is_topline","=",false]]}'/>
+                        <field name="topline_id"
+                               modifiers='{"invisible": [["is_topline","=",false]]}'/>
+                    </group>
+
+                    <!-- Referral Details -->
+                    <group string="Referral Details">
+                        <field name="is_referrer"/>
+                        <field name="referral_code" readonly="1"
+                               modifiers='{"invisible": [["is_referrer","=",false]]}'/>
+                        <field name="referral_points" readonly="1"
+                               modifiers='{"invisible": [["is_referrer","=",false]]}'/>
+                        <field name="referral_url" readonly="1"
+                               modifiers='{"invisible": [["is_referrer","=",false]]}'/>
+                        <field name="referral_today_visits" readonly="1"
+                               modifiers='{"invisible": [["is_referrer","=",false]]}'/>
+                        <field name="referral_total_visits" readonly="1"
+                               modifiers='{"invisible": [["is_referrer","=",false]]}'/>
+                        <field name="referral_qr" widget="image"
+                               modifiers='{"invisible": [["is_referrer","=",false]]}'/>
+                    </group>
+
+                    <group string="Referral Visits (Daily)">
+                        <field name="referral_visit_stat_ids" readonly="1"
+                               modifiers='{"invisible": [["is_referrer","=",false]]}'>
+                            <list create="false" delete="false" edit="false">
+                                <field name="date"/>
+                                <field name="visit_count"/>
+                            </list>
+                        </field>
+                    </group>
+
+                    <group string="Visitor Location Log">
+                        <field name="referral_visit_log_ids" readonly="1"
+                               modifiers='{"invisible": [["is_referrer","=",false]]}'>
+                            <list create="false" delete="false" edit="false">
+                                <field name="visit_datetime"/>
+                                <field name="visitor_country"/>
+                                <field name="visitor_region"/>
+                                <field name="visitor_city"/>
+                                <field name="visitor_ip"/>
+                            </list>
+                        </field>
+                    </group>
+
+                </group>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

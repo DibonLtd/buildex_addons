@@ -1,0 +1,8 @@
+<odoo>
+    <record id="menu_influencer_program" model="website.menu">
+        <field name="name">Influencer Program</field>
+        <field name="url">/influencer</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" eval="5"/>
+    </record>
+</odoo>

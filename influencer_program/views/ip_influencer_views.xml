@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         INFLUENCER LIST VIEW
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_influencer_list" model="ir.ui.view">
+        <field name="name">ip.influencer.list</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <list string="Influencers" decoration-success="influencer_state == 'approved'"
+                  decoration-warning="influencer_state == 'review'"
+                  decoration-muted="influencer_state == 'rejected'">
+                <field name="name"/>
+                <field name="mobile"/>
+                <field name="county"/>
+                <field name="referral_code"/>
+                <field name="influencer_state" widget="badge"
+                       decoration-success="influencer_state == 'approved'"
+                       decoration-warning="influencer_state == 'review'"
+                       decoration-danger="influencer_state == 'rejected'"
+                       decoration-info="influencer_state == 'draft'"/>
+                <field name="commission_plan_id"/>
+                <field name="wallet_balance" string="Wallet (KES)"/>
+                <field name="referral_total_visits" string="Visits"/>
+                <field name="referral_today_visits" string="Today"/>
+                <field name="is_topline" string="Topline"/>
+                <field name="create_date" string="Joined" widget="date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         INFLUENCER KANBAN VIEW  (applications pipeline)
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_influencer_kanban" model="ir.ui.view">
+        <field name="name">ip.influencer.kanban</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="influencer_state" quick_create="false"
+                    class="o_kanban_small_column">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="mobile"/>
+                <field name="county"/>
+                <field name="influencer_state"/>
+                <field name="commission_plan_id"/>
+                <field name="wallet_balance"/>
+                <field name="referral_total_visits"/>
+                <field name="is_topline"/>
+                <field name="comm_mode_call"/>
+                <field name="comm_mode_whatsapp"/>
+                <field name="comm_mode_sms"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click p-3" style="border-radius:10px;">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <img t-att-src="kanban_image('res.partner', 'image_128', record.id.raw_value)"
+                                     class="rounded-circle" style="width:36px;height:36px;object-fit:cover;" alt=""/>
+                                <div>
+                                    <strong style="font-size:.9rem;"><t t-esc="record.name.value"/></strong>
+                                    <div class="text-muted" style="font-size:.78rem;"><t t-esc="record.mobile.value"/></div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="text-muted" style="font-size:.78rem;"><t t-esc="record.county.value"/></span>
+                                <t t-if="record.is_topline.raw_value">
+                                    <span class="badge" style="background:#7c3aed;font-size:.7rem;">Topline</span>
+                                </t>
+                            </div>
+                            <div class="d-flex gap-2 mt-2" style="font-size:.78rem;color:#64748b;">
+                                <span>👁 <t t-esc="record.referral_total_visits.value"/> visits</span>
+                                <span>💰 KES <t t-esc="record.wallet_balance.value"/></span>
+                            </div>
+                            <div class="mt-2" style="font-size:.75rem;color:#94a3b8;">
+                                <t t-if="record.comm_mode_call.raw_value">📞 </t>
+                                <t t-if="record.comm_mode_whatsapp.raw_value">💬 </t>
+                                <t t-if="record.comm_mode_sms.raw_value">📱 </t>
+                                <t t-esc="record.commission_plan_id.value"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         INFLUENCER FORM VIEW
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_influencer_form" model="ir.ui.view">
+        <field name="name">ip.influencer.form</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <form string="Influencer">
+                <header>
+                    <button name="action_approve_influencer" type="object"
+                            string="✅ Approve" class="btn-success"
+                            groups="influencer_program.group_influencer_manager"
+                            invisible="not applied_as_influencer or influencer_state == 'approved'"
+                            confirm="Approve this influencer application?"/>
+                    <button name="action_reject_influencer" type="object"
+                            string="❌ Reject" class="btn-danger"
+                            groups="influencer_program.group_influencer_manager"
+                            invisible="not applied_as_influencer or influencer_state not in ('review','approved')"/>
+                    <field name="influencer_state" widget="statusbar"
+                           statusbar_visible="draft,review,approved,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object"
+                                name="action_visit_facebook"
+                                icon="fa-facebook"
+                                invisible="not influencer_facebook_link">
+                            <span class="o_stat_text">Facebook</span>
+                        </button>
+                        <button class="oe_stat_button" type="object"
+                                name="action_visit_instagram"
+                                icon="fa-instagram"
+                                invisible="not influencer_instagram_link">
+                            <span class="o_stat_text">Instagram</span>
+                        </button>
+                        <button class="oe_stat_button" type="object"
+                                name="action_visit_tiktok"
+                                icon="fa-music"
+                                invisible="not influencer_tiktok_link">
+                            <span class="o_stat_text">TikTok</span>
+                        </button>
+                        <button class="oe_stat_button" type="object"
+                                name="action_visit_x"
+                                icon="fa-twitter"
+                                invisible="not influencer_x_link">
+                            <span class="o_stat_text">X</span>
+                        </button>
+                        <button class="oe_stat_button" type="object"
+                                name="action_visit_youtube"
+                                icon="fa-youtube"
+                                invisible="not influencer_youtube_link">
+                            <span class="o_stat_text">YouTube</span>
+                        </button>
+                        <button class="oe_stat_button" type="object"
+                                name="action_visit_linkedin"
+                                icon="fa-linkedin"
+                                invisible="not influencer_linkedin_link">
+                            <span class="o_stat_text">LinkedIn</span>
+                        </button>
+                    </div>
+
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Full Name"/></h1>
+                        <h2 style="color:#7c3aed;">
+                            <field name="referral_code" readonly="1" placeholder="(code auto-generated)"/>
+                        </h2>
+                    </div>
+
+                    <group>
+                        <group string="Personal Details">
+                            <field name="mobile"/>
+                            <field name="email"/>
+                            <field name="gender"/>
+                            <field name="birthdate"/>
+                            <field name="id_number"/>
+                            <field name="county"/>
+                            <field name="city"/>
+                        </group>
+                        <group string="Programme Status">
+                            <field name="applied_as_influencer"/>
+                            <field name="is_referrer" string="Approved Influencer"/>
+                            <field name="commission_plan_id"/>
+                            <field name="is_topline"/>
+                            <field name="topline_id" invisible="not is_topline"/>
+                            <field name="topline_referral_code" readonly="1" invisible="not is_topline"/>
+                            <field name="referred_by_id" string="Referred By"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- ── PAGE 1: Application ── -->
+                        <page string="Application" invisible="not applied_as_influencer">
+                            <group>
+                                <group string="Motivation">
+                                    <field name="influencer_join_reason"/>
+                                    <field name="influencer_experience_years"/>
+                                    <field name="influencer_referral_source"/>
+                                </group>
+                                <group string="Communication">
+                                    <field name="comm_mode_call"/>
+                                    <field name="comm_mode_whatsapp"/>
+                                    <field name="comm_mode_sms"/>
+                                    <field name="influencer_payment_account"/>
+                                </group>
+                            </group>
+                            <group string="Construction Material Knowledge">
+                                <field name="influencer_construction_knowledge" nolabel="1"/>
+                            </group>
+                            <group string="Background">
+                                <field name="influencer_convicted"/>
+                                <field name="influencer_conviction_details"
+                                       invisible="not influencer_convicted"/>
+                                <field name="influencer_terms_accepted"/>
+                            </group>
+                            <group string="Application Note">
+                                <field name="influencer_application_note" nolabel="1"/>
+                            </group>
+                        </page>
+
+                        <!-- ── PAGE 2: Social Media ── -->
+                        <page string="Social Media">
+                            <group>
+                                <field name="influencer_facebook_link" string="Facebook"/>
+                                <field name="influencer_instagram_link" string="Instagram"/>
+                                <field name="influencer_tiktok_link" string="TikTok"/>
+                                <field name="influencer_x_link" string="X (Twitter)"/>
+                                <field name="influencer_youtube_link" string="YouTube"/>
+                                <field name="influencer_linkedin_link" string="LinkedIn"/>
+                            </group>
+                        </page>
+
+                        <!-- ── PAGE 3: Wallet & Commissions ── -->
+                        <page string="Wallet">
+                            <group>
+                                <group>
+                                    <field name="wallet_balance" string="Current Balance"/>
+                                    <field name="commission_plan_id"/>
+                                </group>
+                            </group>
+                            <field name="wallet_transaction_ids" readonly="1">
+                                <list string="Wallet Transactions"
+                                      decoration-success="transaction_type == 'credit'"
+                                      decoration-danger="transaction_type == 'debit'">
+                                    <field name="create_date" string="Date"/>
+                                    <field name="transaction_type" widget="badge"/>
+                                    <field name="amount"/>
+                                    <field name="currency_id"/>
+                                    <field name="commission_id"/>
+                                    <field name="batch_id"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- ── PAGE 4: Referral Activity ── -->
+                        <page string="Referral Activity">
+                            <group>
+                                <group string="Referral Link">
+                                    <field name="referral_url" readonly="1"/>
+                                    <field name="referral_total_visits" readonly="1"/>
+                                    <field name="referral_today_visits" readonly="1"/>
+                                </group>
+                                <group string="QR Code">
+                                    <field name="referral_qr" widget="image"
+                                           readonly="1" style="max-width:160px;"/>
+                                </group>
+                            </group>
+                            <field name="referral_visit_log_ids" readonly="1">
+                                <list string="Visit Log">
+                                    <field name="visit_datetime"/>
+                                    <field name="visitor_city"/>
+                                    <field name="visitor_country"/>
+                                    <field name="visitor_region"/>
+                                    <field name="visitor_ip"/>
+                                    <field name="gps_lat" string="Lat"/>
+                                    <field name="gps_lng" string="Lng"/>
+                                    <field name="gps_accuracy" string="Accuracy (m)"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- ── PAGE 5: Network (Topline) ── -->
+                        <page string="Network" invisible="not is_topline">
+                            <field name="topline_referral_ids" readonly="1">
+                                <list string="Recruited Influencers"
+                                      decoration-success="influencer_state == 'approved'"
+                                      decoration-warning="influencer_state == 'review'">
+                                    <field name="name"/>
+                                    <field name="mobile"/>
+                                    <field name="influencer_state" widget="badge"/>
+                                    <field name="wallet_balance" string="Wallet"/>
+                                    <field name="create_date" string="Joined" widget="date"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- ── PAGE 6: Visitor Location ── -->
+                        <page string="Location">
+                            <group>
+                                <group>
+                                    <field name="visitor_latitude" readonly="1"/>
+                                    <field name="visitor_longitude" readonly="1"/>
+                                    <field name="visitor_city" readonly="1"/>
+                                    <field name="visitor_location_source" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SEARCH VIEW
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_influencer_search" model="ir.ui.view">
+        <field name="name">ip.influencer.search</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search string="Influencers">
+                <field name="name" string="Name"/>
+                <field name="mobile"/>
+                <field name="referral_code"/>
+                <field name="commission_plan_id"/>
+                <field name="county"/>
+                <separator/>
+                <filter name="filter_pending" string="Pending Review"
+                        domain="[('influencer_state','in',['draft','review'])]"/>
+                <filter name="filter_approved" string="Approved"
+                        domain="[('influencer_state','=','approved')]"/>
+                <filter name="filter_rejected" string="Rejected"
+                        domain="[('influencer_state','=','rejected')]"/>
+                <separator/>
+                <filter name="filter_topline" string="Topline Mentors"
+                        domain="[('is_topline','=',True)]"/>
+                <filter name="filter_call" string="Prefers Call"
+                        domain="[('comm_mode_call','=',True)]"/>
+                <filter name="filter_whatsapp" string="Prefers WhatsApp"
+                        domain="[('comm_mode_whatsapp','=',True)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="Status" context="{'group_by':'influencer_state'}"/>
+                    <filter name="group_county" string="County" context="{'group_by':'county'}"/>
+                    <filter name="group_plan" string="Commission Plan" context="{'group_by':'commission_plan_id'}"/>
+                    <filter name="group_join_reason" string="Join Reason" context="{'group_by':'influencer_join_reason'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ACTIONS
+    ═══════════════════════════════════════════════════════════ -->
+
+    <!-- All Influencers -->
+    <record id="ip_action_influencer_all" model="ir.actions.act_window">
+        <field name="name">All Influencers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('applied_as_influencer','=',True)]</field>
+        <field name="context">{'default_applied_as_influencer': True}</field>
+        <field name="search_view_id" ref="ip_view_influencer_search"/>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('ip_view_influencer_list')}),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('ip_view_influencer_kanban')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ip_view_influencer_form')}),
+        ]"/>
+    </record>
+
+    <!-- Pending Applications -->
+    <record id="ip_action_influencer_pending" model="ir.actions.act_window">
+        <field name="name">Pending Applications</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('applied_as_influencer','=',True),('influencer_state','in',['draft','review'])]</field>
+        <field name="search_view_id" ref="ip_view_influencer_search"/>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('ip_view_influencer_kanban')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('ip_view_influencer_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ip_view_influencer_form')}),
+        ]"/>
+    </record>
+
+    <!-- Approved Influencers -->
+    <record id="ip_action_influencer_approved" model="ir.actions.act_window">
+        <field name="name">Approved Influencers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('influencer_state','=','approved')]</field>
+        <field name="search_view_id" ref="ip_view_influencer_search"/>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('ip_view_influencer_list')}),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('ip_view_influencer_kanban')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ip_view_influencer_form')}),
+        ]"/>
+    </record>
+
+</odoo>

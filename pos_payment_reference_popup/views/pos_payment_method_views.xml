@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_payment_method_view_form_inherit_payment_reference_popup" model="ir.ui.view">
+        <field name="name">pos.payment.method.form.inherit.payment.reference.popup</field>
+        <field name="model">pos.payment.method</field>
+        <field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_method_type']" position="after">
+                <field name="ask_payment_reference"/>
+                <field name="payment_reference_required" invisible="not ask_payment_reference"/>
+                <field name="payment_reference_label" invisible="not ask_payment_reference"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pos_payment_method_view_tree_inherit_payment_reference_popup" model="ir.ui.view">
+        <field name="name">pos.payment.method.list.inherit.payment.reference.popup</field>
+        <field name="model">pos.payment.method</field>
+        <field name="inherit_id" ref="point_of_sale.pos_payment_method_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="ask_payment_reference" optional="hide"/>
+                <field name="payment_reference_required" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

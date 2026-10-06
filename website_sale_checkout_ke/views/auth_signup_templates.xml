@@ -1,0 +1,38 @@
+<odoo>
+    <template id="auth_signup_delivery_town" inherit_id="auth_signup.signup" name="Signup Delivery Town">
+        <xpath expr="//form[contains(@class, 'oe_signup_form')]/input[@name='token']" position="after">
+            <input type="hidden" name="from_referral" t-att-value="'1' if from_referral else ''"/>
+        </xpath>
+
+        <xpath expr="//t[@t-call='auth_signup.fields']" position="after">
+            <div class="mb-3">
+                <label for="default_delivery_town_id" class="form-label">
+                    Delivery Town
+                </label>
+                <select id="default_delivery_town_id"
+                        name="default_delivery_town_id"
+                        class="form-select">
+                    <option value="">Select delivery town...</option>
+                    <t t-foreach="available_delivery_towns" t-as="town">
+                        <option t-att-value="town.id"
+                                t-att-selected="str(town.id) == str(default_delivery_town_id or '')">
+                            <t t-esc="town.name"/>
+                        </option>
+                    </t>
+                </select>
+                <small class="text-muted">This will be saved as your default checkout delivery town.</small>
+            </div>
+
+            <div class="mb-3 p-3 border rounded bg-light">
+                <div class="fw-semibold mb-2">We are only available in below towns</div>
+                <div class="d-flex flex-wrap gap-2">
+                    <t t-foreach="available_delivery_towns" t-as="town_box">
+                        <span class="badge bg-secondary-subtle text-dark border">
+                            <t t-esc="town_box.name"/>
+                        </span>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

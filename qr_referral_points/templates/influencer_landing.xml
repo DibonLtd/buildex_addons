@@ -1,0 +1,553 @@
+<odoo>
+<template id="influencer_landing_page" name="Influencer Program Landing">
+<t t-call="website.layout">
+
+<style>
+/* ── Landing page scoped styles ─────────────────────── */
+:root {
+    --blx-navy: #282f72;
+    --blx-navy-deep: #282f72;
+    --blx-gold: #f8d817;
+    --blx-gold-deep: #f8d817;
+    --blx-teal: #b8cbca;
+    --blx-teal-deep: #8ea9a8;
+    --blx-mist: #f3f5f4;
+    --blx-ink: #282f72;
+}
+.blx-land-hero {
+    position: relative;
+    min-height: 92vh;
+    background:
+        radial-gradient(circle at top left, rgba(255,210,31,0.15), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(184,203,202,0.16), transparent 30%),
+        linear-gradient(135deg, #282f72 0%, #282f72 52%, #282f72 100%);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+.blx-land-mesh {
+    position: absolute; inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    animation: blx-mesh-drift 18s linear infinite;
+}
+@keyframes blx-mesh-drift {
+    0%   { background-position: 0 0; }
+    100% { background-position: 48px 48px; }
+}
+.blx-land-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+}
+.blx-land-glow-1 {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(255,210,31,0.24), transparent 70%);
+    top: -100px; left: -80px;
+    animation: blx-glow-pulse 7s ease-in-out infinite;
+}
+.blx-land-glow-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(184,203,202,0.18), transparent 70%);
+    bottom: 60px; right: -60px;
+    animation: blx-glow-pulse 9s ease-in-out infinite reverse;
+}
+.blx-land-glow-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,210,31,0.14), transparent 70%);
+    top: 40%; left: 60%;
+    animation: blx-glow-pulse 11s ease-in-out infinite;
+}
+@keyframes blx-glow-pulse {
+    0%,100% { transform: scale(1); opacity: 0.8; }
+    50%      { transform: scale(1.15); opacity: 1; }
+}
+
+/* Hero content */
+.blx-land-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--blx-gold);
+    background: rgba(255,210,31,0.12);
+    border: 1px solid rgba(255,210,31,0.28);
+    border-radius: 30px; padding: 5px 16px;
+    margin-bottom: 1.25rem;
+}
+.blx-eyebrow-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--blx-gold);
+    box-shadow: 0 0 8px rgba(255,210,31,0.75);
+    animation: blx-blink 1.4s ease-in-out infinite;
+}
+@keyframes blx-blink {
+    0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+}
+.blx-land-headline {
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 900; line-height: 1.1;
+    color: #fff; margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+}
+.blx-grad-text {
+    background: linear-gradient(120deg, #ffffff 0%, #f8d817 42%, #b8cbca 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.blx-land-sub {
+    font-size: 1.1rem; color: rgba(255,255,255,0.74);
+    line-height: 1.7; margin-bottom: 2rem; max-width: 520px;
+}
+
+/* CTA buttons */
+.blx-cta-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 34px; border-radius: 50px;
+    background: linear-gradient(135deg, var(--blx-gold), var(--blx-gold-deep));
+    color: var(--blx-ink); font-weight: 800; font-size: 1rem;
+    text-decoration: none; border: none; cursor: pointer;
+    box-shadow: 0 10px 26px rgba(255,210,31,0.28);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.blx-cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(255,210,31,0.36);
+    color: var(--blx-ink); text-decoration: none;
+}
+.blx-cta-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 34px; border-radius: 50px;
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(184,203,202,0.42);
+    color: rgba(255,255,255,0.92); font-weight: 600; font-size: 1rem;
+    text-decoration: none; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+.blx-cta-secondary:hover {
+    background: rgba(184,203,202,0.16);
+    border-color: rgba(255,210,31,0.42);
+    color: #fff; text-decoration: none;
+}
+
+/* Stats row under CTA */
+.blx-land-stats {
+    display: flex; flex-wrap: wrap; gap: 32px;
+    margin-top: 2.5rem;
+}
+.blx-stat-item { text-align: left; }
+.blx-stat-num {
+    font-size: 1.8rem; font-weight: 900; color: #fff;
+    line-height: 1;
+}
+.blx-stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: .08em; }
+
+/* Right side floating card stack */
+.blx-hero-cards {
+    position: relative; height: 480px;
+}
+.blx-hcard {
+    position: absolute;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 22px 24px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    color: #fff;
+}
+.blx-hcard-main {
+    width: 260px; top: 40px; left: 40px;
+    background: linear-gradient(135deg, rgba(255,210,31,0.2), rgba(184,203,202,0.12));
+    border-color: rgba(255,210,31,0.28);
+    animation: blx-float-a 6s ease-in-out infinite;
+}
+.blx-hcard-earn {
+    width: 210px; top: 20px; right: 10px;
+    animation: blx-float-b 7.5s ease-in-out infinite;
+}
+.blx-hcard-step {
+    width: 230px; bottom: 60px; left: 20px;
+    animation: blx-float-c 8.5s ease-in-out infinite;
+}
+.blx-hcard-review {
+    width: 190px; bottom: 80px; right: 20px;
+    animation: blx-float-d 5.5s ease-in-out infinite;
+}
+@keyframes blx-float-a { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+@keyframes blx-float-b { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+@keyframes blx-float-c { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+@keyframes blx-float-d { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+.blx-hcard-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
+.blx-hcard-val { font-size: 1.65rem; font-weight: 800; color: var(--blx-gold); }
+.blx-hcard-sub { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.blx-hcard-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; margin-bottom: 10px;
+}
+.blx-hcard-icon-blue  { background: rgba(184,203,202,0.22); color: #e6f0ef; }
+.blx-hcard-icon-green { background: rgba(255,210,31,0.22); color: var(--blx-gold); }
+.blx-hcard-icon-amber { background: rgba(255,210,31,0.22); color: var(--blx-gold); }
+.blx-hcard-icon-purple{ background: rgba(184,203,202,0.22); color: #d9e6e5; }
+.blx-hcard-step-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.blx-hcard-step-row:last-child { margin-bottom:0; }
+.blx-step-num {
+    width:24px;height:24px;border-radius:50%;
+    background:rgba(255,210,31,0.18);color:var(--blx-gold);
+    font-size:.75rem;font-weight:700;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.blx-step-txt { font-size:.82rem; color:rgba(255,255,255,0.75); }
+
+/* Alert pill */
+.blx-alert-pill {
+    display: inline-flex; align-items: flex-start; gap: 12px;
+    background: rgba(255,210,31,0.12);
+    border: 1px solid rgba(255,210,31,0.28);
+    border-radius: 14px; padding: 14px 18px;
+    color: #fff2b0; font-size: 0.87rem; line-height: 1.55;
+    max-width: 620px;
+}
+.blx-alert-pill i { color: var(--blx-gold); margin-top: 2px; flex-shrink:0; }
+
+/* How it works section */
+.blx-how {
+    background: linear-gradient(180deg, #f4f5f6 0%, #edf1f2 100%);
+    padding: 6rem 0;
+}
+.blx-section-eyebrow {
+    font-size: .75rem; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--blx-navy);
+    margin-bottom: .6rem;
+}
+.blx-section-title {
+    font-size: clamp(1.7rem, 4vw, 2.6rem);
+    font-weight: 800; color: var(--blx-ink); line-height: 1.2;
+    margin-bottom: 3.5rem;
+}
+.blx-step-card {
+    background: rgba(255,255,255,0.94);
+    border: 1px solid rgba(47,52,125,0.08);
+    border-radius: 20px; padding: 2rem 1.75rem;
+    position: relative; transition: background .2s, border-color .2s, transform .25s;
+    box-shadow: 0 18px 40px rgba(47,52,125,0.07);
+}
+.blx-step-card:hover {
+    background: #ffffff;
+    border-color: rgba(255,210,31,0.4);
+    transform: translateY(-4px);
+}
+.blx-step-badge {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 1.2rem;
+}
+.blx-step-card h5 { font-size: 1.1rem; font-weight: 700; color: var(--blx-ink); margin-bottom: .5rem; }
+.blx-step-card p { font-size: .88rem; color: #5b617f; margin: 0; line-height: 1.6; }
+
+/* Perks grid */
+.blx-perks {
+    background: linear-gradient(180deg, #ffffff 0%, #f4f5f6 100%);
+    padding: 5.5rem 0;
+}
+.blx-perk-card {
+    background: #ffffff;
+    border: 1px solid rgba(47,52,125,0.08);
+    border-radius: 18px; padding: 1.75rem;
+    transition: border-color .2s, transform .25s;
+    box-shadow: 0 18px 36px rgba(47,52,125,0.06);
+}
+.blx-perk-card:hover {
+    border-color: rgba(255,210,31,0.38);
+    transform: translateY(-3px);
+}
+.blx-perk-icon {
+    width: 46px; height: 46px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem; margin-bottom: 1rem;
+}
+.blx-perk-card h6 { font-size: 1rem; font-weight: 700; color: var(--blx-ink); margin-bottom: .4rem; }
+.blx-perk-card p { font-size: .82rem; color: #5b617f; margin: 0; line-height: 1.6; }
+
+/* CTA band */
+.blx-cta-band {
+    background: linear-gradient(135deg, #282f72 0%, #282f72 55%, #282f72 100%);
+    padding: 5rem 0; text-align: center; position: relative; overflow: hidden;
+}
+.blx-cta-band::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(255,210,31,0.18), transparent 65%);
+}
+.blx-cta-band .container { position: relative; }
+</style>
+
+<!-- ══════════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════════ -->
+<section class="blx-land-hero">
+    <div class="blx-land-mesh"></div>
+    <div class="blx-land-glow blx-land-glow-1"></div>
+    <div class="blx-land-glow blx-land-glow-2"></div>
+    <div class="blx-land-glow blx-land-glow-3"></div>
+
+    <div class="container" style="position:relative;z-index:2;padding-top:4rem;padding-bottom:4rem;">
+        <div class="row align-items-center g-5">
+
+            <!-- LEFT -->
+            <div class="col-lg-6">
+                <div class="blx-land-eyebrow">
+                    <span class="blx-eyebrow-dot"></span>
+                    Buildex Influencer Program
+                </div>
+
+                <h1 class="blx-land-headline">
+                    Earn Real Money<br/>
+                    <span class="blx-grad-text">Promoting Buildex.</span>
+                </h1>
+
+                <p class="blx-land-sub">
+                    Join Kenya's fastest-growing building materials influencer network.
+                    Share your unique link, drive sales, and get paid — it's that simple.
+                </p>
+
+                <!-- Public: login + signup -->
+                <t t-if="request.env.user._is_public()">
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <a href="/web/login?redirect=/influencer/apply" class="blx-cta-primary">
+                            <i class="fa fa-sign-in"/> Login &amp; Apply
+                        </a>
+                        <a href="/web/signup?redirect=/influencer/apply" class="blx-cta-secondary">
+                            <i class="fa fa-user-plus"/> New? Sign Up
+                        </a>
+                    </div>
+                    <!-- Existing customer notice -->
+                    <div class="blx-alert-pill">
+                        <i class="fa fa-exclamation-triangle mt-1"/>
+                        <span>
+                            Already a Buildex customer? <strong style="color:#f8d817;">Login</strong> — don't create a new account.
+                            New to Buildex? <strong style="color:#f8d817;">Sign Up</strong> to get started.
+                        </span>
+                    </div>
+                </t>
+
+                <!-- Logged in -->
+                <t t-else="">
+                    <a href="/influencer/apply" class="blx-cta-primary">
+                        <i class="fa fa-rocket"/> Go to Influencer Dashboard
+                    </a>
+                </t>
+
+                <!-- Stats -->
+                <div class="blx-land-stats">
+                    <div class="blx-stat-item">
+                        <div class="blx-stat-num">5–15%</div>
+                        <div class="blx-stat-label">Commission Rate</div>
+                    </div>
+                    <div class="blx-stat-item">
+                        <div class="blx-stat-num">KES 0</div>
+                        <div class="blx-stat-label">Cost to Join</div>
+                    </div>
+                    <div class="blx-stat-item">
+                        <div class="blx-stat-num">48h</div>
+                        <div class="blx-stat-label">Payout Speed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: floating cards -->
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="blx-hero-cards">
+
+                    <!-- Earnings card -->
+                    <div class="blx-hcard blx-hcard-main">
+                        <div class="blx-hcard-icon blx-hcard-icon-green"><i class="fa fa-dollar"/></div>
+                        <div class="blx-hcard-title">This Month's Earnings</div>
+                        <div class="blx-hcard-val">KES 18,400</div>
+                        <div class="blx-hcard-sub" style="color:#f8d817;font-weight:600;">▲ 34% vs last month</div>
+                    </div>
+
+                    <!-- Referral badge -->
+                    <div class="blx-hcard blx-hcard-earn">
+                        <div class="blx-hcard-icon blx-hcard-icon-blue"><i class="fa fa-qrcode"/></div>
+                        <div class="blx-hcard-title">Your Referral Link</div>
+                        <div style="font-size:.82rem;color:rgba(255,255,255,0.7);margin-top:4px;">buildex.co.ke/r/<strong style="color:#dce8e7;">BLXINF24</strong></div>
+                        <div style="margin-top:10px;display:flex;gap:6px;">
+                            <div style="flex:1;text-align:center;background:rgba(59,130,246,0.2);border-radius:8px;padding:4px 0;">
+                                <div style="font-size:1rem;font-weight:800;color:#fff;">128</div>
+                                <div style="font-size:.65rem;color:rgba(255,255,255,0.45);">Clicks</div>
+                            </div>
+                            <div style="flex:1;text-align:center;background:rgba(16,185,129,0.2);border-radius:8px;padding:4px 0;">
+                                <div style="font-size:1rem;font-weight:800;color:#fff;">23</div>
+                                <div style="font-size:.65rem;color:rgba(255,255,255,0.45);">Orders</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Steps card -->
+                    <div class="blx-hcard blx-hcard-step">
+                        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.45);margin-bottom:12px;">How it works</div>
+                        <div class="blx-hcard-step-row">
+                            <div class="blx-step-num">1</div>
+                            <div class="blx-step-txt">Apply &amp; get approved</div>
+                        </div>
+                        <div class="blx-hcard-step-row">
+                            <div class="blx-step-num">2</div>
+                            <div class="blx-step-txt">Share your referral link</div>
+                        </div>
+                        <div class="blx-hcard-step-row">
+                            <div class="blx-step-num">3</div>
+                            <div class="blx-step-txt">Earn commissions</div>
+                        </div>
+                    </div>
+
+                    <!-- Review pill -->
+                    <div class="blx-hcard blx-hcard-review" style="text-align:center;">
+                        <div style="font-size:1.4rem;margin-bottom:6px;">⭐⭐⭐⭐⭐</div>
+                        <div style="font-size:.82rem;color:rgba(255,255,255,0.75);font-weight:600;">"Best side income I've found!"</div>
+                        <div style="font-size:.72rem;color:rgba(255,255,255,0.4);margin-top:4px;">— Influencer, Nairobi</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════════════════════════ -->
+<section class="blx-how">
+    <div class="container">
+        <div class="text-center mb-2">
+            <div class="blx-section-eyebrow">Simple Process</div>
+            <div class="blx-section-title">How the Program Works</div>
+        </div>
+        <div class="row g-4">
+            <div class="col-sm-6 col-lg-3">
+                <div class="blx-step-card">
+                    <div class="blx-step-badge" style="background:rgba(59,130,246,0.18);">📝</div>
+                    <h5>Apply Online</h5>
+                    <p>Fill in our quick application form. We review and approve you within 48 hours.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="blx-step-card">
+                    <div class="blx-step-badge" style="background:rgba(16,185,129,0.18);">🔗</div>
+                    <h5>Get Your Link</h5>
+                    <p>Receive your unique referral link and QR code to share with your audience.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="blx-step-card">
+                    <div class="blx-step-badge" style="background:rgba(245,158,11,0.18);">📣</div>
+                    <h5>Share &amp; Promote</h5>
+                    <p>Share on WhatsApp, TikTok, Instagram, or anywhere your audience is active.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="blx-step-card">
+                    <div class="blx-step-badge" style="background:rgba(139,92,246,0.18);">💰</div>
+                    <h5>Earn Commission</h5>
+                    <p>Every sale made through your link earns you a commission, paid directly to you.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PERKS / BENEFITS
+══════════════════════════════════════════════════════ -->
+<section class="blx-perks">
+    <div class="container">
+        <div class="text-center mb-2">
+            <div class="blx-section-eyebrow">Why Join</div>
+            <div class="blx-section-title">What You Get as an Influencer</div>
+        </div>
+        <div class="row g-4">
+            <div class="col-sm-6 col-lg-4">
+                <div class="blx-perk-card">
+                    <div class="blx-perk-icon" style="background:rgba(248,216,23,0.14);color:#f8d817;"><i class="fa fa-dollar"/></div>
+                    <h6>Real Commissions</h6>
+                    <p>Earn 5–15% on every confirmed sale. No cap — the more you sell, the more you earn.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+                <div class="blx-perk-card">
+                    <div class="blx-perk-icon" style="background:rgba(40,47,114,0.12);color:#282f72;"><i class="fa fa-bar-chart"/></div>
+                    <h6>Live Dashboard</h6>
+                    <p>Track every click, referral, sale, and payout from your personal influencer portal.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+                <div class="blx-perk-card">
+                    <div class="blx-perk-icon" style="background:rgba(248,216,23,0.14);color:#f8d817;"><i class="fa fa-qrcode"/></div>
+                    <h6>QR Code + Link</h6>
+                    <p>Get a unique QR code and referral link — perfect for print, social media, and more.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+                <div class="blx-perk-card">
+                    <div class="blx-perk-icon" style="background:rgba(184,203,202,0.22);color:#6d8f8d;"><i class="fa fa-sitemap"/></div>
+                    <h6>Build a Network</h6>
+                    <p>Recruit other influencers and earn Topline bonuses on their sales too.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+                <div class="blx-perk-card">
+                    <div class="blx-perk-icon" style="background:rgba(239,68,68,0.18);color:#fca5a5;"><i class="fa fa-bolt"/></div>
+                    <h6>Fast Payouts</h6>
+                    <p>Request a payout when you hit the minimum threshold — processed within 48 hours.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+                <div class="blx-perk-card">
+                    <div class="blx-perk-icon" style="background:rgba(20,184,166,0.18);color:#5eead4;"><i class="fa fa-shield"/></div>
+                    <h6>Trusted Brand</h6>
+                    <p>Promote Buildex — Kenya's trusted name in MDF doors, granite, and plywood.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     BOTTOM CTA BAND
+══════════════════════════════════════════════════════ -->
+<section class="blx-cta-band">
+    <div class="container">
+        <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:.75rem;">
+            Ready to Start Earning?
+        </h2>
+        <p style="font-size:1.05rem;color:rgba(255,255,255,0.6);max-width:500px;margin:0 auto 2.5rem;">
+            Join hundreds of influencers already making money with Buildex.
+        </p>
+        <t t-if="request.env.user._is_public()">
+            <div class="d-flex justify-content-center flex-wrap gap-3">
+                <a href="/web/login?redirect=/influencer/apply" class="blx-cta-primary">
+                    <i class="fa fa-sign-in"/> Login &amp; Apply
+                </a>
+                <a href="/web/signup?redirect=/influencer/apply" class="blx-cta-secondary" style="border-color:rgba(255,255,255,0.3);">
+                    <i class="fa fa-user-plus"/> Create Account
+                </a>
+            </div>
+        </t>
+        <t t-else="">
+            <a href="/influencer/apply" class="blx-cta-primary" style="font-size:1.05rem;padding:16px 42px;">
+                <i class="fa fa-rocket"/> Open My Dashboard
+            </a>
+        </t>
+    </div>
+</section>
+
+</t>
+</template>
+</odoo>

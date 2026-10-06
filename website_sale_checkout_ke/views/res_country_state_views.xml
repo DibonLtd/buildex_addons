@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_country_state_tree_delivery_town" model="ir.ui.view">
+        <field name="name">res.country.state.tree.delivery.town</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="base.view_country_state_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="is_delivery_town"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_country_state_form_delivery_town" model="ir.ui.view">
+        <field name="name">res.country.state.form.delivery.town</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="base.view_country_state_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="is_delivery_town"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

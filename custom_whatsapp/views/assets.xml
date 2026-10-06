@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- JavaScript Assets -->
+        <record id="custom_whatsapp_backend_js" model="ir.asset">
+            <field name="name">Custom WhatsApp Backend JS</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="directive">append</field>
+            <field name="target" eval="False"/>
+            <field name="path" type="str">/custom_whatsapp/static/src/whatsapp_button.js</field>
+        </record>        <!-- Core Common Assets -->
+        <record id="custom_whatsapp_common_js" model="ir.asset">
+            <field name="name">Custom WhatsApp Common JS</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="directive">append</field>
+            <field name="target" eval="False"/>
+            <field name="path">/custom_whatsapp/static/src/core/common/*.js</field>
+        </record>
+
+        <!-- Core Web Assets -->
+        <record id="custom_whatsapp_web_js" model="ir.asset">
+            <field name="name">Custom WhatsApp Web JS</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="directive">append</field>
+            <field name="target" eval="False"/>
+            <field name="path">/custom_whatsapp/static/src/core/web/*.js</field>
+        </record>
+
+        <!-- Public Web Assets -->
+        <record id="custom_whatsapp_public_web_js" model="ir.asset">
+            <field name="name">Custom WhatsApp Public Web JS</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="directive">append</field>
+            <field name="target" eval="False"/>
+            <field name="path">/custom_whatsapp/static/src/core/public_web/*.js</field>
+        </record>
+
+        <!-- CSS Assets -->
+        <record id="custom_whatsapp_css" model="ir.asset">
+            <field name="name">Custom WhatsApp CSS</field>
+            <field name="bundle">web.assets_backend</field>
+            <field name="directive">append</field>
+            <field name="target" eval="False"/>
+            <field name="path">/custom_whatsapp/static/src/css/whatsapp.css</field>
+        </record>
+    </data>
+</odoo>

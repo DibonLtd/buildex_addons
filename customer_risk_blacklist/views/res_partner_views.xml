@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_customer_risk_blacklist" model="ir.ui.view">
+        <field name="name">res.partner.form.customer.risk.blacklist</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    class="oe_stat_button"
+                    type="object"
+                    name="action_view_bounced_cheques"
+                    icon="fa-exclamation-triangle">
+                    <field name="bounced_cheque_count" widget="statinfo" string="Bounced Cheques"/>
+                </button>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <widget name="web_ribbon" title="Blacklisted" bg_color="text-bg-danger" invisible="not is_blacklisted"/>
+            </xpath>
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-danger" role="alert" invisible="not is_blacklisted">
+                    Credit sales are blocked for this customer because bounced cheques
+                    (<field name="bounced_cheque_count"/>) exceed the configured limit
+                    (<field name="bounced_cheque_blacklist_limit"/>).
+                </div>
+                <div class="alert alert-warning" role="alert" invisible="is_blacklisted or not bounced_cheque_count">
+                    This customer has <field name="bounced_cheque_count"/> bounced cheque(s). Blacklisting starts once the count exceeds
+                    <field name="bounced_cheque_blacklist_limit"/>.
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_property_form_customer_risk_blacklist" model="ir.ui.view">
+        <field name="name">res.partner.property.form.customer.risk.blacklist</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='credit_limits']" position="after">
+                <group string="Risk Control" groups="account.group_account_invoice,account.group_account_readonly">
+                    <field
+                        name="risk_status"
+                        widget="badge"
+                        decoration-success="risk_status == 'clear'"
+                        decoration-warning="risk_status == 'warning'"
+                        decoration-danger="risk_status == 'blacklisted'"/>
+                    <field name="bounced_cheque_count"/>
+                    <field name="bounced_cheque_blacklist_limit"/>
+                    <field name="is_blacklisted" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

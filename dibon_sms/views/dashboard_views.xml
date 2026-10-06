@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard View -->
+    <record id="view_dibon_sms_dashboard" model="ir.ui.view">
+        <field name="name">dibon.sms.dashboard</field>
+        <field name="model">iap.account</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0" delete="0">
+                <div class="o_dibon_sms_dashboard">
+                    <div class="container-fluid o_kanban_view">
+                        <!-- Summary Cards Row -->
+                        <div class="row mt-3">
+                            <!-- SMS Balance Card -->
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary">SMS Balance</h5>
+                                        <h2 class="mt-2"><field name="balance_string"/></h2>
+                                        <p class="text-muted">Available Credits</p>
+                                        <p class="text-muted mt-2">Last Updated: <field name="last_balance_update"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Messages Stats Card -->
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-success">Message Stats</h5>
+                                        <div class="row mt-3">
+                                            <div class="col-6">
+                                                <h3 class="mb-0"><field name="messages_sent" decoration-danger="failed_count > 0"/></h3>
+                                                <p class="text-muted">Total Messages</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <h3 class="mb-0 text-danger"><field name="failed_count"/></h3>
+                                                <p class="text-muted">Failed</p>
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button name="action_refresh_stats" type="object" class="btn btn-link">
+                                                <i class="fa fa-refresh"/> Refresh Stats
+                                            </button>
+                                        </div>
+                                        <p class="text-muted mt-2">Total Cost: <field name="total_cost"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Delivery Rate Card -->
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-info">Success Rate</h5>
+                                        <div class="text-center mt-3">
+                                            <field name="success_rate" widget="percentpie"/>
+                                        </div>
+                                        <p class="text-muted text-center mt-2">Successful Deliveries</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Actions Row -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">Quick Actions</h5>
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                                                <button class="btn btn-primary w-100" type="object" name="action_send_sms">
+                                                    <i class="fa fa-paper-plane"></i> Send SMS
+                                                </button>
+                                            </div>
+                                            <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                                                <button class="btn btn-secondary w-100" type="object" name="action_view_settings">
+                                                    <i class="fa fa-cog"></i> SMS Settings
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dashboard Action -->
+    <record id="action_dibon_sms_dashboard" model="ir.actions.act_window">
+        <field name="name">SMS Dashboard</field>
+        <field name="res_model">iap.account</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_dibon_sms_dashboard"/>
+        <field name="target">current</field>
+        <field name="res_id" ref="dibon_sms.iap_account_sms_dibon"/>
+        <field name="domain">[('service_id.technical_name', '=', 'sms.sms'), ('sms_provider', '=', 'Dibon')]</field>
+        <!-- default_partner_id is set server-side when opening from the dashboard quick-action -->
+        <field name="context" eval="{
+            'form_view_ref': 'dibon_sms.iap_account_view_form',
+            'default_sms_provider': 'Dibon'
+        }"/>
+    </record>
+</odoo>

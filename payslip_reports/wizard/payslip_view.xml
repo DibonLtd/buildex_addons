@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="payslip_wizard_view" model="ir.ui.view">
+            <field name="name">payslip_wizard_view</field>
+            <field name="model">payslip.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Employee Payslip Report">
+                <group>
+                    <field name="select_all"/>
+                    <field name="employee_ids" widget="many2many_tags"/>
+                    <field name="date_from" required="1"/>
+                    <field name="date_to" required="1"/>
+                </group>
+                <footer>
+                    <button string="Print Report" type="object" name="action_print_report" class="btn-primary"/>
+                    <button string="Send Email" type="object" name="action_send_email" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+            </field>
+        </record>
+
+        <record id="payslip_action" model="ir.actions.act_window">
+            <field name="name">Payslip</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">payslip.wizard</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="payslip_wizard_view" />
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="payslip_menu" name="Email P9 Report" parent="hr_payroll.menu_hr_payroll_report"
+                  action="payslip_action" sequence="11"/>
+
+    </data>
+</odoo>

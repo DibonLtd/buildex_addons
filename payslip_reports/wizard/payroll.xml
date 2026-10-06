@@ -1,0 +1,70 @@
+<odoo>
+    <!-- Excel Report Wizard Action -->
+   
+
+    <!-- Excel Report Wizard Form View -->
+    <record id="view_payroll_deduction_report_wizard_form" model="ir.ui.view">
+        <field name="name">payroll.deduction.report.wizard.form</field>
+        <field name="model">payroll.deduction.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Payroll Deduction Report">
+                <group>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="structure_id"/>
+                </group>
+                <footer>
+                    <button name="generate_payment_details_report" type="object" string="Generate Report" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+     <record id="action_payroll_deduction_report_wizard" model="ir.actions.act_window">
+        <field name="name">Payroll Deduction Report</field>
+        <field name="res_model">payroll.deduction.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu Item for Excel Report -->
+    <menuitem id="menu_payroll_deduction_report_wizard"
+              name="Detailed Payroll Report"
+               parent="hr_payroll.menu_hr_payroll_report"
+              action="action_payroll_deduction_report_wizard"/>
+
+ 
+
+    <!-- PDF Report Wizard Form View -->
+    <record id="view_payroll_summary_report_wizard_form" model="ir.ui.view">
+        <field name="name">payroll.summary.report.wizard.form</field>
+        <field name="model">payroll.summary.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Payroll Summary Report">
+                <group>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="structure_id"/>
+                </group>
+                <footer>
+                    <button name="generate_pdf_report" type="object" string="Generate Report" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+       <!-- PDF Report Wizard Action -->
+    <record id="action_payroll_summary_report_wizard" model="ir.actions.act_window">
+        <field name="name">Payroll Summary Report</field>
+        <field name="res_model">payroll.summary.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu Item for PDF Report -->
+    <menuitem id="menu_payroll_summary_report_wizard"
+              name="Mutara Salary Summary Report"
+              parent="hr_payroll.menu_hr_payroll_report"
+              action="action_payroll_summary_report_wizard"/>
+
+</odoo>

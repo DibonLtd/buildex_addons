@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_customer_bounced_cheque_list" model="ir.ui.view">
+        <field name="name">customer.bounced.cheque.list</field>
+        <field name="model">customer.bounced.cheque</field>
+        <field name="arch" type="xml">
+            <list string="Bounced Cheques">
+                <field name="incident_date"/>
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="cheque_number"/>
+                <field name="amount"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_customer_bounced_cheque_form" model="ir.ui.view">
+        <field name="name">customer.bounced.cheque.form</field>
+        <field name="model">customer.bounced.cheque</field>
+        <field name="arch" type="xml">
+            <form string="Bounced Cheque">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="incident_date"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="name"/>
+                            <field name="cheque_number"/>
+                            <field name="amount"/>
+                        </group>
+                    </group>
+                    <field name="note" placeholder="Add supporting notes..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_customer_bounced_cheque_search" model="ir.ui.view">
+        <field name="name">customer.bounced.cheque.search</field>
+        <field name="model">customer.bounced.cheque</field>
+        <field name="arch" type="xml">
+            <search string="Bounced Cheques">
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="cheque_number"/>
+                <field name="incident_date"/>
+                <group expand="0" string="Group By">
+                    <filter string="Customer" name="group_by_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Company" name="group_by_company" context="{'group_by': 'company_id'}"/>
+                    <filter string="Incident Date" name="group_by_incident_date" context="{'group_by': 'incident_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_customer_bounced_cheque" model="ir.actions.act_window">
+        <field name="name">Bounced Cheques</field>
+        <field name="res_model">customer.bounced.cheque</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_customer_bounced_cheque_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Record a bounced cheque for a customer.
+            </p>
+            <p>
+                The customer will be blacklisted automatically once the configured limit is exceeded.
+            </p>
+        </field>
+    </record>
+</odoo>

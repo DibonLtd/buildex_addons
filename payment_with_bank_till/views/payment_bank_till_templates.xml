@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inline form shown during checkout when bank_till provider is selected -->
+    <template id="inline_form">
+        <div t-attf-id="bank-till-container-{{provider_id}}">
+            <t t-call="payment_with_bank_till.payment_instructions"/>
+        </div>
+    </template>
+
+    <!-- Payment instructions and reference input -->
+    <template id="payment_instructions">
+        <div class="o_bank_till_instructions">
+
+            <!-- Bank details card -->
+            <div class="alert alert-info border-0 rounded-3 mb-3">
+                <h6 class="fw-bold mb-2">
+                    <i class="fa fa-university me-1"></i> Pay via Equity Bank Paybill
+                </h6>
+                <table class="table table-sm table-borderless mb-0">
+                    <tbody>
+                        <tr>
+                            <td class="fw-semibold pe-3" style="white-space:nowrap;">Bank</td>
+                            <td>Equity Bank</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold pe-3">Account Name</td>
+                            <td>BUILDEX</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold pe-3">Paybill Number</td>
+                            <td class="fw-bold text-primary fs-5">247247</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Steps -->
+            <div class="mb-3">
+                <p class="small text-muted mb-1 fw-semibold">How to pay:</p>
+                <ol class="small text-muted ps-3 mb-0">
+                    <li>Go to M-PESA on your phone</li>
+                    <li>Select <strong>Lipa na M-PESA</strong> then <strong>Paybill</strong></li>
+                    <li>Enter Business No: <strong>247247</strong></li>
+                    <li>Enter Account No: <strong>BUILDEX</strong></li>
+                    <li>Enter the order amount and complete payment</li>
+                    <li>Enter the M-PESA confirmation code below</li>
+                </ol>
+            </div>
+
+            <!-- Payment reference input -->
+            <div class="mb-2">
+                <label for="bank_till_payment_reference" class="form-label fw-semibold">
+                    M-PESA / Payment Reference <span class="text-danger">*</span>
+                </label>
+                <input type="text"
+                       id="bank_till_payment_reference"
+                       name="payment_reference"
+                       class="form-control"
+                       placeholder="e.g. QA12BCD345"
+                       required="required"
+                       autocomplete="off"/>
+                <div id="bank_till_ref_error" class="text-danger small d-none">
+                    Please enter your M-PESA confirmation code.
+                </div>
+                <div class="form-text">Enter the confirmation code from your M-PESA message.</div>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            (function () {
+                // Intercept Odoo's payment button to validate reference before submit
+                document.addEventListener('click', function (e) {
+                    var btn = e.target.closest('[name="o_payment_submit_button"], .o_payment_submit_button, [data-payment-submit]');
+                    if (!btn) return;
+                    var refInput = document.getElementById('bank_till_payment_reference');
+                    if (!refInput) return;
+                    var errDiv = document.getElementById('bank_till_ref_error');
+                    if (!refInput.value.trim()) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        refInput.classList.add('is-invalid');
+                        if (errDiv) errDiv.classList.remove('d-none');
+                        refInput.focus();
+                    } else {
+                        refInput.classList.remove('is-invalid');
+                        if (errDiv) errDiv.classList.add('d-none');
+                    }
+                }, true);
+            })();
+        </script>
+    </template>
+
+</odoo>

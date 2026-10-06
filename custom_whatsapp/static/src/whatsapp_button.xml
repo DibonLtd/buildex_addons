@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="custom_whatsapp.Chatter" t-inherit="mail.Chatter" t-inherit-mode="extension">
+        <xpath expr="//*[contains(@class, 'o-mail-Chatter-activity')]" position="before">
+            <button class="btn btn-secondary text-nowrap me-2" t-att-class="{
+                    'btn-primary': state.composerType !== 'note',
+                    'btn-secondary': state.composerType === 'note',
+                    'active': state.composerType === 'message',
+                    'my-2': !props.compactHeight
+                }" data-hotkey="shift+w" t-on-click="ClicksendWhatsapp">
+                <i class="fa fa-whatsapp me-1" />
+                <span>WhatsApp</span>
+            </button>
+        </xpath>
+    </t>
+
+    
+</templates>

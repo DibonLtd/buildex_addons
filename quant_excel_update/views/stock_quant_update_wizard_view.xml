@@ -1,0 +1,39 @@
+<odoo>
+
+    <record id="view_stock_quant_update_wizard_form" model="ir.ui.view">
+        <field name="name">stock.quant.update.wizard.form</field>
+        <field name="model">stock.quant.update.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Quant Excel Update">
+                <group>
+                    <field name="file" filename="file_name"/>
+                </group>
+
+                <footer>
+                    <button name="action_update_records"
+                            type="object"
+                            string="Update Quants"
+                            class="btn-primary"/>
+                    <button string="Cancel"
+                            special="cancel"
+                            class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_quant_update_wizard" model="ir.actions.act_window">
+        <field name="name">Quant Excel Update</field>
+        <field name="res_model">stock.quant.update.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_quant_excel_update"
+              name="Quant Excel Update"
+              parent="stock.menu_stock_inventory_control"
+              action="action_stock_quant_update_wizard"
+              sequence="99"
+              groups="stock.group_stock_manager"/>
+
+</odoo>

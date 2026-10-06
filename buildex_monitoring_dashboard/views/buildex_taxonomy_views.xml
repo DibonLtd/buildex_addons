@@ -1,0 +1,266 @@
+<odoo>
+    <record id="view_buildex_customer_type_tree" model="ir.ui.view">
+        <field name="name">buildex.customer.type.tree</field>
+        <field name="model">buildex.customer.type</field>
+        <field name="arch" type="xml">
+            <list string="Customer Types">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_buildex_customer_type_form" model="ir.ui.view">
+        <field name="name">buildex.customer.type.form</field>
+        <field name="model">buildex.customer.type</field>
+        <field name="arch" type="xml">
+            <form string="Customer Type"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_customer_types" model="ir.actions.act_window">
+        <field name="name">Customer Types</field>
+        <field name="res_model">buildex.customer.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_skill_type_tree" model="ir.ui.view">
+        <field name="name">buildex.skill.type.tree</field>
+        <field name="model">buildex.skill.type</field>
+        <field name="arch" type="xml">
+            <list string="Skill Types"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_skill_type_form" model="ir.ui.view">
+        <field name="name">buildex.skill.type.form</field>
+        <field name="model">buildex.skill.type</field>
+        <field name="arch" type="xml">
+            <form string="Skill Type"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_skill_types" model="ir.actions.act_window">
+        <field name="name">Skill Types</field>
+        <field name="res_model">buildex.skill.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_outlet_tree" model="ir.ui.view">
+        <field name="name">buildex.outlet.tree</field>
+        <field name="model">buildex.outlet</field>
+        <field name="arch" type="xml">
+            <list string="Outlets"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_outlet_form" model="ir.ui.view">
+        <field name="name">buildex.outlet.form</field>
+        <field name="model">buildex.outlet</field>
+        <field name="arch" type="xml">
+            <form string="Outlet"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_outlets" model="ir.actions.act_window">
+        <field name="name">Outlets</field>
+        <field name="res_model">buildex.outlet</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_age_bracket_tree" model="ir.ui.view">
+        <field name="name">buildex.age.bracket.tree</field>
+        <field name="model">buildex.age.bracket</field>
+        <field name="arch" type="xml">
+            <list string="Age Brackets"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_age_bracket_form" model="ir.ui.view">
+        <field name="name">buildex.age.bracket.form</field>
+        <field name="model">buildex.age.bracket</field>
+        <field name="arch" type="xml">
+            <form string="Age Bracket"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_age_brackets" model="ir.actions.act_window">
+        <field name="name">Age Brackets</field>
+        <field name="res_model">buildex.age.bracket</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_acquisition_source_tree" model="ir.ui.view">
+        <field name="name">buildex.acquisition.source.tree</field>
+        <field name="model">buildex.acquisition.source</field>
+        <field name="arch" type="xml">
+            <list string="Acquisition Sources"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_acquisition_source_form" model="ir.ui.view">
+        <field name="name">buildex.acquisition.source.form</field>
+        <field name="model">buildex.acquisition.source</field>
+        <field name="arch" type="xml">
+            <form string="Acquisition Source"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_acquisition_sources" model="ir.actions.act_window">
+        <field name="name">Acquisition Sources</field>
+        <field name="res_model">buildex.acquisition.source</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_next_need_tree" model="ir.ui.view">
+        <field name="name">buildex.next.need.tree</field>
+        <field name="model">buildex.next.need</field>
+        <field name="arch" type="xml">
+            <list string="Next Needs"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_next_need_form" model="ir.ui.view">
+        <field name="name">buildex.next.need.form</field>
+        <field name="model">buildex.next.need</field>
+        <field name="arch" type="xml">
+            <form string="Next Need"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_next_needs" model="ir.actions.act_window">
+        <field name="name">Next Needs</field>
+        <field name="res_model">buildex.next.need</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_project_type_tree" model="ir.ui.view">
+        <field name="name">buildex.project.type.tree</field>
+        <field name="model">buildex.project.type</field>
+        <field name="arch" type="xml">
+            <list string="Project Types"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_project_type_form" model="ir.ui.view">
+        <field name="name">buildex.project.type.form</field>
+        <field name="model">buildex.project.type</field>
+        <field name="arch" type="xml">
+            <form string="Project Type"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_project_types" model="ir.actions.act_window">
+        <field name="name">Project Types</field>
+        <field name="res_model">buildex.project.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_residential_use_tree" model="ir.ui.view">
+        <field name="name">buildex.residential.use.tree</field>
+        <field name="model">buildex.residential.use</field>
+        <field name="arch" type="xml">
+            <list string="Residential Uses"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_residential_use_form" model="ir.ui.view">
+        <field name="name">buildex.residential.use.form</field>
+        <field name="model">buildex.residential.use</field>
+        <field name="arch" type="xml">
+            <form string="Residential Use"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_residential_uses" model="ir.actions.act_window">
+        <field name="name">Residential Uses</field>
+        <field name="res_model">buildex.residential.use</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_project_stage_tree" model="ir.ui.view">
+        <field name="name">buildex.project.stage.tree</field>
+        <field name="model">buildex.project.stage</field>
+        <field name="arch" type="xml">
+            <list string="Project Stages"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_project_stage_form" model="ir.ui.view">
+        <field name="name">buildex.project.stage.form</field>
+        <field name="model">buildex.project.stage</field>
+        <field name="arch" type="xml">
+            <form string="Project Stage"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_project_stages" model="ir.actions.act_window">
+        <field name="name">Project Stages</field>
+        <field name="res_model">buildex.project.stage</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_budget_range_tree" model="ir.ui.view">
+        <field name="name">buildex.budget.range.tree</field>
+        <field name="model">buildex.budget.range</field>
+        <field name="arch" type="xml">
+            <list string="Budget Ranges"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_budget_range_form" model="ir.ui.view">
+        <field name="name">buildex.budget.range.form</field>
+        <field name="model">buildex.budget.range</field>
+        <field name="arch" type="xml">
+            <form string="Budget Range"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_budget_ranges" model="ir.actions.act_window">
+        <field name="name">Budget Ranges</field>
+        <field name="res_model">buildex.budget.range</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_decision_maker_tree" model="ir.ui.view">
+        <field name="name">buildex.decision.maker.tree</field>
+        <field name="model">buildex.decision.maker</field>
+        <field name="arch" type="xml">
+            <list string="Decision Makers"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_decision_maker_form" model="ir.ui.view">
+        <field name="name">buildex.decision.maker.form</field>
+        <field name="model">buildex.decision.maker</field>
+        <field name="arch" type="xml">
+            <form string="Decision Maker"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_decision_makers" model="ir.actions.act_window">
+        <field name="name">Decision Makers</field>
+        <field name="res_model">buildex.decision.maker</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_intended_use_tree" model="ir.ui.view">
+        <field name="name">buildex.intended.use.tree</field>
+        <field name="model">buildex.intended.use</field>
+        <field name="arch" type="xml">
+            <list string="Intended Uses"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_intended_use_form" model="ir.ui.view">
+        <field name="name">buildex.intended.use.form</field>
+        <field name="model">buildex.intended.use</field>
+        <field name="arch" type="xml">
+            <form string="Intended Use"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_intended_uses" model="ir.actions.act_window">
+        <field name="name">Intended Uses</field>
+        <field name="res_model">buildex.intended.use</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_buildex_followup_activity_type_tree" model="ir.ui.view">
+        <field name="name">buildex.followup.activity.type.tree</field>
+        <field name="model">buildex.followup.activity.type</field>
+        <field name="arch" type="xml">
+            <list string="Follow-up Activity Types"><field name="sequence" widget="handle"/><field name="name"/><field name="code"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_buildex_followup_activity_type_form" model="ir.ui.view">
+        <field name="name">buildex.followup.activity.type.form</field>
+        <field name="model">buildex.followup.activity.type</field>
+        <field name="arch" type="xml">
+            <form string="Follow-up Activity Type"><sheet><group><field name="name"/><field name="code"/><field name="sequence"/><field name="active"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_buildex_followup_activity_types" model="ir.actions.act_window">
+        <field name="name">Follow-up Activity Types</field>
+        <field name="res_model">buildex.followup.activity.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

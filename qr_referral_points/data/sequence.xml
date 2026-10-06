@@ -1,0 +1,16 @@
+
+<odoo>
+    <record id="seq_referral_code" model="ir.sequence">
+        <field name="name">Referral Code</field>
+        <field name="code">referral.code</field>
+        <field name="prefix">BLXINF-</field>
+        <field name="padding">5</field>
+    </record>
+
+    <record id="seq_topline_referral_code" model="ir.sequence">
+        <field name="name">Topline Referral Code</field>
+        <field name="code">topline.referral.code</field>
+        <field name="prefix">BLXTL</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>

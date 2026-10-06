@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="internal_layout_timesheet">
+			<div class="header">
+			</div>
+			<div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+				<t t-raw="0"/>
+			</div>
+			<div class="footer">
+			</div>
+		</template>
+
+		<template id="payslip_template_document">
+			<t t-call="web.html_container">
+				<t t-call="payslip_reports.internal_layout_timesheet">
+                    <t t-if="docs">
+					<t t-foreach="docs" t-as="o">
+						<div class="page">
+							<style>
+								table.main_table{
+								width: 100%;
+								border-collapse: collapse;
+								}
+								table.main_table th, table.main_table td{
+								border:1px solid black;
+								}
+							</style>
+							<div width="100%">
+								<div width="100%" style="text-align:center;">
+								<img style="width:35%;" src="/payslip_reports/static/src/img/KRA_logo.png"/>
+								</div>
+								<div style="width:100%;">
+									<table width="100%;">
+										<tr>
+											<td style="width:39%;font-size:12px;"><strong>APPENDIX 2A</strong></td>
+											<td style="width:61%;font-size:12px;">
+												<strong>KENYA REVENUE AUTHORITY<br/>
+													DOMESTIC TAXES DEPARTMENT<br/>
+                                                    FROM <t t-esc="date_from" /> To <t t-esc="date_to" />
+													 </strong>
+											</td>
+										</tr>
+									</table>
+									<table style="width:100%;margin-bottom:20px;">
+										<tr style="font-size:12px;">
+											<td><strong>Employers Name</strong><![CDATA[&nbsp;]]><span style="border-bottom:1px dotted black;" t-esc="company_id.name"/></td>
+											<td style="text-align:center;"><strong>Employer's PIN</strong></td>
+											<td style="border:1px solid grey;text-align:center;"><span t-esc="company_id.vat"/></td>
+										</tr>
+										
+										<tr style="font-size:12px;">
+											<td><strong>Employee's  Names</strong><![CDATA[&nbsp;]]><span style="border-bottom:1px dotted black;" t-esc="o.name"/></td>
+											<td style="text-align:center;"><strong>Employee's PIN</strong></td>
+											<td style="border:1px solid grey;text-align:center;"><span t-esc="o.kra"/></td>
+										</tr>
+									</table>
+									<table class="main_table">
+										<tr style="font-size:10px;text-align:center;">
+											<th>MONTH</th>
+											<th>Basic<br/>Salary<br/><br/><br/>Kshs.</th>
+											<th>Benefits<br/>Non<br/>Cash<br/><br/>Kshs.</th>
+											<th>Value of<br/>Quarters<br/><br/><br/>Kshs.</th>
+											<th>Total<br/>Gross<br/>Pay<br/><br/>Kshs.</th>
+											<th colspan="3">Defined Contribution<br/>Retirement Scheme<br/><br/><br/>Kshs.</th>
+											<th>Owner-<br/>Occupied<br/>Interest<br/><br/>Kshs.</th>
+											<th>Retirement<br/>Contribution &amp;<br/>Owner Occupied<br/>Interest</th>
+											<th>Chargeable<br/>Pay<br/><br/><br/>Kshs.</th>
+											<th>Tax<br/>Charged<br/><br/><br/>Kshs.</th>
+											<th>Personal<br/>Relief<br/><br/><br/>Kshs.</th>
+											<th>Insurance<br/>Relief<br/><br/><br/>Kshs.</th>
+											<th>PAYE<br/>Tax<br/>(J-K)<br/><br/>Kshs.</th>
+										</tr>
+										<tr style="font-size:10px;text-align:center;">
+											<th rowspan="2"></th>
+											<th  rowspan="2">A</th>
+											<th  rowspan="2">B</th>
+											<th  rowspan="2">C</th>
+											<th  rowspan="2">D</th>
+											<th colspan="3">E</th>
+											<th rowspan="2">F<br/>Amount of<br/>Interest</th>
+											<th rowspan="2">G<br/>The lowest of E<br/>added to F</th>
+											<th>H</th>
+											<th>J</th>
+											<th>K</th>
+											<th></th>
+											<th>L</th>
+										</tr>
+										<tr style="font-size:10px;text-align:center;">
+											<th>E1<br/>30%<br/>of A</th>
+											<th>E2<br/>Actual</th>
+											<th>E3<br/>Fixed</th>
+											<th></th>
+											<th></th>
+											<th colspan="2">Total<br/>Kshs.</th>
+											<th></th>
+										</tr>
+                                        <t t-foreach="data" t-as="row">
+                                            <tr style="font-size:10px;">
+                                                <th style="padding-left:5px;"><strong><t t-esc="row[0]"/></strong></th>
+                                                <th><t t-esc="row[1]" /></th>
+                                                <th><t t-esc="row[2]"/></th>
+                                                <th><t t-esc="row[3]"/></th>
+                                                <th><t t-esc="row[4]"/></th>
+                                                <th><t t-esc="row[5]" t-options='{"widget": "float", "precision": 2}'/></th>
+                                                <th><t t-esc="row[6]" t-options='{"widget": "float", "precision": 2}'/></th>
+                                                <th><t t-esc="row[7]" t-options='{"widget": "float", "precision": 2}'/></th>
+                                                <th><t t-esc="row[8]" t-options='{"widget": "float", "precision": 2}'/></th>
+                                                <th><t t-esc="row[9]" t-options='{"widget": "float", "precision": 2}'/></th>
+                                                <th><t t-esc="row[10]" t-options='{"widget": "float", "precision": 2}'/></th>
+                                                <th><t t-esc="row[11]" t-options='{"widget": "float", "precision": 2}'/></th>
+                                                <th colspan="2">><t t-esc="row[12]" t-options='{"widget": "float", "precision": 2}'/></th>
+                                                <th><t t-esc="row[13]" t-options='{"widget": "float", "precision": 2}'/></th>
+                                            </tr>
+                                        </t>
+                                      <t t-if="sums">
+                    <tr style="font-size:10px;">
+											<th style="padding:10px;vertical-align:text-bottom;"><strong>Totals</strong></th>
+                        <th><t t-esc="sums[1]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th><t t-esc="sums[2]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th><t t-esc="sums[3]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th><t t-esc="sums[4]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th><t t-esc="sums[5]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th><t t-esc="sums[6]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th><t t-esc="sums[7]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th><t t-esc="sums[8]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th><t t-esc="sums[9]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th><t t-esc="sums[10]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th><t t-esc="sums[11]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th colspan="2"><t t-esc="sums[12]" t-options='{"widget": "float", "precision": 2}'/></th>
+                        <th><t t-esc="sums[13]" t-options='{"widget": "float", "precision": 2}'/></th>
+                    </tr>
+                </t>
+      										
+									</table>
+									<table style="width:100%;margin-left:10px;">
+										<tr>
+											<th colspan="2" style="padding-left:55px;">
+    <b><strong>
+        TOTAL TAX (COLL.)
+        <t t-if="sums[13]">
+            <t t-esc="sums[13]" t-options='{"widget": "float", "precision": 2}'/>
+        </t>
+        Kshs.
+    </strong></b>
+</th>
+										</tr>
+										<tr>
+											<td style="font-size:12px;">To be completed by Employer at end of year</td>
+											<td/>
+											<td/>
+										</tr>
+										<tr>
+											<td style="width:40%;font-size:12px;">
+    <strong><b>TOTAL CHARGABLE PAY (COL. H) 
+        <t t-if="sums[10]">
+            <t t-esc="sums[10]" t-options='{"widget": "float", "precision": 2}'/>
+        </t>
+    </b></strong> kshs.
+</td>
+										</tr>
+									</table>
+									<table style="width:100%;margin-left:10px;">
+										<tr style="font-size:12px;">
+											<th style="width:40%;"><u>IMPORTANT</u></th>
+											<td style="width:13%"/>
+											<td style="width:47%;font-size:8px;">b) Attach</td>
+										</tr>
+										<tr  style="font-size:8px;">
+											<td style="width:40%;">1. Use P9A<![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>(a) For all liable employees and where director/employee received<br/>
+												<span style="padding-left:55px;">benefits in addition to cash emoluments</span><br/>
+												<span style="padding-left:47px;">(b)<![CDATA[&nbsp;]]> Where an employee is eligible to deduction on owner occupier interest</span><br/>
+												<span>2.<![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>(a)<![CDATA[&nbsp;]]><![CDATA[&nbsp;]]> Deductible interest in respect of any month must not exceed kshs. 12,500/=</span>
+											</td>
+											<td style="width:13%"/>
+											<td style="width:47%;padding-left:5px;">(i)<![CDATA[&nbsp;]]>Photostat copy of interest and statement of account from the<br/>
+												<span style="padding-left:12px;">financial institution.</span><br/>
+												<span>(ii)<![CDATA[&nbsp;]]> The DECLARATION duly signed by the employee</span>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</t>
+                    </t>
+				</t>
+			</t>
+
+		</template>
+	</data>
+</odoo>

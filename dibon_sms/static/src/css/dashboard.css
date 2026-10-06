@@ -1,0 +1,28 @@
+.o_dibon_sms_dashboard {
+    padding: 20px;
+}
+
+.o_dibon_sms_dashboard .card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.o_dibon_sms_dashboard .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.o_dibon_sms_dashboard .card-title {
+    font-weight: 600;
+}
+
+.o_dibon_sms_dashboard .btn {
+    padding: 10px 20px;
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+.o_dibon_sms_dashboard .btn i {
+    margin-right: 8px;
+}

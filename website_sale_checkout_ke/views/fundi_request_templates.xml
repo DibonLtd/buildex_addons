@@ -1,0 +1,136 @@
+<odoo>
+    <template id="fundi_request_template" name="Fundi Request">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10">
+                        <div class="row g-4 align-items-start">
+                            <div class="col-lg-5">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body p-4 p-lg-5">
+                                        <div class="text-uppercase small fw-bold text-primary mb-2">Find / Get Fundi</div>
+                                        <h1 class="h2 fw-bold mb-3">Technician / Fundi request form</h1>
+                                        <p class="text-muted mb-4">
+                                            Use this form when a customer needs technician support. For now the process stays manual and the request is routed to the Buildex team for follow-up.
+                                        </p>
+
+                                        <t t-if="product">
+                                            <div class="border rounded-4 p-3 bg-light mb-4">
+                                                <div class="small text-muted text-uppercase fw-bold mb-1">Selected Product</div>
+                                                <div class="fw-semibold" t-esc="product.name"/>
+                                            </div>
+                                        </t>
+
+                                        <div class="border rounded-4 p-3 mb-3">
+                                            <div class="small text-muted text-uppercase fw-bold mb-1">Manual Contact Flow</div>
+                                            <div class="fw-semibold mb-2">Need to talk to someone now?</div>
+                                            <p class="text-muted small mb-3">
+                                                Customers can submit this request, call the sales team, or use the main contact page for immediate assistance.
+                                            </p>
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <a href="/contactus" class="btn btn-outline-primary rounded-pill px-3">
+                                                    <i class="fa fa-envelope me-1"/> Contact Builder
+                                                </a>
+                                                <a href="/contactus" class="btn btn-primary rounded-pill px-3">
+                                                    <i class="fa fa-phone me-1"/> Call Sales Team
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="small text-muted">
+                                            Contact groups supported in backend: <strong>B2C</strong>, <strong>B2B</strong>, and <strong>Fundi</strong>. One contact can belong to multiple groups.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-7">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body p-4 p-lg-5">
+                                        <t t-if="submitted">
+                                            <div class="alert alert-success rounded-4 mb-4" role="alert">
+                                                Your technician request has been received. The Buildex team can now follow up manually.
+                                            </div>
+                                        </t>
+
+                                        <form action="/fundi-request" method="post">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input t-if="product" type="hidden" name="product_id" t-att-value="product.id"/>
+
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label fw-semibold" for="fundi_name">Full name</label>
+                                                    <input id="fundi_name" type="text" name="name" class="form-control form-control-lg"
+                                                           placeholder="Customer or technician name"
+                                                           t-att-value="defaults.get('name') or ''"/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label fw-semibold" for="fundi_phone">Phone number</label>
+                                                    <input id="fundi_phone" type="text" name="phone" class="form-control form-control-lg"
+                                                           placeholder="07xx xxx xxx"
+                                                           t-att-value="defaults.get('phone') or ''"/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label fw-semibold" for="fundi_email">Email</label>
+                                                    <input id="fundi_email" type="email" name="email" class="form-control form-control-lg"
+                                                           placeholder="name@example.com"
+                                                           t-att-value="defaults.get('email') or ''"/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label fw-semibold" for="fundi_company">Company / Shop</label>
+                                                    <input id="fundi_company" type="text" name="company_name" class="form-control form-control-lg"
+                                                           placeholder="Optional"
+                                                           t-att-value="defaults.get('company_name') or ''"/>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label fw-semibold" for="fundi_city">Town / Location</label>
+                                                    <input id="fundi_city" type="text" name="city" class="form-control form-control-lg"
+                                                           placeholder="Where is the project site?"
+                                                           t-att-value="defaults.get('city') or ''"/>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label fw-semibold d-block">Contact Grouping</label>
+                                                    <div class="d-flex flex-wrap gap-3">
+                                                        <div class="form-check">
+                                                            <input id="group_b2c" class="form-check-input" type="checkbox" name="group_b2c" value="1"
+                                                                   t-att-checked="'checked' if defaults.get('group_b2c') or not submitted else None"/>
+                                                            <label class="form-check-label" for="group_b2c">B2C</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input id="group_b2b" class="form-check-input" type="checkbox" name="group_b2b" value="1"
+                                                                   t-att-checked="'checked' if defaults.get('group_b2b') else None"/>
+                                                            <label class="form-check-label" for="group_b2b">B2B</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input id="group_fundi" class="form-check-input" type="checkbox" name="group_fundi" value="1"
+                                                                   t-att-checked="'checked' if defaults.get('group_fundi') else None"/>
+                                                            <label class="form-check-label" for="group_fundi">Fundi</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-text">A single contact can be grouped under one, two, or all three tags.</div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label fw-semibold" for="fundi_message">Request details</label>
+                                                    <textarea id="fundi_message" name="message" class="form-control" rows="5"
+                                                              placeholder="Explain the product, installation need, or the best time to call back."><t t-esc="defaults.get('message') or ''"/></textarea>
+                                                </div>
+                                                <div class="col-12 d-flex flex-wrap gap-2 pt-2">
+                                                    <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">
+                                                        <i class="fa fa-paper-plane me-1"/> Submit Request
+                                                    </button>
+                                                    <a href="/contactus" class="btn btn-outline-secondary btn-lg rounded-pill px-4">
+                                                        Main Contact Page
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

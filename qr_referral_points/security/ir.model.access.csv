@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_influencer_commission,influencer.commission,model_influencer_commission,base.group_user,1,1,1,1
+access_influencer_wallet,influencer.wallet.transaction,model_influencer_wallet_transaction,base.group_user,1,1,1,1
+access_influencer_plan,influencer.commission.plan,model_influencer_commission_plan,base.group_user,1,1,1,1
+access_influencer_rule,influencer.commission.rule,model_influencer_commission_rule,base.group_user,1,1,1,1
+access_influencer_commission_batch,influencer.commission.batch,model_influencer_commission_batch,base.group_user,1,1,1,1
+access_influencer_referral_visit_stat,influencer.referral.visit.stat,model_influencer_referral_visit_stat,base.group_user,1,1,1,1
+access_influencer_referral_visit_log,influencer.referral.visit.log,model_influencer_referral_visit_log,base.group_user,1,1,1,1
+access_influencer_link_performance_report,influencer.link.performance.report,model_influencer_link_performance_report,base.group_user,1,0,0,0
+access_influencer_program_config,influencer.program.config,model_influencer_program_config,base.group_user,1,0,0,0
+access_influencer_program_config_manager,influencer.program.config.manager,model_influencer_program_config,base.group_system,1,1,1,1

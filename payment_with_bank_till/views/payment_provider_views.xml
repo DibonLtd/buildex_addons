@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_provider_form_bank_till" model="ir.ui.view">
+        <field name="name">payment.provider.form.bank_till</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header invisible="code != 'bank_till'">
+                    <div class="alert alert-info mb-0" role="alert">
+                        Bank: Equity Bank | Account: BUILDEX | Paybill: 247247
+                    </div>
+                </header>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,17 @@
+<odoo>
+    <record id="res_partner_form_checkout_policy" model="ir.ui.view">
+        <field name="name">res.partner.form.checkout.policy</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Website Checkout">
+                    <field name="checkout_payment_policy"/>
+                    <field name="is_fundi"/>
+                    <field name="category_id" widget="many2many_tags"
+                           options="{'color_field': 'color'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

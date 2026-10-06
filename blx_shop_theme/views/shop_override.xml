@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         1.  IMMERSIVE HERO BANNER
+         ═══════════════════════════════════════════════════════════════════ -->
+    <template id="blx_shop_hero" inherit_id="website_sale.products" name="BLX Shop Hero">
+        <xpath expr="//div[@id='wrap']" position="before">
+
+            <section class="blx-hero">
+                <!-- Animated mesh background -->
+                <div class="blx-hero-mesh"/>
+                <!-- Orbs -->
+                <div class="blx-orb blx-orb-1"/>
+                <div class="blx-orb blx-orb-2"/>
+                <div class="blx-orb blx-orb-3"/>
+
+                <div class="container blx-hero-inner">
+                    <div class="row align-items-center g-0">
+
+                        <!-- LEFT: Text + Search -->
+                        <div class="col-lg-6 blx-hero-left">
+                            <div class="blx-hero-slider">
+                                <div class="blx-hero-slide">
+                                    <div class="blx-hero-eyebrow">
+                                        <span class="blx-eyebrow-dot"/>
+                                        Premium Collection
+                                    </div>
+                                    <h1 class="blx-hero-headline">
+                                        <t t-if="category">
+                                            <span class="blx-gradient-text"><t t-esc="category.name"/></span>
+                                        </t>
+                                        <t t-else="">
+                                            Shop The<br/>
+                                            <span class="blx-gradient-text">Future.</span>
+                                        </t>
+                                    </h1>
+                                    <p class="blx-hero-tagline">
+                                        Authentic products · Fast delivery · Best prices across Kenya
+                                    </p>
+                                </div>
+
+                                <div class="blx-hero-slide blx-hero-slide-zoom">
+                                    <div class="blx-hero-eyebrow">
+                                        <span class="blx-eyebrow-dot"/>
+                                        Build With Style
+                                    </div>
+                                    <h1 class="blx-hero-headline">
+                                        Plywood, MDFs<br/>
+                                        <span class="blx-gradient-text">and Blockboard.</span>
+                                    </h1>
+                                    <p class="blx-hero-tagline">
+                                        Shop reliable board solutions for cabinetry, furniture, partitions, and interior finishing projects.
+                                    </p>
+                                </div>
+
+                                <div class="blx-hero-slide">
+                                    <div class="blx-hero-eyebrow">
+                                        <span class="blx-eyebrow-dot"/>
+                                        Project Ready
+                                    </div>
+                                    <h1 class="blx-hero-headline">
+                                        Gypsum, Doors<br/>
+                                        <span class="blx-gradient-text">for Every Site.</span>
+                                    </h1>
+                                    <p class="blx-hero-tagline">
+                                        Fast supply across Kenya for gypsum systems, interior doors, and finishing materials when timelines matter.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="blx-fundi-sidecard d-lg-none">
+                                <div class="blx-fundi-sidecard-copy">
+                                    <div class="blx-fundi-sidecard-title">Find / Get Fundi</div>
+                                    <div class="blx-fundi-sidecard-text">
+                                        Need installation help? Send a technician request and our team will connect you with the right Buildex contact.
+                                    </div>
+                                </div>
+                                <a href="/fundi-request" class="blx-fundi-sidecard-btn">
+                                    <i class="fa fa-wrench"/>&#160;Technician Request
+                                </a>
+                            </div>
+
+                            <!-- Trust badges -->
+                            <div class="blx-trust-row">
+                                <div class="blx-trust-badge">
+                                    <div class="blx-trust-icon">
+                                        <i class="fa fa-shield"/>
+                                    </div>
+                                    <div>
+                                        <div class="blx-trust-label">100% Authentic</div>
+                                        <div class="blx-trust-sub">Verified products</div>
+                                    </div>
+                                </div>
+                                <div class="blx-trust-badge">
+                                    <div class="blx-trust-icon blx-trust-icon-orange">
+                                        <i class="fa fa-bolt"/>
+                                    </div>
+                                    <div>
+                                        <div class="blx-trust-label">Fast Delivery</div>
+                                        <div class="blx-trust-sub">Nationwide</div>
+                                    </div>
+                                </div>
+                                <div class="blx-trust-badge">
+                                    <div class="blx-trust-icon blx-trust-icon-purple">
+                                        <i class="fa fa-star"/>
+                                    </div>
+                                    <div>
+                                        <div class="blx-trust-label">Top Rated</div>
+                                        <div class="blx-trust-sub">5★ Reviews</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT: MDF Doors, Granite, Plywood floating cards -->
+                        <div class="col-lg-6 d-none d-lg-block blx-hero-right">
+                            <div class="blx-showcase">
+
+                                <!-- MDF DOORS card — large, left -->
+                                <div class="blx-id-card blx-id-mdf">
+                                    <div class="blx-id-card-glow"/>
+                                    <div class="blx-id-icon-wrap blx-icon-warm">
+                                        <!-- Door SVG -->
+                                        <svg width="34" height="34" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="10" y="4" width="36" height="56" rx="3" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+                                            <rect x="16" y="10" width="11" height="16" rx="2" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+                                            <rect x="30" y="10" width="11" height="16" rx="2" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+                                            <rect x="16" y="32" width="11" height="20" rx="2" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+                                            <rect x="30" y="32" width="11" height="20" rx="2" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+                                            <circle cx="42" cy="33" r="2.5" fill="rgba(255,200,100,0.8)"/>
+                                        </svg>
+                                    </div>
+                                    <div class="blx-id-badge">🏆 Best Seller</div>
+                                    <div class="blx-id-tag">MDF DOORS</div>
+                                    <div class="blx-id-name">Premium Interior<br/>MDF Doors</div>
+                                    <div class="blx-id-colors">
+                                        <span class="blx-dot-swatch" style="background:#c8a96e;"/>
+                                        <span class="blx-dot-swatch" style="background:#8b6914;"/>
+                                        <span class="blx-dot-swatch" style="background:#3a2a1a;"/>
+                                        <span class="blx-dot-swatch" style="background:#e8e0d5;"/>
+                                    </div>
+                                    <a href="/fundi-request" class="blx-fundi-tag">
+                                        <i class="fa fa-wrench"/> Ask for Fundi
+                                    </a>
+                                </div>
+
+                                <!-- GRANITE card — top right -->
+                                <div class="blx-id-card blx-id-granite">
+                                    <div class="blx-id-icon-wrap blx-icon-stone">
+                                        <!-- Granite/stone SVG -->
+                                        <svg width="34" height="34" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="6" y="16" width="52" height="32" rx="4" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+                                            <line x1="6"  y1="26" x2="58" y2="26" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                                            <line x1="6"  y1="36" x2="58" y2="36" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                                            <path d="M12 20 Q18 28 14 36 Q20 30 26 38 Q22 44 28 48" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" fill="none"/>
+                                            <path d="M34 18 Q40 24 36 32 Q44 26 42 40" stroke="rgba(255,255,255,0.2)" stroke-width="1" fill="none"/>
+                                            <path d="M48 22 Q52 30 46 38" stroke="rgba(255,255,255,0.18)" stroke-width="1" fill="none"/>
+                                        </svg>
+                                    </div>
+                                    <div class="blx-id-tag">GRANITE SLABS</div>
+                                    <div class="blx-id-name">Natural Granite<br/>Countertops</div>
+                                    <div class="blx-id-spec">Available in 12+ varieties</div>
+                                    <a href="/fundi-request" class="blx-fundi-tag">
+                                        <i class="fa fa-wrench"/> Ask for Fundi
+                                    </a>
+                                </div>
+
+                                <!-- PLYWOOD card — bottom right -->
+                                <div class="blx-id-card blx-id-plywood">
+                                    <div class="blx-id-icon-wrap blx-icon-wood">
+                                        <!-- Plywood layers SVG -->
+                                        <svg width="34" height="34" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="8"  y="10" width="48" height="9" rx="2" fill="rgba(255,255,255,0.30)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                                            <rect x="8"  y="21" width="48" height="9" rx="2" fill="rgba(255,255,255,0.22)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+                                            <rect x="8"  y="32" width="48" height="9" rx="2" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+                                            <rect x="8"  y="43" width="48" height="9" rx="2" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                                            <line x1="14" y1="10" x2="14" y2="52" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                                            <line x1="28" y1="10" x2="28" y2="52" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+                                            <line x1="44" y1="10" x2="44" y2="52" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+                                        </svg>
+                                    </div>
+                                    <div class="blx-id-tag">PLYWOOD SHEETS</div>
+                                    <div class="blx-id-name">Marine &amp; Commercial<br/>Plywood</div>
+                                    <div class="blx-id-spec">6mm · 9mm · 12mm · 18mm</div>
+                                    <a href="/fundi-request" class="blx-fundi-tag">
+                                        <i class="fa fa-wrench"/> Ask for Fundi
+                                    </a>
+                                </div>
+
+                                <!-- Rating pill -->
+                                <div class="blx-rating-pill">
+                                    <span style="color:#f8d817;font-size:0.85rem;">★★★★★</span>
+                                    <span class="blx-rating-text">4.9 · 2,400+ orders</span>
+                                </div>
+
+                                <div class="blx-side-column-card">
+                                    <div class="blx-side-column-label">Find / Get Fundi</div>
+                                    <div class="blx-side-column-title">Technician help for your project</div>
+                                    <div class="blx-side-column-text">
+                                        Request a Fundi, call the sales team, or ask Buildex to guide you on the right installer for the product you are viewing.
+                                    </div>
+                                    <div class="blx-side-column-actions">
+                                        <a href="/fundi-request" class="blx-side-column-btn blx-side-column-btn-primary">
+                                            <i class="fa fa-wrench"/>&#160;Get Fundi
+                                        </a>
+                                        <a href="/contactus" class="blx-side-column-btn blx-side-column-btn-secondary">
+                                            <i class="fa fa-phone"/>&#160;Contact Builder
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Bottom wave -->
+                <div class="blx-hero-wave">
+                    <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                        <path d="M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z" fill="#f8fafc"/>
+                    </svg>
+                </div>
+            </section>
+
+        </xpath>
+    </template>
+
+    <template id="blx_shop_page_polish" inherit_id="website_sale.products" name="BLX Shop Page Polish">
+        <xpath expr="//aside[@id='products_grid_before']/div[hasclass('o_wsale_products_grid_before_rail')]" position="inside">
+            <div class="blx-sidebar-feature">
+                <div class="blx-sidebar-feature-label">Build Better</div>
+                <div class="blx-sidebar-feature-title">Materials, guidance, and Fundi support in one place</div>
+                <p class="blx-sidebar-feature-text">
+                    Explore the catalog, narrow down the right finish, and request technician support when the project needs more than product supply.
+                </p>
+                <div class="blx-sidebar-feature-points">
+                    <span><i class="fa fa-check-circle"/> Verified supply</span>
+                    <span><i class="fa fa-clock-o"/> Fast response</span>
+                    <span><i class="fa fa-map-marker"/> Kenya-wide delivery</span>
+                </div>
+                <div class="blx-sidebar-feature-actions">
+                    <a href="/fundi-request" class="blx-sidebar-feature-btn blx-sidebar-feature-btn-primary">Get Fundi</a>
+                    <a href="/contactus" class="blx-sidebar-feature-btn blx-sidebar-feature-btn-secondary">Talk to Sales</a>
+                </div>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[hasclass('products_header')]" position="after">
+            <section class="blx-shop-service-strip">
+                <div class="blx-shop-service-copy">
+                    <div class="blx-shop-service-kicker">Need More Than Products?</div>
+                    <div class="blx-shop-service-title">Let Buildex help with the next decision on your project</div>
+                    <p class="blx-shop-service-text">
+                        If you need a technician, product guidance, or help choosing the right finish for the site, our team can step in quickly.
+                    </p>
+                </div>
+                <div class="blx-shop-service-actions">
+                    <a href="/fundi-request" class="blx-shop-service-btn blx-shop-service-btn-primary">
+                        <i class="fa fa-wrench"/>&#160;Request Fundi
+                    </a>
+                    <a href="/contactus" class="blx-shop-service-btn blx-shop-service-btn-secondary">
+                        <i class="fa fa-phone"/>&#160;Contact Sales
+                    </a>
+                </div>
+            </section>
+        </xpath>
+    </template>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         2.  PRODUCT CARD — Cinematic hover overlay
+         ═══════════════════════════════════════════════════════════════════ -->
+    <template id="blx_product_card_overlay" inherit_id="website_sale.products_item" name="BLX Product Card Overlay">
+        <xpath expr="//div[hasclass('product_price')]" position="after">
+            <a t-att-href="'/fundi-request?product_id=%s' % product.id" class="blx-product-fundi-tag">
+                <i class="fa fa-wrench"/>&#160;Get Fundi
+            </a>
+        </xpath>
+        <xpath expr="//div[hasclass('oe_product_image')]" position="inside">
+            <!-- Dark overlay with CTA slides up on hover -->
+            <div class="blx-card-overlay">
+                <div class="blx-overlay-content">
+                    <div class="blx-overlay-icon"><i class="fa fa-eye"/></div>
+                    <div class="blx-overlay-label">View Product</div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         3.  PRODUCT DETAIL — Premium badges + feature strip
+         ═══════════════════════════════════════════════════════════════════ -->
+    <template id="blx_product_detail_premium" inherit_id="website_sale.product" name="BLX Product Detail Premium">
+        <xpath expr="//h1[1]" position="after">
+            <div class="blx-pdp-badges">
+                <span class="blx-pdp-badge blx-badge-green">
+                    <i class="fa fa-check-circle"/>&#160;In Stock
+                </span>
+                <span class="blx-pdp-badge blx-badge-blue">
+                    <i class="fa fa-shield"/>&#160;Authentic
+                </span>
+                <span class="blx-pdp-badge blx-badge-amber">
+                    <i class="fa fa-truck"/>&#160;First Delivery
+                </span>
+                <span class="blx-pdp-badge blx-badge-surface">
+                    <i class="fa fa-book"/>&#160;Product Info
+                </span>
+                <a t-att-href="'/fundi-request?product_id=%s' % product.id" class="blx-pdp-badge blx-badge-technician">
+                    <i class="fa fa-wrench"/>&#160;Contact Technician
+                </a>
+            </div>
+        </xpath>
+    </template>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         4.  CART PAGE — Dark immersive header
+         ═══════════════════════════════════════════════════════════════════ -->
+    <template id="blx_cart_header" inherit_id="website_sale.cart" name="BLX Cart Header">
+        <xpath expr="//h3[contains(.,'Order overview')]" position="before">
+            <div class="blx-cart-header">
+                <div class="blx-cart-header-orb"/>
+                <div class="container">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="blx-cart-icon-wrap">
+                            <i class="fa fa-shopping-cart"/>
+                        </div>
+                        <div>
+                            <div class="blx-cart-title">Your Cart</div>
+                            <div class="blx-cart-sub">Review your items and proceed to checkout</div>
+                        </div>
+                        <div class="ms-auto d-none d-md-flex gap-3">
+                            <div class="blx-cart-trust">
+                                <i class="fa fa-lock me-1" style="color:#f8d817;"/>
+                                Secure Checkout
+                            </div>
+                            <div class="blx-cart-trust">
+                                <i class="fa fa-refresh me-1" style="color:#b8cbca;"/>
+                                Easy Returns
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

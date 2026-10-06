@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+<odoo>
+    <data noupdate="1">
+        <!-- Cron for the Attendance Sync -->
+        <record id="ir_cron_sync_attendance" model="ir.cron">
+            <field name="name">Zkteco: Attendance Sync Cron</field>
+            <field name="model_id" ref="wk_zkteco_attendance_management.model_zkteco_device"/>
+            <field name="state">code</field>
+            <field name="code">model._sync_attendance_cron()</field>
+            <field eval="True" name="active" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+        </record>
+
+        <!-- Sequences for employee barcode Code -->
+        <record id="sequence_hr_employee_pin" model="ir.sequence">
+            <field name="name">Employee barcode Code</field>
+            <field name="code">hr.employee.barcode</field>
+            <field name="prefix">1</field>
+            <field name="padding">4</field>
+        </record>
+
+        <!-- Cron for creating Employee barcode Code -->
+        <record id="ir_cron_create_employee_pin" model="ir.cron">
+            <field name="name">Zkteco: Employee Barcode Creation Cron</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">model._create_employee_pin_cron()</field>
+            <field eval="False" name="active" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">999</field>
+            <field name="interval_type">months</field>
+        </record>
+    </data>
+</odoo>

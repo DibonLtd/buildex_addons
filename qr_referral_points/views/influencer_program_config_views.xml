@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form view -->
+    <record id="influencer_program_config_form" model="ir.ui.view">
+        <field name="name">influencer.program.config.form</field>
+        <field name="model">influencer.program.config</field>
+        <field name="arch" type="xml">
+            <form string="Programme Terms &amp; Conditions">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <notebook>
+                        <page string="Terms &amp; Conditions">
+                            <field name="terms_html" widget="html" options="{'collaborative': false}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_influencer_program_config" model="ir.actions.act_window">
+        <field name="name">Programme Terms</field>
+        <field name="res_model">influencer.program.config</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Menu item under existing Influencers root menu -->
+    <menuitem id="menu_influencer_program_config"
+              name="Programme Terms"
+              parent="menu_influencer_root"
+              action="action_influencer_program_config"
+              sequence="50"/>
+
+</odoo>

@@ -1,0 +1,230 @@
+/* Buildex-inspired portal palette */
+.blx-portal-theme {
+    --blx-navy: #282f72;
+    --blx-navy-deep: #282f72;
+    --blx-gold: #f8d817;
+    --blx-gold-deep: #f8d817;
+    --blx-teal: #b8cbca;
+    --blx-teal-deep: #6d8f8d;
+    --blx-stone: #f3f5f4;
+    --blx-card: #ffffff;
+    --blx-border: rgba(40, 47, 114, 0.10);
+    --blx-text: #282f72;
+    --blx-muted: #6c728f;
+}
+
+.blx-portal-theme .bg-white {
+    background: var(--blx-card) !important;
+}
+
+.blx-portal-theme .shadow-sm {
+    box-shadow: 0 18px 36px rgba(40, 47, 114, 0.08) !important;
+}
+
+.blx-portal-theme .rounded-4 {
+    border: 1px solid var(--blx-border);
+}
+
+.blx-portal-theme .text-primary,
+.blx-portal-theme .btn-link,
+.blx-portal-theme a:not(.btn):not(.dropdown-item) {
+    color: var(--blx-navy);
+}
+
+.blx-portal-theme .text-info {
+    color: var(--blx-teal-deep) !important;
+}
+
+.blx-portal-theme .text-success {
+    color: #567d55 !important;
+}
+
+.blx-portal-theme .text-muted {
+    color: var(--blx-muted) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   BLX Influencer Portal — Tab Navigation
+═══════════════════════════════════════════════ */
+
+/* Nav pill bar */
+.blx-portal-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px 8px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 16px;
+    box-shadow: 0 16px 32px rgba(47, 52, 125, 0.08);
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(40, 47, 114, 0.08);
+}
+
+/* Individual tab button */
+.blx-portal-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #5d6486;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    white-space: nowrap;
+    position: relative;
+}
+
+.blx-portal-tab:hover {
+    background: #f6f7fb;
+    color: #282f72;
+}
+
+/* Active state — set via JS (blx-tab-active) or server-side data-active="true" */
+.blx-portal-tab[data-active="true"],
+.blx-portal-tab.blx-tab-active {
+    background: linear-gradient(135deg, #282f72, #282f72);
+    color: #fff;
+    box-shadow: 0 10px 22px rgba(40, 47, 114, 0.32);
+}
+
+/* Badge inside tab button */
+.blx-tab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.20);
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 1px 7px;
+    min-width: 20px;
+}
+
+.blx-portal-tab:not([data-active="true"]):not(.blx-tab-active) .blx-tab-badge {
+    background: #eef1ff;
+    color: #282f72;
+}
+
+/* Tab panels — hidden by default; JS shows the active one */
+.blx-panel {
+    animation: blx-fadein 0.22s ease;
+}
+
+.blx-portal-theme .table thead {
+    background: #f6f7fb !important;
+}
+
+.blx-portal-theme .table td,
+.blx-portal-theme .table th {
+    border-color: rgba(40, 47, 114, 0.08);
+}
+
+.blx-portal-theme .badge.bg-success,
+.blx-portal-theme .btn-outline-success,
+.blx-portal-theme .btn-success {
+    background-color: #6d8f8d !important;
+    border-color: #6d8f8d !important;
+    color: #fff !important;
+}
+
+.blx-portal-theme .badge.bg-info {
+    background-color: #b8cbca !important;
+    color: #282f72 !important;
+}
+
+.blx-portal-theme .badge.bg-warning {
+    background-color: #f8d817 !important;
+    color: #282f72 !important;
+}
+
+.blx-portal-theme .badge.bg-secondary {
+    background-color: #9095b0 !important;
+}
+
+.blx-portal-theme .btn-dark,
+.blx-portal-theme .blx-sales-pill.btn-dark {
+    background: var(--blx-navy) !important;
+    border-color: var(--blx-navy) !important;
+}
+
+.blx-portal-theme .btn-outline-primary,
+.blx-theme-outline-primary {
+    color: var(--blx-navy) !important;
+    border-color: rgba(40, 47, 114, 0.28) !important;
+    background: #fff !important;
+}
+
+.blx-portal-theme .btn-outline-primary:hover,
+.blx-theme-outline-primary:hover {
+    background: #eef1ff !important;
+    color: var(--blx-navy) !important;
+}
+
+.blx-theme-primary-btn,
+.blx-portal-theme .btn-primary {
+    background: var(--blx-gold) !important;
+    border-color: var(--blx-gold) !important;
+    color: var(--blx-text) !important;
+    font-weight: 700;
+}
+
+.blx-theme-primary-btn:hover,
+.blx-portal-theme .btn-primary:hover {
+    background: var(--blx-gold-deep) !important;
+    border-color: var(--blx-gold-deep) !important;
+    color: var(--blx-text) !important;
+}
+
+.blx-share-btn {
+    border: none !important;
+    font-weight: 600;
+}
+
+.blx-share-btn-primary {
+    background: var(--blx-navy) !important;
+    color: #fff !important;
+}
+
+.blx-share-btn-accent {
+    background: var(--blx-teal-deep) !important;
+    color: #fff !important;
+}
+
+.blx-portal-theme .form-control {
+    border-color: rgba(47, 52, 125, 0.12);
+    color: var(--blx-text);
+}
+
+.blx-portal-theme .form-control.bg-light {
+    background: #f6f7fb !important;
+}
+
+.blx-portal-theme .blx-month-section > div:first-child {
+    background: linear-gradient(135deg, #282f72, #282f72) !important;
+}
+
+.blx-portal-theme #blx-sales-filters .blx-sales-pill {
+    border-width: 1px;
+    font-weight: 600;
+}
+
+@keyframes blx-fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive: on small screens stack buttons */
+@media (max-width: 575px) {
+    .blx-portal-nav {
+        gap: 4px;
+        padding: 4px 6px;
+    }
+    .blx-portal-tab {
+        padding: 7px 12px;
+        font-size: 0.8rem;
+    }
+}

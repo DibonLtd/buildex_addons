@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================
+         STEP 1: Enter mobile number + email → request OTP
+    ============================================================ -->
+    <template id="mobile_signup_page" name="Mobile Signup – Enter Details">
+        <t t-call="website.layout">
+            <div class="container py-5" style="max-width: 480px;">
+
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4 p-md-5">
+
+                        <h3 class="mb-1 fw-bold text-center">Create Your Account</h3>
+                        <p class="text-muted text-center mb-4" style="font-size:0.92rem;">
+                            Enter your mobile number and email to get started.
+                        </p>
+
+                        <!-- Error banner -->
+                        <t t-if="error">
+                            <div class="alert alert-danger py-2 mb-3" role="alert">
+                                <i class="fa fa-exclamation-circle me-1"/>
+                                <t t-esc="error"/>
+                            </div>
+                        </t>
+
+                        <form action="/mobile/signup/send-otp" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="from_influencer" t-att-value="from_influencer or ''"/>
+
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label fw-semibold">
+                                    Email Address
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-envelope"/>
+                                    </span>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        class="form-control"
+                                        placeholder="you@example.com"
+                                        required="required"
+                                        autocomplete="email"
+                                    />
+                                </div>
+                                <small class="text-muted">
+                                    This will be your login email.
+                                </small>
+                            </div>
+
+                            <!-- Mobile number -->
+                            <div class="mb-4">
+                                <label for="mobile" class="form-label fw-semibold">
+                                    Mobile Number
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-phone"/>
+                                    </span>
+                                    <input
+                                        type="tel"
+                                        id="mobile"
+                                        name="mobile"
+                                        class="form-control"
+                                        placeholder="+254 7XX XXX XXX"
+                                        required="required"
+                                        autocomplete="tel"
+                                    />
+                                </div>
+                                <small class="text-muted">
+                                    We will send a one-time code to this number for verification.
+                                </small>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+                                <i class="fa fa-paper-plane me-1"/> Send OTP
+                            </button>
+                        </form>
+
+                        <hr class="my-4"/>
+
+                        <p class="text-center text-muted mb-0" style="font-size:0.88rem;">
+                            Already have an account?
+                            <a href="/web/login" class="text-primary fw-semibold">Log in</a>
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+
+    <!-- ============================================================
+         STEP 2: Enter OTP to verify mobile and create account
+    ============================================================ -->
+    <template id="mobile_signup_verify_page" name="Mobile Signup – Verify OTP">
+        <t t-call="website.layout">
+            <div class="container py-5" style="max-width: 480px;">
+
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4 p-md-5">
+
+                        <h3 class="mb-1 fw-bold text-center">Verify Your Mobile</h3>
+                        <p class="text-muted text-center mb-3" style="font-size:0.92rem;">
+                            Enter the 4-digit code sent to your number below.
+                        </p>
+
+                        <!-- Read-only mobile number -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Mobile Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa fa-phone"/>
+                                </span>
+                                <input
+                                    type="tel"
+                                    class="form-control bg-light"
+                                    t-att-value="mobile"
+                                    readonly="readonly"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Error banner -->
+                        <t t-if="error">
+                            <div class="alert alert-danger py-2 mb-3" role="alert">
+                                <i class="fa fa-exclamation-circle me-1"/>
+                                <t t-esc="error"/>
+                            </div>
+                        </t>
+
+                        <form action="/mobile/signup/verify" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                            <!-- OTP input -->
+                            <div class="mb-4">
+                                <label for="otp" class="form-label fw-semibold">
+                                    One-Time Code
+                                </label>
+                                <input
+                                    type="text"
+                                    id="otp"
+                                    name="otp"
+                                    class="form-control form-control-lg text-center"
+                                    placeholder="— — — —"
+                                    maxlength="4"
+                                    inputmode="numeric"
+                                    pattern="[0-9]{4}"
+                                    required="required"
+                                    autocomplete="one-time-code"
+                                    style="letter-spacing: 0.35em; font-size: 1.5rem;"
+                                />
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">
+                                <i class="fa fa-check-circle me-1"/> Verify &amp; Create Account
+                            </button>
+                        </form>
+
+                        <!-- Resend OTP -->
+                        <div class="text-center mt-3">
+                            <form action="/mobile/signup/resend-otp" method="post" class="d-inline">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <small class="text-muted">Didn't receive a code?</small>
+                                <button
+                                    type="submit"
+                                    class="btn btn-link btn-sm p-0 ms-1 text-primary fw-semibold"
+                                    style="font-size:0.88rem;"
+                                >
+                                    Resend OTP
+                                </button>
+                            </form>
+                        </div>
+
+                        <hr class="my-3"/>
+
+                        <p class="text-center mb-0">
+                            <a href="/mobile/signup" class="text-muted" style="font-size:0.88rem;">
+                                <i class="fa fa-arrow-left me-1"/> Go back
+                            </a>
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+</odoo>

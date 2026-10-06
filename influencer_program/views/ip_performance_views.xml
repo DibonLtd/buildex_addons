@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         COMMISSIONS
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_commission_list" model="ir.ui.view">
+        <field name="name">ip.commission.list</field>
+        <field name="model">influencer.commission</field>
+        <field name="arch" type="xml">
+            <list string="Commissions"
+                  decoration-success="state == 'paid'"
+                  decoration-warning="state == 'approved'"
+                  decoration-info="state == 'batched'"
+                  decoration-muted="state == 'draft'">
+                <field name="partner_id" string="Influencer"/>
+                <field name="commission_type" widget="badge"/>
+                <field name="sale_order_id" string="Order"/>
+                <field name="invoice_id" string="Invoice"/>
+                <field name="base_amount" string="Sale Amount"/>
+                <field name="commission_amount" string="Gross"/>
+                <field name="topline_deduction" string="Topline Cut"/>
+                <field name="tax_amount" string="WHT"/>
+                <field name="net_amount" string="Net"/>
+                <field name="currency_id" groups="base.group_multi_currency"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'paid'"
+                       decoration-warning="state == 'approved'"
+                       decoration-info="state == 'batched'"/>
+                <field name="batch_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ip_view_commission_search" model="ir.ui.view">
+        <field name="name">ip.commission.search</field>
+        <field name="model">influencer.commission</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id" string="Influencer"/>
+                <field name="sale_order_id"/>
+                <field name="batch_id"/>
+                <separator/>
+                <filter name="filter_draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="filter_approved" string="Approved" domain="[('state','=','approved')]"/>
+                <filter name="filter_batched" string="Batched" domain="[('state','=','batched')]"/>
+                <filter name="filter_paid" string="Paid" domain="[('state','=','paid')]"/>
+                <separator/>
+                <filter name="filter_direct" string="Direct" domain="[('commission_type','=','direct')]"/>
+                <filter name="filter_topline" string="Topline Bonus" domain="[('commission_type','=','topline')]"/>
+                <separator/>
+                <group string="Group By">
+                    <filter string="Influencer" name="group_partner" context="{'group_by':'partner_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by':'state'}"/>
+                    <filter string="Type" name="group_type" context="{'group_by':'commission_type'}"/>
+                    <filter string="Batch" name="group_batch" context="{'group_by':'batch_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="ip_action_commissions" model="ir.actions.act_window">
+        <field name="name">Commissions</field>
+        <field name="res_model">influencer.commission</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="ip_view_commission_search"/>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         COMMISSION BATCHES
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_commission_batch_list" model="ir.ui.view">
+        <field name="name">ip.commission.batch.list</field>
+        <field name="model">influencer.commission.batch</field>
+        <field name="arch" type="xml">
+            <list string="Commission Batches"
+                  decoration-success="state == 'paid'"
+                  decoration-info="state == 'billed'"
+                  decoration-warning="state == 'batched'">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'paid'"
+                       decoration-info="state == 'billed'"
+                       decoration-warning="state == 'batched'"/>
+                <field name="commission_ids" string="# Commissions" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ip_action_commission_batches" model="ir.actions.act_window">
+        <field name="name">Commission Batches</field>
+        <field name="res_model">influencer.commission.batch</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         WALLET TRANSACTIONS
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_wallet_list" model="ir.ui.view">
+        <field name="name">ip.wallet.list</field>
+        <field name="model">influencer.wallet.transaction</field>
+        <field name="arch" type="xml">
+            <list string="Wallet Transactions"
+                  decoration-success="transaction_type == 'credit'"
+                  decoration-danger="transaction_type == 'debit'">
+                <field name="create_date" string="Date"/>
+                <field name="partner_id" string="Influencer"/>
+                <field name="transaction_type" widget="badge"
+                       decoration-success="transaction_type == 'credit'"
+                       decoration-danger="transaction_type == 'debit'"/>
+                <field name="amount"/>
+                <field name="currency_id" groups="base.group_multi_currency"/>
+                <field name="commission_id"/>
+                <field name="batch_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ip_view_wallet_search" model="ir.ui.view">
+        <field name="name">ip.wallet.search</field>
+        <field name="model">influencer.wallet.transaction</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id" string="Influencer"/>
+                <separator/>
+                <filter name="credits" string="Credits" domain="[('transaction_type','=','credit')]"/>
+                <filter name="debits" string="Debits" domain="[('transaction_type','=','debit')]"/>
+                <separator/>
+                <group string="Group By">
+                    <filter string="Influencer" name="group_partner" context="{'group_by':'partner_id'}"/>
+                    <filter string="Type" name="group_type" context="{'group_by':'transaction_type'}"/>
+                    <filter string="Month" name="group_month" context="{'group_by':'create_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="ip_action_wallet" model="ir.actions.act_window">
+        <field name="name">Wallet Transactions</field>
+        <field name="res_model">influencer.wallet.transaction</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="ip_view_wallet_search"/>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         REFERRAL VISIT STATS
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_visit_stat_list" model="ir.ui.view">
+        <field name="name">ip.visit.stat.list</field>
+        <field name="model">influencer.referral.visit.stat</field>
+        <field name="arch" type="xml">
+            <list string="Referral Visit Stats">
+                <field name="date"/>
+                <field name="partner_id" string="Influencer"/>
+                <field name="referral_code"/>
+                <field name="visit_count" sum="Total"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ip_view_visit_stat_graph" model="ir.ui.view">
+        <field name="name">ip.visit.stat.graph</field>
+        <field name="model">influencer.referral.visit.stat</field>
+        <field name="arch" type="xml">
+            <graph string="Referral Visits" type="bar">
+                <field name="date" type="row"/>
+                <field name="visit_count" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="ip_view_visit_stat_pivot" model="ir.ui.view">
+        <field name="name">ip.visit.stat.pivot</field>
+        <field name="model">influencer.referral.visit.stat</field>
+        <field name="arch" type="xml">
+            <pivot string="Referral Visits">
+                <field name="partner_id" type="row"/>
+                <field name="date" type="col" interval="month"/>
+                <field name="visit_count" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="ip_view_visit_stat_search" model="ir.ui.view">
+        <field name="name">ip.visit.stat.search</field>
+        <field name="model">influencer.referral.visit.stat</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="referral_code"/>
+                <filter name="today" string="Today" domain="[('date','=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="this_week" string="This Week"
+                        domain="[('date','&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <group string="Group By">
+                    <filter string="Influencer" name="group_partner" context="{'group_by':'partner_id'}"/>
+                    <filter string="Day" name="group_day" context="{'group_by':'date:day'}"/>
+                    <filter string="Week" name="group_week" context="{'group_by':'date:week'}"/>
+                    <filter string="Month" name="group_month" context="{'group_by':'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="ip_action_visit_stats" model="ir.actions.act_window">
+        <field name="name">Referral Visits</field>
+        <field name="res_model">influencer.referral.visit.stat</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="search_view_id" ref="ip_view_visit_stat_search"/>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         LINK PERFORMANCE REPORT (dashboard-style)
+    ═══════════════════════════════════════════════════════════ -->
+    <record id="ip_view_perf_report_list" model="ir.ui.view">
+        <field name="name">ip.perf.report.list</field>
+        <field name="model">influencer.link.performance.report</field>
+        <field name="arch" type="xml">
+            <list string="Link Performance" default_order="visit_count desc">
+                <field name="partner_id" string="Influencer"/>
+                <field name="referral_code"/>
+                <field name="referral_url" string="Link"/>
+                <field name="visit_count" string="Visits" sum="Total Visits"/>
+                <field name="order_count" string="Orders" sum="Total Orders"/>
+                <field name="conversion_rate" string="Conversion %" avg="Avg %"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ip_view_perf_report_graph" model="ir.ui.view">
+        <field name="name">ip.perf.report.graph</field>
+        <field name="model">influencer.link.performance.report</field>
+        <field name="arch" type="xml">
+            <graph string="Link Performance" type="bar" stacked="0">
+                <field name="partner_id" type="row"/>
+                <field name="visit_count" type="measure"/>
+                <field name="order_count" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="ip_action_perf_report" model="ir.actions.act_window">
+        <field name="name">Performance Overview</field>
+        <field name="res_model">influencer.link.performance.report</field>
+        <field name="view_mode">graph,list</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('ip_view_perf_report_graph')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('ip_view_perf_report_list')}),
+        ]"/>
+    </record>
+
+</odoo>

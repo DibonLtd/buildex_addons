@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_zkteco_device_hr_user,User zkteco_device access,model_zkteco_device,base.group_user,1,0,0,0
+access_zkteco_device_hr_manager,Manager zkteco_device access,model_zkteco_device,hr.group_hr_user,1,1,1,1
+access_zkteco_attendance_feed_hr_user,User zkteco_attendance_feed access,model_zkteco_attendance_feed,base.group_user,1,0,0,0
+access_zkteco_attendance_feed_hr_manager,Manager zkteco_attendance_feed access,model_zkteco_attendance_feed,hr.group_hr_user,1,1,1,1
+access_enroll_employee_wizard,Manager access_enroll_employee access,model_enroll_employees_wizard,hr.group_hr_user,1,1,1,1
+
+access_hr_break_attendance,User access_hr_break_attendance access,model_hr_attendance_break,base.group_user,1,0,0,0
+access_manager_hr_break_attendance,Manager access_hr_break_attendance access,model_hr_attendance_break,hr.group_hr_user,1,1,1,1
+
+access_punch_state,Manager access_punch_state access,model_machine_punch_state,hr.group_hr_user,1,1,1,1
+access_machine_user,Manager access_machine_user access,model_employee_machine_data,hr.group_hr_user,1,1,1,1

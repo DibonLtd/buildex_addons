@@ -1,0 +1,16 @@
+<odoo noupdate="1">
+    <record id="partner_category_b2c" model="res.partner.category">
+        <field name="name">B2C</field>
+        <field name="color">3</field>
+    </record>
+
+    <record id="partner_category_b2b" model="res.partner.category">
+        <field name="name">B2B</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="partner_category_fundi" model="res.partner.category">
+        <field name="name">Fundi</field>
+        <field name="color">10</field>
+    </record>
+</odoo>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+<odoo>
+    <record id="view_zkteco_device_form" model="ir.ui.view">
+        <field name="name">zkteco.device.form</field>
+        <field name="model">zkteco.device</field>
+        <field name="arch" type="xml">
+            <form string="ZKTeco Device">
+                <header>
+                    <button string="Fetch Attendance" type="object" name="sync_attendance" class="btn-primary me-2" invisible="is_adms_mode or state != 'connected'" />
+                    <button name="test_connection" string="Test Connection" class="oe_highlight" invisible="is_adms_mode or state != 'draft'" type="object"/>
+                    <button name="reset" class="btn-secondary" string="Reset" invisible="is_adms_mode or state not in ['error','connected']" type="object" confirm="Are you sure you want to reset?"/>
+                    <field name="state" widget="statusbar" />
+                </header>
+
+                <sheet>
+                    <div class="row mb-2">
+                        <div class="col text-end">
+                            <button name="fetch_employees" class="btn-info me-2" string="Fetch Machine Users" invisible="is_adms_mode or state != 'connected'" type="object"/>
+                            <button name="enroll_employees" class="btn-success me-2" string="Enroll Employees" invisible="is_adms_mode or state != 'connected'" type="object"/>
+                            <button name="delete_employees" class="btn-danger " string="Remove Employees" invisible="is_adms_mode or state != 'connected'" type="object"/>
+                        </div>
+                    </div>
+                    <div class="oe_button_box" name="button_box" >
+                        <button class="oe_stat_button" name="action_linked_machine_user" type="object" icon="fa-user" invisible="not machine_user_ids">
+                            <field name="machine_user_ids"  widget="statinfo" />
+                        </button>
+                        <button class="oe_stat_button" name="action_linked_feeds" type="object" icon="fa-list" invisible="not linked_feed_count">
+                            <field name="linked_feed_count"  widget="statinfo" />
+                        </button>
+                    </div>
+                    <group >
+                        <field name="name" required="1" readonly="state != 'draft'"/>
+                        <field name="serial_number" required="is_adms_mode" invisible="not is_adms_mode and state != 'connected' " readonly="state != 'draft'"/>
+                        <field name="ip_address" required="not is_adms_mode" invisible="is_adms_mode" readonly="state != 'draft'"/>
+                        <field name="port" required="not is_adms_mode" invisible="is_adms_mode" readonly="state != 'draft'"/>
+                        <field name="is_adms_mode" widget="boolean_toggle"/>
+                        <field name="last_sync" readonly="state != 'draft'" />
+                        <field name="last_attendance_id" readonly="state != 'draft'" invisible="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Punch State" name="punch_state">
+                            <field name="punch_state_ids" widget="section_and_note_one2many" mode="list" readonly="state != 'draft'">
+                                <list string="Punch State" editable="bottom">
+                                    <field name="create_date"/>
+                                    <field name="punch_state" colspan="2" required="1"/>
+                                    <field name="value" required="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_zkteco_machine_user" model="ir.ui.view">
+        <field name="name">zkteco.machine.user</field>
+        <field name="model">employee.machine.data</field>
+        <field name="arch" type="xml">
+            <list string="Machine user" editable="bottom" create="0">
+                <field name="name" string="Name" readonly="1"/>
+                <field name="user_id" readonly="1" />
+                <field name="employee_id" domain="['|',('barcode', '=',user_id),('barcode','=',False)]"/>
+                <field name="machine_id" column_invisible="not context.get('employee_page')"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_zkteco_device_tree" model="ir.ui.view">
+        <field name="name">zkteco.device.tree</field>
+        <field name="model">zkteco.device</field>
+        <field name="arch" type="xml">
+            <list string="ZKTeco Devices">
+                <field name="name"/>
+                <field name="serial_number"/>
+                <field name="ip_address"/>
+                <field name="port"/>
+                <field name="state"  widget="badge" string="State" decoration-info="state == 'draft'"  decoration-success="state == 'connected'" decoration-danger="state == 'error'"/>
+                <field name="last_sync" optional="hide"/>
+                <field name="create_date" optional="hide"/>
+                <field name="write_date" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="zkteco_device_filter" model="ir.ui.view">
+        <field name="name">zkteco.device.search</field>
+        <field name="model">zkteco.device</field>
+        <field name="arch" type="xml">
+            <search string="Device Search">
+                <field name="name" string="Device Name"/>
+                <field name="serial_number" string="Serial Number"/>
+                <group expand="0" string="Group By">
+                    <filter string="State" name="state" context="{'group_by': 'state'}"/>
+                    <filter string="Port" name="port" context="{'group_by': 'port'}"/>
+                    <filter string="Create Date" name="create_date" context="{'group_by': 'create_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_clear_machine_data">
+            <field name="name">Clear Machine Data</field>
+            <field name="model_id" ref="wk_zkteco_attendance_management.model_zkteco_device"/>
+            <field name="groups_id" eval="[(4, ref('hr.group_hr_user'))]"/>
+            <field name="binding_model_id" ref="wk_zkteco_attendance_management.model_zkteco_device" />
+            <field name="state">code</field>
+            <field name="binding_view_types">form</field>
+            <field name="code">
+if records:
+    action = records.action_clear_machine_data()
+            </field>
+        </record>
+    
+    <record id="action_zkteco_devices" model="ir.actions.act_window">
+        <field name="name">ZKTeco Devices</field>
+        <field name="res_model">zkteco.device</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_zkteco_attendance_feed" model="ir.actions.act_window">
+        <field name="name">ZKTeco Feeds</field>
+        <field name="res_model">zkteco.attendance.feed</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_hr_attendance_break" model="ir.actions.act_window">
+        <field name="name">Employee Breaks</field>
+        <field name="res_model">hr.attendance.break</field>
+        <field name="view_mode">list</field>
+    </record>
+   
+    <menuitem id="menu_zkteco_root" name="ZKTeco" parent="hr_attendance.menu_hr_attendance_root" sequence="10" groups="hr.group_hr_user"/>
+    <menuitem id="menu_zkteco_devices" name="Devices" parent="menu_zkteco_root" action="action_zkteco_devices"/>
+    <menuitem id="menu_zkteco_attendance_feed" name="Feeds" parent="menu_zkteco_root" action="action_zkteco_attendance_feed"/>
+    <menuitem id="menu_hr_attendance_break" name="Employee Breaks" parent="menu_zkteco_root" action="action_hr_attendance_break"/>
+
+</odoo>

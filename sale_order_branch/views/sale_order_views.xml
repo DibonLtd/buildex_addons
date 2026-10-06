@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_sale_branch" model="ir.ui.view">
+        <field name="name">sale.order.form.sale.branch</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button
+                    name="action_request_from_main"
+                    type="object"
+                    string="Request From Main"
+                    invisible="company_id == 1 or state not in ('draft', 'sent')"
+                />
+            </xpath>
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <field name="branch_id" required="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sale_order_filter_sale_branch" model="ir.ui.view">
+        <field name="name">sale.order.search.sale.branch</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="branch_id"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_branch_id" string="Branch" context="{'group_by': 'branch_id'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

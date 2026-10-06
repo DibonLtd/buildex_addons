@@ -1,0 +1,17 @@
+
+<odoo>
+    <record id="sale_order_form_referral" model="ir.ui.view">
+        <field name="name">sale.order.form.referral</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Referral">
+                    <field name="is_referral_order" readonly="1"/>
+                    <field name="referral_code" readonly="1"/>
+                    <field name="referral_partner_id" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

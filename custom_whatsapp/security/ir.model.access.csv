@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ir_whatsapp_server,ir_whatsapp_server_user,custom_whatsapp.model_ir_whatsapp_server,base.group_user,1,0,0,0
+access_ir_whatsapp_server_system,ir_whatsapp_server_system,custom_whatsapp.model_ir_whatsapp_server,base.group_system,1,1,1,1
+access_ir_whatsapp_qr_wizard,whatsapp_qr_wizard,custom_whatsapp.model_whatsapp_qr_wizard,base.group_system,1,1,1,1
+access_whatsapp_compose_message,access.whatsapp.compose.message,custom_whatsapp.model_whatsapp_compose_message,base.group_user,1,1,1,0
+access_whatsapp_compose_message_portal,access.whatsapp.compose.message.portal,custom_whatsapp.model_whatsapp_compose_message,base.group_portal,1,1,1,0
+access_check_partner_mobile,access_check_partner_mobile,custom_whatsapp.model_check_partner_mobile,base.group_user,1,0,0,0

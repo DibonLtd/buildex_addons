@@ -1,0 +1,83 @@
+<odoo>
+    <!-- ========================= Search View ========================= -->
+    <record id="view_influencer_order_search" model="ir.ui.view">
+        <field name="name">sale.order.influencer.search</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <search string="Influencer Orders">
+                <field name="name" string="Order"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="referral_partner_id" string="Influencer"/>
+                <separator/>
+                <filter name="stage_ordered"    string="Ordered"    domain="[('influencer_order_stage','=','ordered')]"/>
+                <filter name="stage_dispatched" string="Dispatched" domain="[('influencer_order_stage','=','dispatched')]"/>
+                <filter name="stage_delivered"  string="Delivered"  domain="[('influencer_order_stage','=','delivered')]"/>
+                <filter name="stage_invoiced"   string="Invoiced"   domain="[('influencer_order_stage','=','invoiced')]"/>
+                <filter name="stage_paid"       string="Paid"       domain="[('influencer_order_stage','=','paid')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_stage"      string="Stage"      context="{'group_by': 'influencer_order_stage'}"/>
+                    <filter name="group_influencer" string="Influencer" context="{'group_by': 'referral_partner_id'}"/>
+                </group>
+                <searchpanel>
+                    <field name="influencer_order_stage" string="Stage" select="one" icon="fa-tasks" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!-- ========================= List (Tree) View ========================= -->
+    <record id="view_influencer_order_tree" model="ir.ui.view">
+        <field name="name">sale.order.influencer.list</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <list string="Influencer Orders"
+                  decoration-success="influencer_order_stage == 'paid'"
+                  decoration-info="influencer_order_stage == 'delivered'"
+                  decoration-warning="influencer_order_stage == 'dispatched'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="referral_code"/>
+                <field name="referral_partner_id"/>
+                <field name="amount_total"/>
+                <field name="influencer_order_stage" widget="badge"/>
+                <field name="state" invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ========================= Form View ========================= -->
+    <record id="view_influencer_order_form" model="ir.ui.view">
+        <field name="name">sale.order.influencer.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Referral Info">
+                    <group>
+                        <field name="is_referral_order" readonly="1"/>
+                        <field name="referral_code" readonly="1"/>
+                        <field name="referral_partner_id" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ========================= Action ========================= -->
+    <record id="action_influencer_orders" model="ir.actions.act_window">
+        <field name="name">Influencer Orders</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_influencer_order_tree"/>
+        <field name="search_view_id" ref="view_influencer_order_search"/>
+        <field name="domain">[('is_referral_order','=',True)]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- ========================= Menu ========================= -->
+    <menuitem id="menu_influencer_orders_root"
+              name="Influencer Orders"
+              parent="menu_influencer_sales_main"
+              sequence="52"
+              action="action_influencer_orders"/>
+</odoo>

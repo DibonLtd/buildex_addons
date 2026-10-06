@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="point_of_sale.PaymentScreenPaymentLines" t-inherit-mode="extension">
+        <xpath expr="//span[@class='payment-name']" position="replace">
+            <div class="d-flex flex-column text-truncate">
+                <span class="payment-name"><t t-esc="line.payment_method_id.name"/></span>
+                <t t-if="line.payment_ref_no">
+                    <span class="text-muted small">Ref: <t t-esc="line.payment_ref_no"/></span>
+                </t>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[contains(@class, 'payment-infos')]/t[@t-esc='line.payment_method_id.name']" position="replace">
+            <div class="d-flex flex-column text-truncate">
+                <span><t t-esc="line.payment_method_id.name"/></span>
+                <t t-if="line.payment_ref_no">
+                    <span class="text-muted small">Ref: <t t-esc="line.payment_ref_no"/></span>
+                </t>
+            </div>
+        </xpath>
+    </t>
+
+</templates>

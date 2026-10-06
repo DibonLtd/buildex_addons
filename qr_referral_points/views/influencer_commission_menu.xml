@@ -1,0 +1,92 @@
+<odoo>
+
+    <!-- ========================= Tree ========================= -->
+    <record id="view_influencer_commission_tree" model="ir.ui.view">
+        <field name="name">influencer.commission.tree</field>
+        <field name="model">influencer.commission</field>
+        <field name="arch" type="xml">
+            <list string="Influencer Commissions">
+                <field name="partner_id"/>
+                <field name="sale_order_id"/>
+                <field name="invoice_id"/>
+                <field name="base_amount"/>
+                <field name="commission_amount"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ========================= Form ========================= -->
+    <record id="view_influencer_commission_form" model="ir.ui.view">
+        <field name="name">influencer.commission.form</field>
+        <field name="model">influencer.commission</field>
+        <field name="arch" type="xml">
+            <form string="Influencer Commission">
+
+                <!-- 🔥 ADDED HEADER SECTION -->
+                <header>
+
+                    <!-- 🔥 NEW: Approve Button -->
+                    <button name="action_approve"
+                            type="object"
+                            string="Approve"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+
+                    <!-- 🔥 NEW: Statusbar widget -->
+                    <field name="state"
+                           widget="statusbar"
+                           statusbar_visible="draft,approved,batched,paid"/>
+
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="sale_order_id"/>
+                        <field name="invoice_id"/>
+                        <field name="base_amount"/>
+                        <field name="commission_amount"/>
+
+                        <!-- 🔥 CHANGED: Removed state field from body
+                             It is now shown in header as statusbar -->
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================= Action ========================= -->
+    <record id="action_influencer_commissions" model="ir.actions.act_window">
+        <field name="name">Influencer Commissions</field>
+        <field name="res_model">influencer.commission</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <!-- Server Action: Mass Approve -->
+    <record id="action_influencer_commission_mass_approve" model="ir.actions.server">
+        <field name="name">Approve Selected Commissions</field>
+        <field name="model_id" ref="model_influencer_commission"/>
+        <field name="binding_model_id" ref="model_influencer_commission"/>
+        <field name="state">code</field>
+        <field name="code">
+            records.action_approve()
+        </field>
+    </record>
+
+
+
+
+    
+
+    <!-- ========================= Menu ========================= -->
+    <menuitem id="menu_influencer_commissions"
+              name="Influencer Commissions"
+              parent="menu_influencer_sales_main"
+              sequence="51"
+              action="action_influencer_commissions"/>
+
+</odoo>

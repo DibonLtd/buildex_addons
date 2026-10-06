@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_sale_branch" model="ir.ui.view">
+        <field name="name">res.partner.form.sale.branch</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="sale_branch_id" readonly="1" invisible="not sale_branch_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

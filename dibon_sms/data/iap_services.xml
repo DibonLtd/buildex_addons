@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Create default Dibon SMS provider -->
+        <record id="iap_account_sms_dibon" model="iap.account">
+            <field name="name">Dibon SMS</field>
+            <!-- Service ID will be set by post_init_hook -->
+            <field name="sms_provider">Dibon</field>
+            <field name="state">enabled</field>
+            <field name="is_default_provider">True</field>
+            <field name="description">Default SMS provider configuration for Dibon</field>
+        </record>
+    </data>
+</odoo>
